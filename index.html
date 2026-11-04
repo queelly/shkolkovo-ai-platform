@@ -30,20 +30,6 @@
       --pill-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
     }
 
-    body[data-theme="dark"] {
-      --bg-page: #0B111E;
-      --bg-card: #162032;
-      --bg-white-box: #1E293B;
-      --text-main: #F8FAFC;
-      --text-body: #E2E8F0;
-      --text-muted: #94A3B8;
-      --shk-blue: #1D9BF0;
-      --shk-blue-hover: #38BDF8;
-      --shk-blue-soft: rgba(29, 155, 240, 0.18);
-      --border-light: #2D3B50;
-      --pill-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -124,27 +110,6 @@
       color: #FFFFFF;
       font-weight: 700;
       box-shadow: 0 2px 8px rgba(0, 136, 255, 0.28);
-    }
-
-    .theme-btn {
-      background: var(--bg-white-box);
-      color: var(--text-main);
-      border: 1px solid var(--border-light);
-      border-radius: 11px;
-      padding: 7px 14px;
-      font-family: inherit;
-      font-size: 13.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: var(--pill-shadow);
-      transition: all 0.15s ease;
-    }
-
-    .theme-btn:hover {
-      border-color: var(--shk-blue);
     }
 
     /* 2. MAIN SINGLE-PAGE SANDBOX CONTAINER (3.shkolkovo.online/sandbox/61 style) */
@@ -539,8 +504,6 @@
         <button class="topic-pill" data-topic="combo" onclick="switchTopic('combo')">🎲 Комбинаторика</button>
         <button class="topic-pill" data-topic="geom" onclick="switchTopic('geom')">📐 Планиметрия</button>
       </nav>
-
-      <button class="theme-btn" id="themeBtn">🌙 Тема</button>
     </div>
   </header>
 
@@ -972,38 +935,85 @@
     <!-- TOPIC 5: КОМБИНАТОРИКА                                              -->
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-combo">
-      <div class="page-kicker">Задачи к вебинару · Конструктор комбинаторных схем</div>
-      <h1 class="page-title">№1–2. Метод шаров и перегородок и правило деления</h1>
+      <div class="page-kicker">Задачи к вебинару · Неочевидные биекции и инварианты</div>
+      <h1 class="page-title">№1–2. Принцип зеркального отражения Андре и задача о бензоколонках</h1>
 
-      <!-- CARD 1: Шары и перегородки -->
+      <!-- CARD 1: Принцип отражения Андре и числа Каталана -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">Метод шаров и перегородок: $x_1 + x_2 + x_3 + x_4 = 10$</div>
-          <div class="card-pills" id="comboModePills">
-            <button class="shk-pill active" onclick="setComboEmpty(false)">Без пустых ($x_i \ge 1$)</button>
-            <button class="shk-pill" onclick="setComboEmpty(true)">С пустыми ($x_i \ge 0$)</button>
+          <div class="card-heading">Принцип отражения Андре (Зеркало $y = x + 1$) и числа Каталана</div>
+          <div class="card-pills" id="catalanPills">
+            <button class="shk-pill active" onclick="setCatalanPreset(0)">Плохой путь №1</button>
+            <button class="shk-pill" onclick="setCatalanPreset(1)">Плохой путь №2</button>
+            <button class="shk-pill" onclick="setCatalanPreset(2)">Хороший путь ($y \le x$)</button>
+            <button class="shk-pill" id="btnCatalanFlip" onclick="toggleCatalanReflect()">Отразить хвост</button>
           </div>
         </div>
         <div class="card-grid">
           <div class="card-text-col">
             <p>
-              Сколькими способами можно купить 10 открыток 4 видов? Выложим 10 открыток в ряд и разделим их <b>тремя перегородками</b> на 4 группы.
+              У кассы стоят $4$ человека с 50 рублями (шаг $\to$) и $4$ человека со 100 рублями (шаг $\uparrow$). Путь из $(0;0)$ в $(4;4)$ <b>хороший</b>, если он ни разу не поднимается выше диагонали $y = x$ (кассир всегда может дать сдачу).
             </p>
             <p>
-              Если <span class="inline-link active" onclick="setComboEmpty(false)">каждый вид должен встретиться ($x_i \ge 1$)</span>, перегородки нельзя ставить рядом и с краю — выбираем 3 промежутка из 9 внутренних: $C_9^3 = 84$.
+              Как посчитать плохие пути, не перебирая их вручную? Любой плохой путь впервые касается запретной прямой $y = x + 1$ в некоторой точке $K$.
             </p>
             <p>
-              Если же <span class="inline-link" onclick="setComboEmpty(true)">виды могут быть пустыми ($x_i \ge 0$)</span>, 10 шаров и 3 перегородки свободно занимают $10 + 3 = 13$ мест: $C_{13}^3 = 286$.
+              Если <span class="inline-link active" onclick="toggleCatalanReflect()">отразить весь хвост пути после точки $K$ симметрично относительно прямой $y = x + 1$</span> (меняя шаги $\to$ и $\uparrow$ местами), то конец любого плохого пути из $(4; 4)$ неизбежно перейдёт в фиксированную точку $(3; 5)$!
             </p>
             <div class="white-formula-box">
-              <span id="comboFormulaText">Разбиение: 3 + 2 + 3 + 2 = 10  |  Способов: C(9, 3) = 84</span>
+              <span id="catalanFormulaText">Всего путей: C(8, 4) = 70  |  Плохих (в точку 3; 5): C(8, 3) = 56  ⇒  Хороших: C₄ = 70 − 56 = 14</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Зеркальное отражение хвоста пути после точки $K$</span>
+                <span class="slider-val-badge" id="valCatalanRef">0% (Финиш в 4; 4)</span>
+              </div>
+              <input type="range" class="shk-range" id="rngCatalanRef" min="0" max="100" value="0" />
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
-              <canvas class="sandbox-canvas" id="cvComboStars"></canvas>
+              <canvas class="sandbox-canvas" id="cvComboCatalan"></canvas>
             </div>
-            <div class="stage-caption">Перетаскивайте синие вертикальные перегородки мышкой влево и вправо</div>
+            <div class="stage-caption">Двигайте ползунок отражения — хвост после точки K перевернётся через прямую y = x + 1 в точку (3; 5)</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 2: Задача о бензоколонках на кольцевой трассе (Принцип минимума) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Бензоколонки на кольцевом шоссе: старт из точки глобального минимума</div>
+          <div class="card-pills" id="gasPills">
+            <span class="pill-label">Старт:</span>
+            <button class="shk-pill" onclick="setGasStart(0)">№1</button>
+            <button class="shk-pill" onclick="setGasStart(1)">№2</button>
+            <button class="shk-pill" onclick="setGasStart(2)">№3</button>
+            <button class="shk-pill" onclick="setGasStart(3)">№4</button>
+            <button class="shk-pill active" onclick="setGasStart(4)">№5 (Минимум!)</button>
+            <button class="shk-pill" onclick="setGasStart(5)">№6</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              На круговой трассе стоят 6 бензоколонок. Суммарного бензина во всех колонках ровно хватает на один круг (изменения запаса на участках: $+2, -3, +1, -2, +4, -2$, сумма равна $0$). Докажите, что с некоторой колонки можно проехать весь круг, не заглохнув!
+            </p>
+            <p>
+              Мысленно проедем круг из <span class="inline-link" onclick="setGasStart(0)">произвольной колонки №1 (с разрешением уходить в «долг»)</span> и построим график остатка топлива. Самая нижняя точка графика достигается перед колонкой №5 (уровень $-2$).
+            </p>
+            <p>
+              Если же <span class="inline-link active" onclick="setGasStart(4)">перенести старт ровно в точку абсолютного минимума (колонка №5)</span>, то эта нижняя точка станет новым нулём отсчёта, и весь остальной график окажется строго $\ge 0$!
+            </p>
+            <div class="white-formula-box">
+              <span id="gasStatusText">Старт с колонки №5 (точки минимума): остаток в баке ≥ 0 на всём круге! ✓</span>
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvComboGas"></canvas>
+            </div>
+            <div class="stage-caption">Кликайте по точкам графика или кнопкам №1–№6, чтобы менять стартовую бензоколонку</div>
           </div>
         </div>
       </article>
@@ -1056,27 +1066,36 @@
       <article class="sandbox-card">
         <div class="card-top-bar">
           <div class="card-heading">Метод вспомогательной окружности ($\angle ABD = \angle ACD$)</div>
-          <div class="card-pills">
-            <button class="shk-pill active" onclick="snapAuxCircle()">Посадить C на окружность</button>
+          <div class="card-pills" id="auxModePills">
+            <button class="shk-pill" onclick="setAuxMode('in')">Внутри ($\angle ACD > \angle ABD$)</button>
+            <button class="shk-pill active" onclick="setAuxMode('on')">На окружности ($\angle ACD = \angle ABD$)</button>
+            <button class="shk-pill" onclick="setAuxMode('out')">Снаружи ($\angle ACD < \angle ABD$)</button>
           </div>
         </div>
         <div class="card-grid">
           <div class="card-text-col">
             <p>
-              Если отрезок $AD$ виден из точек $B$ и $C$, лежащих по одну сторону от прямой $AD$, под равными углами ($\angle ABD = \angle ACD$), то все четыре точки $A, B, C, D$ лежат на <b>одной окружности</b>!
+              Отрезок $AD$ виден из точек $B$ и $C$, лежащих по одну сторону от прямой $AD$, под равными углами ($\angle ABD = \angle ACD$) <b>тогда и только тогда</b>, когда точки $A, B, C, D$ лежат строго на одной окружности!
             </p>
             <p>
-              Как только вспомогательная окружность проведена, мы можем перебрасывать вписанные углы на общую хорду $CD$: $\angle DAC = \angle DBC$.
+              Если точка $C$ сходит внутрь круга, угол строго увеличивается (<span class="inline-link" onclick="setAuxMode('in')">$\angle ACD > \angle ABD$</span>), а если выходит наружу — уменьшается (<span class="inline-link" onclick="setAuxMode('out')">$\angle ACD < \angle ABD$</span>).
             </p>
             <div class="white-formula-box">
-              <span id="auxAngleText">∠ABD = 48.0°  |  ∠ACD = 48.0° (Точки A, B, C, D на одной окружности!)</span>
+              <span id="auxAngleText">∠ABD = 50.0°  |  ∠ACD = 50.0° (Точка C строго на окружности! ✓)</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Движение точки $C$ строго по дуге окружности</span>
+                <span class="slider-val-badge" id="valAuxArc">Вписанный угол неизменен!</span>
+              </div>
+              <input type="range" class="shk-range" id="rngAuxArc" min="-85" max="-15" value="-42" />
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvGeomCircle"></canvas>
             </div>
-            <div class="stage-caption">Перетаскивайте точку $C$ мышкой по окружности и вне её</div>
+            <div class="stage-caption">Двигайте ползунок вдоль дуги или тяните точку C мышкой (с магнитной фиксацией на окружности)</div>
           </div>
         </div>
       </article>
@@ -1089,29 +1108,20 @@
     // =========================================================================
     const state = {
       activeTopic: "stereo",
-      dark: false,
 
       // --- TOPIC 1: STEREOMETRY 3D ---
-      // Card 1: 3D Cube / Prism Unfolding (Spider shortest path A -> M -> C1)
       unfoldT: 0,          // 0 (3D cube) .. 1 (unfolded 90 deg into plane)
       spiderH: 0.5,        // 0.05 .. 0.95 along edge BB1
       rot1: { yaw: -0.62, pitch: 0.42 },
-
-      // Card 2: Cube Cross-Section by Method of Traces (Steps 0..3)
       traceStep: 0,
       rot2: { yaw: -0.68, pitch: 0.46 },
-
-      // Card 3: Sphere Cross-Section (h in [-1, 1])
       sphereH: 0.0,
       rot3: { yaw: -0.5, pitch: 0.35 },
 
       // --- TOPIC 2: GRAPH THEORY ---
-      // Card 1: Knights on 3x3 -> Cycle C8
       knightMorph: 0,      // 0 (on 3x3 board) .. 1 (unfolded circle C8)
-      knights: ["W", null, "B", null, "B", null, "W", null], // a1, b3, c1, a2, c3, b1, a3, c2
+      knights: ["W", null, "B", null, "B", null, "W", null],
       selKnight: 0,
-
-      // Card 2: Tree Leaf Pruning
       treeStep: 0,
       treeNodes: [
         { id: 1, x: 0.16, y: 0.52, alive: true, name: "1" },
@@ -1126,9 +1136,7 @@
       treeEdges: [
         [1,2], [1,3], [2,5], [2,4], [3,6], [4,7], [4,8]
       ],
-
-      // Card 3: K3,3 Houses & Wells
-      k33Mode: 6,          // 6, 8, or 9 edges
+      k33Mode: 6,
       k33Nodes: [
         { id: 0, label: "Д₁", type: "H", x: 0.50, y: 0.13 },
         { id: 1, label: "К₁", type: "W", x: 0.82, y: 0.32 },
@@ -1144,31 +1152,35 @@
       algPencilA: 0.2,
 
       // --- TOPIC 4: LOGIC & GAMES ---
-      ringMode: "exact",   // 'weak' | 'exact'
+      ringMode: "exact",
       ringVals: [10, -1, -1, -1, 10, -1, -1, -1, 10, -1, -1, -1, 10],
       ringHover: 0,
       gameN: 17,
       gamePos: 1,
       gameAiArc: null,
 
-      // --- TOPIC 5: COMBINATORICS ---
-      comboEmpty: false,
-      comboCounts: [3, 2, 3, 2],
-      comboDragBar: -1,
+      // --- TOPIC 5: COMBINATORICS (Andre Reflection & Circular Gas Shift) ---
+      catalanPreset: 0,    // 0: bad path 1, 1: bad path 2, 2: good Dyck path
+      catalanRef: 0,       // 0 .. 1 (reflection of tail across y = x + 1)
+      gasStartIdx: 4,      // 0..5 (4 = station #5, the global minimum!)
+      gasDeltas: [2, -3, 1, -2, 4, -2],
 
       // --- TOPIC 6: PLANIMETRY ---
       geomRot: 0,          // 0 .. 1 (0 to 180 deg)
+      // Positioned higher so M=(0.47, 0.46) and rotated D=(0.50, 0.78) stays well inside canvas!
       geomPts: {
-        A: { x: 0.20, y: 0.74 },
-        B: { x: 0.42, y: 0.22 },
-        C: { x: 0.64, y: 0.74 }
+        A: { x: 0.18, y: 0.48 },
+        B: { x: 0.44, y: 0.14 },
+        C: { x: 0.76, y: 0.44 }
       },
       geomDragKey: null,
+      auxArcAng: -0.73,    // radians along circumcircle
+      auxRadialOffset: 0,  // 0 = strictly on circle! <0 inside, >0 outside
       auxPts: {
-        A: { x: 0.24, y: 0.76 },
-        B: { x: 0.31, y: 0.26 },
-        C: { x: 0.67, y: 0.25 },
-        D: { x: 0.76, y: 0.76 }
+        A: { x: 0.22, y: 0.76 },
+        B: { x: 0.29, y: 0.26 },
+        C: { x: 0.68, y: 0.25 },
+        D: { x: 0.78, y: 0.76 }
       },
       auxDragKey: null
     };
@@ -1188,7 +1200,7 @@
     }
 
     // =========================================================================
-    // 2. TOPIC NAVIGATION & THEME
+    // 2. TOPIC NAVIGATION
     // =========================================================================
     window.switchTopic = function(topicId) {
       state.activeTopic = topicId;
@@ -1200,12 +1212,6 @@
       });
       resizeAllCanvases();
     };
-
-    document.getElementById("themeBtn").addEventListener("click", () => {
-      state.dark = !state.dark;
-      document.body.setAttribute("data-theme", state.dark ? "dark" : "light");
-      document.getElementById("themeBtn").textContent = state.dark ? "☀️ Тема" : "🌙 Тема";
-    });
 
     // =========================================================================
     // 3. SLIDER BINDINGS (SMOOTH DRAGGING — DOM NEVER RECREATED!)
@@ -1421,22 +1427,66 @@
           : "Полоска 1×17: клетка 1 уже ловушка — компьютер дополняет каждый твой ход до 4!";
     };
 
-    // --- TOPIC 5: COMBINATORICS CONTROLS ---
-    window.setComboEmpty = function(allow) {
-      state.comboEmpty = allow;
-      state.comboCounts = allow ? [4, 0, 4, 2] : [3, 2, 3, 2];
-      const btns = document.querySelectorAll("#comboModePills .shk-pill");
-      btns[0].classList.toggle("active", !allow);
-      btns[1].classList.toggle("active", allow);
-      syncComboText();
+    // --- TOPIC 5: COMBINATORICS CONTROLS (Andre Reflection & Circular Gas Shift) ---
+    function syncCatalanUI() {
+      const pct = Math.round(state.catalanRef * 100);
+      document.getElementById("rngCatalanRef").value = pct;
+      const isGood = state.catalanPreset === 2;
+      if (isGood) {
+        document.getElementById("valCatalanRef").textContent = "Хороший путь не касается стены y = x + 1!";
+      } else {
+        document.getElementById("valCatalanRef").textContent =
+          pct === 0 ? "0% (Финиш в 4; 4)" : (pct === 100 ? "100% (Отражён в 3; 5!)" : `${pct}%`);
+      }
+      document.getElementById("btnCatalanFlip").classList.toggle("active", state.catalanRef > 0.5 && !isGood);
+    }
+
+    document.getElementById("rngCatalanRef").addEventListener("input", function() {
+      if (state.catalanPreset === 2) {
+        this.value = 0;
+        state.catalanRef = 0;
+        syncCatalanUI();
+        return;
+      }
+      state.catalanRef = parseFloat(this.value) / 100;
+      syncCatalanUI();
+    });
+
+    window.setCatalanPreset = function(idx) {
+      state.catalanPreset = idx;
+      state.catalanRef = 0;
+      const btns = document.querySelectorAll("#catalanPills .shk-pill");
+      for (let i = 0; i < 3; i++) btns[i].classList.toggle("active", i === idx);
+      syncCatalanUI();
     };
 
-    function syncComboText() {
-      const c = state.comboCounts;
-      const ways = state.comboEmpty ? "C(13, 3) = 286" : "C(9, 3) = 84";
-      document.getElementById("comboFormulaText").textContent =
-        `Разбиение: ${c[0]} + ${c[1]} + ${c[2]} + ${c[3]} = 10  |  Способов: ${ways}`;
-    }
+    window.toggleCatalanReflect = function() {
+      if (state.catalanPreset === 2) state.catalanPreset = 0;
+      const btns = document.querySelectorAll("#catalanPills .shk-pill");
+      for (let i = 0; i < 3; i++) btns[i].classList.toggle("active", i === state.catalanPreset);
+      animateValue("catalanRef", state.catalanRef > 0.5 ? 0 : 1, 520, syncCatalanUI);
+    };
+
+    window.setGasStart = function(idx) {
+      state.gasStartIdx = idx;
+      const btns = document.querySelectorAll("#gasPills .shk-pill");
+      btns.forEach((b, i) => b.classList.toggle("active", i === idx));
+      // Compute minimum fuel along the route starting at idx
+      let cur = 0, minVal = 0, minStation = idx + 1;
+      for (let step = 0; step < 6; step++) {
+        cur += state.gasDeltas[(idx + step) % 6];
+        if (cur < minVal) {
+          minVal = cur;
+          minStation = ((idx + step + 1) % 6) + 1;
+        }
+      }
+      const box = document.getElementById("gasStatusText");
+      if (minVal >= 0) {
+        box.textContent = `Старт с колонки №${idx + 1} (точки минимума): остаток в баке ≥ 0 на всём круге! ✓`;
+      } else {
+        box.textContent = `Старт с колонки №${idx + 1}: не хватит топлива (провал до ${minVal} перед колонкой №${minStation})`;
+      }
+    };
 
     // --- TOPIC 6: PLANIMETRY CONTROLS ---
     function syncGeomRotUI() {
@@ -1457,14 +1507,43 @@
       animateValue("geomRot", state.geomRot > 0.5 ? 0 : 1, 550, syncGeomRotUI);
     };
 
-    window.snapAuxCircle = function() {
-      const { A, B, D, C } = state.auxPts;
+    function syncAuxPositionFromState() {
+      const { A, B, D } = state.auxPts;
       const circ = circumcircle(A, B, D);
       if (!circ) return;
-      const ang = Math.atan2(C.y - circ.y, C.x - circ.x);
-      state.auxPts.C.x = circ.x + circ.r * Math.cos(ang);
-      state.auxPts.C.y = circ.y + circ.r * Math.sin(ang);
+      const rActual = circ.r * (1 + state.auxRadialOffset);
+      state.auxPts.C.x = circ.x + rActual * Math.cos(state.auxArcAng);
+      state.auxPts.C.y = circ.y + rActual * Math.sin(state.auxArcAng);
       updateAuxAngleText();
+    }
+
+    document.getElementById("rngAuxArc").addEventListener("input", function() {
+      state.auxArcAng = (parseFloat(this.value) * Math.PI) / 180;
+      state.auxRadialOffset = 0; // Strictly on the circle when sliding along the arc!
+      syncAuxPositionFromState();
+      syncAuxModeButtons();
+    });
+
+    function syncAuxModeButtons() {
+      const btns = document.querySelectorAll("#auxModePills .shk-pill");
+      const off = state.auxRadialOffset;
+      btns[0].classList.toggle("active", off < -0.01);
+      btns[1].classList.toggle("active", Math.abs(off) <= 0.01);
+      btns[2].classList.toggle("active", off > 0.01);
+    }
+
+    window.setAuxMode = function(mode) {
+      const targetOff = mode === "in" ? -0.22 : (mode === "out" ? 0.24 : 0.0);
+      animateValue("auxRadialOffset", targetOff, 420, () => {
+        syncAuxPositionFromState();
+        syncAuxModeButtons();
+      });
+    };
+
+    window.snapAuxCircle = function() {
+      state.auxRadialOffset = 0;
+      syncAuxPositionFromState();
+      syncAuxModeButtons();
     };
 
     // =========================================================================
@@ -1476,7 +1555,7 @@
       "cvGraphKnights", "cvGraphTrees", "cvGraphK33",
       "cvAlgMod", "cvAlgPencil",
       "cvLogicRing", "cvLogicGame",
-      "cvComboStars",
+      "cvComboCatalan", "cvComboGas",
       "cvGeomMedian", "cvGeomCircle"
     ];
 
@@ -1497,7 +1576,6 @@
     window.addEventListener("resize", resizeAllCanvases);
 
     function project3D(pt, rot, w, h, scale = 115) {
-      // pt = {x, y, z} where z is vertical up
       const cy = Math.cos(rot.yaw), sy = Math.sin(rot.yaw);
       const cp = Math.cos(rot.pitch), sp = Math.sin(rot.pitch);
       const x1 = pt.x * cy - pt.y * sy;
@@ -1514,18 +1592,17 @@
     }
 
     function colors() {
-      const dark = state.dark;
       return {
-        ink: dark ? "#F1F5F9" : "#1E293B",
-        muted: dark ? "#94A3B8" : "#64748B",
-        grid: dark ? "rgba(148,163,184,0.18)" : "rgba(100,116,139,0.22)",
+        ink: "#1E293B",
+        muted: "#64748B",
+        grid: "rgba(100,116,139,0.22)",
         blue: "#0088FF",
-        blueFill: dark ? "rgba(29,155,240,0.24)" : "rgba(0,136,255,0.16)",
+        blueFill: "rgba(0,136,255,0.16)",
         green: "#10B981",
         red: "#EF4444",
         amber: "#F59E0B",
-        cardBg: dark ? "#162032" : "#F1F4F9",
-        white: dark ? "#1E293B" : "#FFFFFF"
+        cardBg: "#F1F4F9",
+        white: "#FFFFFF"
       };
     }
 
@@ -2342,80 +2419,215 @@
       }
     }
 
-    // --- 5.11: COMBINATORICS CARD 1 (Stars & Bars) ---
-    function getComboGeom(w, h) {
-      const cy = h * 0.42;
-      const span = w - 64;
-      const sx = 32;
-      if (!state.comboEmpty) {
-        const step = span / 9;
-        const b1 = state.comboCounts[0];
-        const b2 = b1 + state.comboCounts[1];
-        const b3 = b2 + state.comboCounts[2];
-        return {
-          cy, sx, step,
-          bars: [
-            { x: sx + (b1 - 0.5) * step, slot: b1 },
-            { x: sx + (b2 - 0.5) * step, slot: b2 },
-            { x: sx + (b3 - 0.5) * step, slot: b3 }
-          ]
-        };
-      } else {
-        const step = span / 12;
-        const s1 = state.comboCounts[0];
-        const s2 = s1 + 1 + state.comboCounts[1];
-        const s3 = s2 + 1 + state.comboCounts[2];
-        return {
-          cy, sx, step,
-          bars: [
-            { x: sx + s1 * step, slot: s1 },
-            { x: sx + s2 * step, slot: s2 },
-            { x: sx + s3 * step, slot: s3 }
-          ]
-        };
+    // --- 5.11: COMBINATORICS CARD 1 (Andre's Reflection Principle & Catalan Numbers) ---
+    const CATALAN_PATHS = [
+      // Preset 0: Bad path #1: R, U, U (hits y=x+1 at K=(1,2), index 3), then R, U, R, R, U -> (4,4)
+      {
+        pts: [[0,0],[1,0],[1,1],[1,2],[2,2],[2,3],[3,3],[4,3],[4,4]],
+        kIdx: 3
+      },
+      // Preset 1: Bad path #2: R, R, U, U, U (hits y=x+1 at K=(2,3), index 5), then R, R, U -> (4,4)
+      {
+        pts: [[0,0],[1,0],[2,0],[2,1],[2,2],[2,3],[3,3],[4,3],[4,4]],
+        kIdx: 5
+      },
+      // Preset 2: Good Dyck path: R, U, R, R, U, U, R, U -> stays <= x everywhere!
+      {
+        pts: [[0,0],[1,0],[1,1],[2,1],[3,1],[3,2],[3,3],[4,3],[4,4]],
+        kIdx: -1
       }
-    }
+    ];
 
-    function drawComboStars() {
-      const c = canvases.cvComboStars;
+    function drawComboCatalan() {
+      const c = canvases.cvComboCatalan;
       if (!c) return;
       const { ctx, w, h } = c;
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      const g = getComboGeom(w, h);
-      if (!state.comboEmpty) {
-        for (let i = 0; i < 10; i++) {
-          drawDot(ctx, g.sx + i * g.step, g.cy, 11, col.ink);
-        }
-      } else {
-        const barSet = new Set(g.bars.map(b => b.slot));
-        for (let s = 0; s < 13; s++) {
-          if (barSet.has(s)) continue;
-          drawDot(ctx, g.sx + s * g.step, g.cy, 10, col.ink);
-        }
+      // Grid 0..4 in X, 0..5 in Y
+      const cell = Math.min((w - 90) / 4.4, (h - 60) / 5.4);
+      const ox = (w - 4 * cell) / 2;
+      const oy = h - 30;
+      const toX = gx => ox + gx * cell;
+      const toY = gy => oy - gy * cell;
+
+      // Grid lines
+      ctx.strokeStyle = col.grid;
+      ctx.lineWidth = 1.2;
+      for (let x = 0; x <= 4; x++) {
+        ctx.beginPath(); ctx.moveTo(toX(x), toY(0)); ctx.lineTo(toX(x), toY(5)); ctx.stroke();
+      }
+      for (let y = 0; y <= 5; y++) {
+        ctx.beginPath(); ctx.moveTo(toX(0), toY(y)); ctx.lineTo(toX(4), toY(y)); ctx.stroke();
       }
 
-      // 3 Draggable Blue Bars
-      g.bars.forEach(b => {
-        ctx.beginPath();
-        ctx.roundRect(b.x - 4, g.cy - 28, 8, 56, 4);
-        ctx.fillStyle = col.blue;
-        ctx.fill();
-      });
+      // Main allowed diagonal y = x (0,0) -> (4,4)
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(toX(0), toY(0));
+      ctx.lineTo(toX(4), toY(4));
+      ctx.stroke();
 
-      // Category counts below
-      const bw = (w - 60) / 4;
-      state.comboCounts.forEach((cnt, idx) => {
-        const bx = 24 + idx * (bw + 4) + bw / 2;
-        ctx.font = "700 14px Inter, sans-serif";
-        ctx.fillStyle = cnt === 0 ? col.red : col.blue;
-        ctx.textAlign = "center";
-        ctx.fillText(`x${idx + 1} = ${cnt}`, bx, h * 0.78);
-      });
+      // Forbidden mirror wall y = x + 1: (-0.2, 0.8) -> (4.1, 5.1)
+      ctx.setLineDash([5, 4]);
+      ctx.strokeStyle = col.red;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(toX(-0.15), toY(0.85));
+      ctx.lineTo(toX(4.05), toY(5.05));
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.font = "700 12px Inter, sans-serif";
+      ctx.fillStyle = col.red;
+      ctx.fillText("Зеркало y = x + 1", toX(0.3), toY(2.1));
+      ctx.fillStyle = col.muted;
+      ctx.fillText("Диагональ y = x", toX(2.55), toY(2.1));
+
+      const pathObj = CATALAN_PATHS[state.catalanPreset];
+      const pts = pathObj.pts;
+      const kIdx = pathObj.kIdx;
+      const t = kIdx >= 0 ? state.catalanRef : 0;
+
+      // If bad path, draw original ghost tail (dashed) when t > 0.02
+      if (kIdx >= 0 && t > 0.02) {
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = col.muted;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        for (let i = kIdx; i < pts.length; i++) {
+          const px = toX(pts[i][0]), py = toY(pts[i][1]);
+          if (i === kIdx) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Draw prefix up to K (or entire good path)
+      const splitIdx = kIdx >= 0 ? kIdx : pts.length - 1;
+      ctx.strokeStyle = kIdx < 0 ? col.green : col.blue;
+      ctx.lineWidth = 3.2;
+      ctx.beginPath();
+      for (let i = 0; i <= splitIdx; i++) {
+        const px = toX(pts[i][0]), py = toY(pts[i][1]);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+
+      // Draw morphing tail after K (reflection across y = x + 1 maps (x, y) -> (y - 1, x + 1))
+      if (kIdx >= 0) {
+        ctx.strokeStyle = t > 0.5 ? col.red : col.amber;
+        ctx.lineWidth = 3.2;
+        ctx.beginPath();
+        for (let i = kIdx; i < pts.length; i++) {
+          const [x0, y0] = pts[i];
+          const xr = y0 - 1, yr = x0 + 1;
+          const xm = x0 + (xr - x0) * t;
+          const ym = y0 + (yr - y0) * t;
+          if (i === kIdx) ctx.moveTo(toX(xm), toY(ym));
+          else ctx.lineTo(toX(xm), toY(ym));
+        }
+        ctx.stroke();
+
+        // Point K
+        const [kx, ky] = pts[kIdx];
+        drawDot(ctx, toX(kx), toY(ky), 7, col.red);
+        ctx.fillStyle = col.red;
+        ctx.font = "700 13px Inter, sans-serif";
+        ctx.fillText(`K(${kx}; ${ky})`, toX(kx) - 42, toY(ky) - 8);
+
+        // Moving endpoint from (4,4) to (3,5)
+        const ex = 4 + (3 - 4) * t;
+        const ey = 4 + (5 - 4) * t;
+        drawDot(ctx, toX(ex), toY(ey), 7, col.red);
+      }
+
+      // Key endpoints (0,0), (4,4), (3,5)
+      drawDot(ctx, toX(0), toY(0), 6, col.ink);
+      drawDot(ctx, toX(4), toY(4), 6, col.blue);
+      drawDot(ctx, toX(3), toY(5), 6, col.red);
+
+      ctx.font = "700 12.5px Inter, sans-serif";
+      ctx.fillStyle = col.ink;
+      ctx.fillText("(0; 0)", toX(0) - 12, toY(0) + 18);
+      ctx.fillStyle = col.blue;
+      ctx.fillText("(4; 4)", toX(4) + 8, toY(4) + 4);
+      ctx.fillStyle = col.red;
+      ctx.fillText("(3; 5)", toX(3) + 8, toY(5) + 4);
     }
 
-    // --- 5.12: PLANIMETRY CARD 1 (Median Doubling) ---
+    // --- 5.11b: COMBINATORICS CARD 2 (Gas Stations on a Circular Track) ---
+    function drawComboGas() {
+      const c = canvases.cvComboGas;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      // Compute cumulative fuel levels from station #1: S = [0, 2, -1, 0, -2, 2, 0]
+      const baseS = [0];
+      for (let i = 0; i < 6; i++) baseS.push(baseS[i] + state.gasDeltas[i]);
+      const shiftVal = baseS[state.gasStartIdx]; // new zero level!
+
+      const padL = 46, padR = 28;
+      const stepX = (w - padL - padR) / 6;
+      const cyZero = h * 0.50 + shiftVal * 26; // shifted zero axis
+      const toX = idx => padL + idx * stepX;
+      const toY = sVal => cyZero - (sVal - shiftVal) * 26;
+
+      // Shaded danger zone below new zero line
+      ctx.fillStyle = "rgba(239, 68, 68, 0.07)";
+      ctx.fillRect(padL, cyZero, w - padL - padR, h - cyZero - 22);
+
+      // New zero horizontal line (dashed blue/green)
+      const isOptimal = (state.gasStartIdx === 4);
+      ctx.setLineDash([5, 4]);
+      ctx.strokeStyle = isOptimal ? col.green : col.blue;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(padL - 10, cyZero);
+      ctx.lineTo(w - padR + 10, cyZero);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.font = "700 12px Inter, sans-serif";
+      ctx.fillStyle = isOptimal ? col.green : col.blue;
+      ctx.fillText(`Уровень 0 (Старт №${state.gasStartIdx + 1})`, padL + 6, cyZero - 7);
+
+      // Fuel polyline
+      ctx.beginPath();
+      for (let i = 0; i <= 6; i++) {
+        const px = toX(i), py = toY(baseS[i]);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = isOptimal ? col.blue : col.ink;
+      ctx.lineWidth = 2.8;
+      ctx.stroke();
+
+      // Points at stations 1..6 (and 1 again at end)
+      for (let i = 0; i <= 6; i++) {
+        const px = toX(i), py = toY(baseS[i]);
+        const relFuel = baseS[i] - shiftVal;
+        const stIdx = i % 6;
+        const isStart = (stIdx === state.gasStartIdx);
+        const dotColor = relFuel < 0 ? col.red : (isStart ? col.green : col.blue);
+        drawDot(ctx, px, py, isStart ? 7.5 : 5.5, dotColor);
+
+        ctx.font = "700 12px Inter, sans-serif";
+        ctx.fillStyle = relFuel < 0 ? col.red : col.ink;
+        ctx.textAlign = "center";
+        ctx.fillText(`№${stIdx + 1}`, px, h - 10);
+        ctx.fillText(relFuel > 0 ? `+${relFuel}` : String(relFuel), px, py - 11);
+      }
+      ctx.textAlign = "left";
+    }
+
+    // --- 5.12: PLANIMETRY CARD 1 (Median Doubling — Clamped Inside Bounds!) ---
     function drawGeomMedian() {
       const c = canvases.cvGeomMedian;
       if (!c) return;
@@ -2442,13 +2654,22 @@
         ctx.fill();
         ctx.setLineDash([4, 4]);
         ctx.strokeStyle = col.blue;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.2;
         ctx.stroke();
+
+        // When close to 180 deg, also show dashed AD side of parallelogram ABCD
+        if (state.geomRot > 0.85) {
+          ctx.beginPath();
+          ctx.moveTo(A.x, A.y);
+          ctx.lineTo(B2.x, B2.y);
+          ctx.stroke();
+        }
         ctx.setLineDash([]);
-        drawDot(ctx, B2.x, B2.y, 6, col.blue);
+
+        drawDot(ctx, B2.x, B2.y, 6.5, col.blue);
         ctx.font = "700 13.5px Inter, sans-serif";
         ctx.fillStyle = col.blue;
-        ctx.fillText("D", B2.x + 10, B2.y + 12);
+        ctx.fillText("D", B2.x + 10, B2.y + 5);
       }
 
       // Base Triangle ABC
@@ -2469,11 +2690,11 @@
         drawDot(ctx, pt.x, pt.y, lb === "M" ? 5.5 : 6.5, lb === "M" ? col.blue : col.ink);
         ctx.font = "700 13.5px Inter, sans-serif";
         ctx.fillStyle = col.ink;
-        ctx.fillText(lb, pt.x - 14, pt.y - 10);
+        ctx.fillText(lb, pt.x - 15, pt.y - 9);
       });
     }
 
-    // --- 5.13: PLANIMETRY CARD 2 (Auxiliary Circle) ---
+    // --- 5.13: PLANIMETRY CARD 2 (Auxiliary Circle with Magnetic Lock!) ---
     function circumcircle(A, B, C) {
       const D = 2 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y));
       if (Math.abs(D) < 1e-6) return null;
@@ -2493,9 +2714,15 @@
       const { A, B, C, D } = state.auxPts;
       const bDeg = angleAt(A, B, D);
       const cDeg = angleAt(A, C, D);
-      const ok = Math.abs(bDeg - cDeg) < 1.8;
-      document.getElementById("auxAngleText").textContent =
-        `∠ABD = ${bDeg.toFixed(1)}°  |  ∠ACD = ${cDeg.toFixed(1)}° ${ok ? "(На одной окружности! ✓)" : ""}`;
+      const onCircle = Math.abs(state.auxRadialOffset) < 0.002;
+      const el = document.getElementById("auxAngleText");
+      if (onCircle) {
+        el.textContent = `∠ABD = ${bDeg.toFixed(1)}°  |  ∠ACD = ${bDeg.toFixed(1)}° (Точка C строго на окружности! ✓)`;
+      } else if (state.auxRadialOffset < 0) {
+        el.textContent = `∠ABD = ${bDeg.toFixed(1)}°  |  ∠ACD = ${cDeg.toFixed(1)}° > ∠ABD (Точка C внутри круга)`;
+      } else {
+        el.textContent = `∠ABD = ${bDeg.toFixed(1)}°  |  ∠ACD = ${cDeg.toFixed(1)}° < ∠ABD (Точка C вне круга)`;
+      }
     }
 
     function drawGeomCircle() {
@@ -2511,16 +2738,31 @@
       const A = toP(state.auxPts.A), B = toP(state.auxPts.B), C = toP(state.auxPts.C), D = toP(state.auxPts.D);
 
       const circ = circumcircle(A, B, D);
-      const ok = Math.abs(angleAt(A, B, D) - angleAt(A, C, D)) < 1.8;
+      const onCircle = Math.abs(state.auxRadialOffset) < 0.002;
 
       if (circ) {
         ctx.beginPath();
         ctx.arc(circ.x, circ.y, circ.r, 0, Math.PI * 2);
-        ctx.setLineDash(ok ? [] : [5, 5]);
-        ctx.strokeStyle = ok ? col.blue : col.muted;
-        ctx.lineWidth = ok ? 2.4 : 1.5;
+        ctx.setLineDash(onCircle ? [] : [5, 5]);
+        ctx.strokeStyle = onCircle ? col.blue : col.muted;
+        ctx.lineWidth = onCircle ? 2.5 : 1.6;
         ctx.stroke();
         ctx.setLineDash([]);
+
+        // If C is off the circle, show its projection C0 on the circle and dashed deviation segment!
+        if (!onCircle) {
+          const ang = Math.atan2(C.y - circ.y, C.x - circ.x);
+          const C0 = { x: circ.x + circ.r * Math.cos(ang), y: circ.y + circ.r * Math.sin(ang) };
+          ctx.setLineDash([3, 3]);
+          ctx.strokeStyle = col.red;
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.moveTo(C0.x, C0.y);
+          ctx.lineTo(C.x, C.y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          drawDot(ctx, C0.x, C0.y, 4.5, col.muted);
+        }
       }
 
       [[A,B],[B,D],[A,C],[C,D],[A,D],[B,C]].forEach(([u,v]) => {
@@ -2529,9 +2771,10 @@
       });
 
       [[A,"A"],[B,"B"],[C,"C"],[D,"D"]].forEach(([pt, lb]) => {
-        drawDot(ctx, pt.x, pt.y, lb === "C" ? 8 : 6, lb === "C" ? col.blue : col.ink);
+        const dotCol = lb === "C" ? (onCircle ? col.blue : col.red) : col.ink;
+        drawDot(ctx, pt.x, pt.y, lb === "C" ? 8 : 6, dotCol);
         ctx.font = "700 13.5px Inter, sans-serif";
-        ctx.fillStyle = lb === "C" ? col.blue : col.ink;
+        ctx.fillStyle = dotCol;
         ctx.fillText(lb, pt.x + 10, pt.y - 8);
       });
     }
@@ -2624,7 +2867,6 @@
       });
       window.addEventListener("pointerup", () => {
         state.k33DragIdx = -1;
-        state.comboDragBar = -1;
         state.geomDragKey = null;
         state.auxDragKey = null;
       });
@@ -2716,39 +2958,19 @@
         }
       });
 
-      // Combo Stars & Bars drag
-      const cvCS = document.getElementById("cvComboStars");
-      cvCS.addEventListener("pointerdown", e => {
-        const rect = cvCS.getBoundingClientRect();
-        const g = getComboGeom(rect.width, rect.height);
-        g.bars.forEach((b, idx) => {
-          if (Math.abs((e.clientX - rect.left) - b.x) < 18) state.comboDragBar = idx;
-        });
-      });
-      cvCS.addEventListener("pointermove", e => {
-        if (state.comboDragBar < 0) return;
-        const rect = cvCS.getBoundingClientRect();
-        const g = getComboGeom(rect.width, rect.height);
-        const px = e.clientX - rect.left;
-        if (!state.comboEmpty) {
-          let b1 = state.comboCounts[0], b2 = b1 + state.comboCounts[1], b3 = b2 + state.comboCounts[2];
-          const sl = Math.round((px - g.sx) / g.step + 0.5);
-          if (state.comboDragBar === 0) b1 = Math.max(1, Math.min(b2 - 1, sl));
-          if (state.comboDragBar === 1) b2 = Math.max(b1 + 1, Math.min(b3 - 1, sl));
-          if (state.comboDragBar === 2) b3 = Math.max(b2 + 1, Math.min(9, sl));
-          state.comboCounts = [b1, b2 - b1, b3 - b2, 10 - b3];
-        } else {
-          let s1 = state.comboCounts[0], s2 = s1 + 1 + state.comboCounts[1], s3 = s2 + 1 + state.comboCounts[2];
-          const sl = Math.round((px - g.sx) / g.step);
-          if (state.comboDragBar === 0) s1 = Math.max(0, Math.min(s2 - 1, sl));
-          if (state.comboDragBar === 1) s2 = Math.max(s1 + 1, Math.min(s3 - 1, sl));
-          if (state.comboDragBar === 2) s3 = Math.max(s2 + 1, Math.min(12, sl));
-          state.comboCounts = [s1, s2 - s1 - 1, s3 - s2 - 1, 12 - s3];
+      // Combinatorics Card 2: Gas station click on chart
+      const cvGas = document.getElementById("cvComboGas");
+      cvGas.addEventListener("pointerdown", e => {
+        const rect = cvGas.getBoundingClientRect();
+        const padL = 46, padR = 28;
+        const stepX = (rect.width - padL - padR) / 6;
+        const idx = Math.round(((e.clientX - rect.left) - padL) / stepX);
+        if (idx >= 0 && idx <= 6) {
+          setGasStart(idx % 6);
         }
-        syncComboText();
       });
 
-      // Planimetry drags
+      // Planimetry Card 1: Median Doubling drag (clamped so D = A + C - B stays inside [0.08, 0.88]!)
       const cvGM = document.getElementById("cvGeomMedian");
       cvGM.addEventListener("pointerdown", e => {
         const rect = cvGM.getBoundingClientRect();
@@ -2760,28 +2982,53 @@
       cvGM.addEventListener("pointermove", e => {
         if (!state.geomDragKey) return;
         const rect = cvGM.getBoundingClientRect();
-        state.geomPts[state.geomDragKey].x = Math.max(0.08, Math.min(0.92, (e.clientX - rect.left) / rect.width));
-        state.geomPts[state.geomDragKey].y = Math.max(0.08, Math.min(0.92, (e.clientY - rect.top) / rect.height));
+        const nx = Math.max(0.08, Math.min(0.90, (e.clientX - rect.left) / rect.width));
+        const ny = Math.max(0.08, Math.min(0.88, (e.clientY - rect.top) / rect.height));
+        const prev = { ...state.geomPts[state.geomDragKey] };
+        state.geomPts[state.geomDragKey] = { x: nx, y: ny };
+        // Ensure reflected point D = A + C - B also stays strictly inside [0.08, 0.88]!
+        const { A, B, C } = state.geomPts;
+        const dx = A.x + C.x - B.x;
+        const dy = A.y + C.y - B.y;
+        if (dx < 0.08 || dx > 0.90 || dy < 0.08 || dy > 0.88) {
+          state.geomPts[state.geomDragKey] = prev;
+        }
       });
 
+      // Planimetry Card 2: Auxiliary Circle drag with magnetic lock onto circle!
       const cvGC = document.getElementById("cvGeomCircle");
       cvGC.addEventListener("pointerdown", e => {
         const rect = cvGC.getBoundingClientRect();
         const s = Math.min(rect.width, rect.height);
         const ox = (rect.width - s) / 2, oy = (rect.height - s) / 2;
         const x = (e.clientX - rect.left - ox) / s, y = (e.clientY - rect.top - oy) / s;
-        ["C", "A", "B", "D"].forEach(k => {
-          if (Math.hypot(x - state.auxPts[k].x, y - state.auxPts[k].y) < 0.09) state.auxDragKey = k;
-        });
+        if (Math.hypot(x - state.auxPts.C.x, y - state.auxPts.C.y) < 0.11) {
+          state.auxDragKey = "C";
+        }
       });
       cvGC.addEventListener("pointermove", e => {
-        if (!state.auxDragKey) return;
+        if (state.auxDragKey !== "C") return;
         const rect = cvGC.getBoundingClientRect();
         const s = Math.min(rect.width, rect.height);
         const ox = (rect.width - s) / 2, oy = (rect.height - s) / 2;
-        state.auxPts[state.auxDragKey].x = Math.max(0.08, Math.min(0.92, (e.clientX - rect.left - ox) / s));
-        state.auxPts[state.auxDragKey].y = Math.max(0.08, Math.min(0.92, (e.clientY - rect.top - oy) / s));
-        updateAuxAngleText();
+        const x = Math.max(0.08, Math.min(0.92, (e.clientX - rect.left - ox) / s));
+        const y = Math.max(0.08, Math.min(0.92, (e.clientY - rect.top - oy) / s));
+        const circ = circumcircle(state.auxPts.A, state.auxPts.B, state.auxPts.D);
+        if (!circ) return;
+        const dist = Math.hypot(x - circ.x, y - circ.y);
+        const ang = Math.atan2(y - circ.y, x - circ.x);
+        state.auxArcAng = Math.max(-1.48, Math.min(-0.26, ang));
+        document.getElementById("rngAuxArc").value = Math.round((state.auxArcAng * 180) / Math.PI);
+
+        // Magnetic lock if within 4.5% of radius (~6px on screen)
+        const relDiff = (dist - circ.r) / circ.r;
+        if (Math.abs(relDiff) < 0.045) {
+          state.auxRadialOffset = 0; // Exact lock on circle!
+        } else {
+          state.auxRadialOffset = Math.max(-0.35, Math.min(0.35, relDiff));
+        }
+        syncAuxPositionFromState();
+        syncAuxModeButtons();
       });
     }
 
@@ -2804,7 +3051,8 @@
         drawLogicRing();
         drawLogicGame();
       } else if (state.activeTopic === "combo") {
-        drawComboStars();
+        drawComboCatalan();
+        drawComboGas();
       } else if (state.activeTopic === "geom") {
         drawGeomMedian();
         drawGeomCircle();
