@@ -1114,7 +1114,7 @@
       spiderH: 0.5,        // 0.05 .. 0.95 along edge BB1
       rot1: { yaw: -0.62, pitch: 0.42 },
       traceStep: 0,
-      rot2: { yaw: -0.68, pitch: 0.46 },
+      rot2: { yaw: 0.58, pitch: 0.40 },
       sphereH: 0.0,
       rot3: { yaw: -0.5, pitch: 0.35 },
 
@@ -1729,7 +1729,7 @@
       ctx.fillText("M", pM.x + 10, pM.y + 4);
     }
 
-    // --- 5.2: STEREO CARD 2 (Method of Traces on 3D Cube) ---
+    // --- 5.2: STEREO CARD 2 (Method of Traces on 3D Cube — Large & Crisp) ---
     function drawStereoTrace() {
       const c = canvases.cvStereoTrace;
       if (!c) return;
@@ -1737,10 +1737,11 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      const sc = Math.min(w, h) * 0.25;
-      const p = pt => project3D(pt, state.rot2, w - 15, h + 15, sc);
+      // Large scale so the cube fills the stage prominently while keeping traces E1, E2 inside bounds
+      const sc = Math.min(w, h) * 0.415;
+      const p = pt => project3D(pt, state.rot2, w * 1.03, h * 0.90, sc);
 
-      // Cube [0,1]^3 shifted to [-0.5, 0.5]^3
+      // Cube [-0.5, 0.5]^3 with A = (-0.5, -0.5, -0.5) as front-bottom corner
       const V = {
         A:  { x: -0.5, y: -0.5, z: -0.5 },
         B:  { x:  0.5, y: -0.5, z: -0.5 },
@@ -1752,11 +1753,7 @@
         D1: { x: -0.5, y:  0.5, z:  0.5 }
       };
 
-      // Midpoints for classic hexagonal cross-section:
-      // P on AB (0, -0.5, -0.5), Q on AD (-0.5, 0, -0.5), K on BC (0.5, 0, -0.5)?
-      // Wait: standard hexagon passes through midpoints of:
-      // P on AB (0, -0.5, -0.5), K on BB1 (0.5, -0.5, 0), R on B1C1 (0.5, 0, 0.5),
-      // M on C1D1 (0, 0.5, 0.5), N on DD1 (-0.5, 0.5, 0), Q on AD (-0.5, 0, -0.5).
+      // Midpoints for classic regular hexagonal cross-section PQKRMN and traces E1, E2
       const S = {
         P:  { x:  0.0, y: -0.5, z: -0.5 },
         Q:  { x: -0.5, y:  0.0, z: -0.5 },
@@ -1773,28 +1770,28 @@
       const ps = {};
       Object.keys(S).forEach(k => ps[k] = p(S[k]));
 
-      // Draw cube edges
-      const backEdges = [["A","D"],["D","C"],["D","D1"]];
-      const frontEdges = [["A","B"],["B","C"],["A","A1"],["B","B1"],["C","C1"],["A1","B1"],["B1","C1"],["C1","D1"],["D1","A1"]];
+      // Hidden back edges meeting at back-bottom vertex C(0.5, 0.5, -0.5)
+      const backEdges = [["B","C"],["D","C"],["C","C1"]];
+      const frontEdges = [["A","B"],["A","D"],["A","A1"],["B","B1"],["D","D1"],["A1","B1"],["B1","C1"],["C1","D1"],["D1","A1"]];
 
-      ctx.setLineDash([4, 4]);
+      ctx.setLineDash([5, 5]);
       ctx.strokeStyle = col.muted;
-      ctx.lineWidth = 1.4;
+      ctx.lineWidth = 1.5;
       backEdges.forEach(([u, v]) => {
         ctx.beginPath(); ctx.moveTo(pv[u].x, pv[u].y); ctx.lineTo(pv[v].x, pv[v].y); ctx.stroke();
       });
       ctx.setLineDash([]);
 
       ctx.strokeStyle = col.ink;
-      ctx.lineWidth = 1.7;
+      ctx.lineWidth = 2.0;
       frontEdges.forEach(([u, v]) => {
         ctx.beginPath(); ctx.moveTo(pv[u].x, pv[u].y); ctx.lineTo(pv[v].x, pv[v].y); ctx.stroke();
       });
 
       // Step >= 0: Extended edges CB -> E1 and CD -> E2 and trace line E2 - Q - P - E1
-      ctx.setLineDash([4, 4]);
+      ctx.setLineDash([5, 4]);
       ctx.strokeStyle = col.blue;
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.7;
       ctx.beginPath();
       ctx.moveTo(pv.B.x, pv.B.y); ctx.lineTo(ps.E1.x, ps.E1.y);
       ctx.moveTo(pv.D.x, pv.D.y); ctx.lineTo(ps.E2.x, ps.E2.y);
@@ -1818,7 +1815,7 @@
 
       // Solid section segments per step
       ctx.strokeStyle = col.blue;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 3.2;
       ctx.beginPath();
       ctx.moveTo(ps.Q.x, ps.Q.y); ctx.lineTo(ps.P.x, ps.P.y);
       if (state.traceStep >= 1) {
@@ -1843,28 +1840,45 @@
         ctx.fillStyle = col.blueFill;
         ctx.fill();
         ctx.strokeStyle = col.blue;
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 3.2;
         ctx.stroke();
       }
 
-      // Points
+      // Subtle cube vertex labels
+      ctx.font = "600 12px Inter, sans-serif";
+      ctx.fillStyle = col.muted;
+      ctx.fillText("A", pv.A.x - 5, pv.A.y + 16);
+      ctx.fillText("B", pv.B.x + 7, pv.B.y - 4);
+      ctx.fillText("C", pv.C.x + 6, pv.C.y - 4);
+      ctx.fillText("D", pv.D.x - 15, pv.D.y - 4);
+      ctx.fillText("A₁", pv.A1.x - 18, pv.A1.y + 4);
+      ctx.fillText("B₁", pv.B1.x + 8, pv.B1.y + 4);
+      ctx.fillText("C₁", pv.C1.x - 6, pv.C1.y - 10);
+      ctx.fillText("D₁", pv.D1.x - 20, pv.D1.y - 4);
+
+      // Section & trace points
       ["P", "Q", "R"].forEach(k => drawDot(ctx, ps[k].x, ps[k].y, 6.5, col.blue));
-      drawDot(ctx, ps.E1.x, ps.E1.y, 5, col.ink);
-      drawDot(ctx, ps.E2.x, ps.E2.y, 5, col.ink);
-      if (state.traceStep >= 1) drawDot(ctx, ps.K.x, ps.K.y, 5.5, col.blue);
+      drawDot(ctx, ps.E1.x, ps.E1.y, 5.5, col.ink);
+      drawDot(ctx, ps.E2.x, ps.E2.y, 5.5, col.ink);
+      if (state.traceStep >= 1) drawDot(ctx, ps.K.x, ps.K.y, 6, col.blue);
       if (state.traceStep >= 2) {
-        drawDot(ctx, ps.M.x, ps.M.y, 5.5, col.blue);
-        drawDot(ctx, ps.N.x, ps.N.y, 5.5, col.blue);
+        drawDot(ctx, ps.M.x, ps.M.y, 6, col.blue);
+        drawDot(ctx, ps.N.x, ps.N.y, 6, col.blue);
       }
 
       ctx.font = "700 13px Inter, sans-serif";
       ctx.fillStyle = col.blue;
-      ctx.fillText("P", ps.P.x - 4, ps.P.y + 18);
-      ctx.fillText("Q", ps.Q.x - 16, ps.Q.y + 12);
-      ctx.fillText("R", ps.R.x + 8, ps.R.y - 6);
+      ctx.fillText("P", ps.P.x + 2, ps.P.y + 19);
+      ctx.fillText("Q", ps.Q.x - 14, ps.Q.y + 18);
+      ctx.fillText("R", ps.R.x + 9, ps.R.y - 6);
+      if (state.traceStep >= 1) ctx.fillText("K", ps.K.x + 9, ps.K.y + 4);
+      if (state.traceStep >= 2) {
+        ctx.fillText("M", ps.M.x - 6, ps.M.y - 10);
+        ctx.fillText("N", ps.N.x - 18, ps.N.y + 3);
+      }
       ctx.fillStyle = col.ink;
-      ctx.fillText("E₁", ps.E1.x + 7, ps.E1.y + 12);
-      ctx.fillText("E₂", ps.E2.x - 22, ps.E2.y + 4);
+      ctx.fillText("E₁", ps.E1.x + 8, ps.E1.y + 5);
+      ctx.fillText("E₂", ps.E2.x - 22, ps.E2.y + 5);
     }
 
     // --- 5.3: STEREO CARD 3 (Sphere Section) ---
@@ -2438,6 +2452,33 @@
       }
     ];
 
+    function drawPillBadge(ctx, text, x, y, textColor, bgColor = "rgba(255,255,255,0.92)", borderColor = "rgba(148,163,184,0.35)", align = "center") {
+      ctx.save();
+      ctx.font = "700 12px Inter, sans-serif";
+      const padX = 7, hPill = 22;
+      const tw = ctx.measureText(text).width;
+      const wPill = tw + padX * 2;
+      let rx = x - wPill / 2;
+      if (align === "left") rx = x;
+      else if (align === "right") rx = x - wPill;
+      const ry = y - hPill / 2;
+
+      ctx.beginPath();
+      ctx.roundRect(rx, ry, wPill, hPill, 6);
+      ctx.fillStyle = bgColor;
+      ctx.fill();
+      if (borderColor) {
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.fillStyle = textColor;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, rx + wPill / 2, ry + hPill / 2 + 0.5);
+      ctx.restore();
+    }
+
     function drawComboCatalan() {
       const c = canvases.cvComboCatalan;
       if (!c) return;
@@ -2445,10 +2486,10 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      // Grid 0..4 in X, 0..5 in Y
-      const cell = Math.min((w - 90) / 4.4, (h - 60) / 5.4);
-      const ox = (w - 4 * cell) / 2;
-      const oy = h - 30;
+      // Grid 0..4 in X, 0..5 in Y — shifted slightly left so right margin has generous room for labels
+      const cell = Math.min((w - 175) / 4.1, (h - 76) / 5.1);
+      const ox = Math.max(64, (w - 4 * cell) * 0.40);
+      const oy = h - 32;
       const toX = gx => ox + gx * cell;
       const toY = gy => oy - gy * cell;
 
@@ -2470,21 +2511,15 @@
       ctx.lineTo(toX(4), toY(4));
       ctx.stroke();
 
-      // Forbidden mirror wall y = x + 1: (-0.2, 0.8) -> (4.1, 5.1)
+      // Forbidden mirror wall y = x + 1: (-0.15, 0.85) -> (4.0, 5.0)
       ctx.setLineDash([5, 4]);
       ctx.strokeStyle = col.red;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(toX(-0.15), toY(0.85));
-      ctx.lineTo(toX(4.05), toY(5.05));
+      ctx.lineTo(toX(4.0), toY(5.0));
       ctx.stroke();
       ctx.setLineDash([]);
-
-      ctx.font = "700 12px Inter, sans-serif";
-      ctx.fillStyle = col.red;
-      ctx.fillText("Зеркало y = x + 1", toX(0.3), toY(2.1));
-      ctx.fillStyle = col.muted;
-      ctx.fillText("Диагональ y = x", toX(2.55), toY(2.1));
 
       const pathObj = CATALAN_PATHS[state.catalanPreset];
       const pts = pathObj.pts;
@@ -2533,12 +2568,19 @@
         }
         ctx.stroke();
 
-        // Point K
+        // Point K and its non-overlapping pill badge in the upper-left empty quadrant of K
         const [kx, ky] = pts[kIdx];
         drawDot(ctx, toX(kx), toY(ky), 7, col.red);
-        ctx.fillStyle = col.red;
-        ctx.font = "700 13px Inter, sans-serif";
-        ctx.fillText(`K(${kx}; ${ky})`, toX(kx) - 42, toY(ky) - 8);
+        drawPillBadge(
+          ctx,
+          `K(${kx}; ${ky})`,
+          toX(kx) - 10,
+          toY(ky) - 14,
+          col.red,
+          "rgba(255, 241, 242, 0.96)",
+          "rgba(239, 68, 68, 0.35)",
+          "right"
+        );
 
         // Moving endpoint from (4,4) to (3,5)
         const ex = 4 + (3 - 4) * t;
@@ -2551,13 +2593,20 @@
       drawDot(ctx, toX(4), toY(4), 6, col.blue);
       drawDot(ctx, toX(3), toY(5), 6, col.red);
 
+      // Clean, non-overlapping labels in dedicated margin zones
       ctx.font = "700 12.5px Inter, sans-serif";
       ctx.fillStyle = col.ink;
-      ctx.fillText("(0; 0)", toX(0) - 12, toY(0) + 18);
-      ctx.fillStyle = col.blue;
-      ctx.fillText("(4; 4)", toX(4) + 8, toY(4) + 4);
-      ctx.fillStyle = col.red;
-      ctx.fillText("(3; 5)", toX(3) + 8, toY(5) + 4);
+      ctx.textAlign = "center";
+      ctx.fillText("(0; 0)", toX(0), toY(0) + 19);
+
+      // (3; 5) placed cleanly ABOVE the top grid line at x = 3
+      drawPillBadge(ctx, "(3; 5)", toX(3), toY(5) - 16, col.red, "rgba(255,241,242,0.95)", "rgba(239,68,68,0.3)", "center");
+
+      // Right-margin labels aligned neatly at x = toX(4) + 10
+      drawPillBadge(ctx, "Зеркало y = x + 1", toX(4) + 10, toY(5), col.red, "rgba(255,241,242,0.95)", "rgba(239,68,68,0.3)", "left");
+      drawPillBadge(ctx, "(4; 4)", toX(4) + 10, toY(4), col.blue, "rgba(239,246,255,0.95)", "rgba(0,136,255,0.3)", "left");
+      drawPillBadge(ctx, "Диагональ y = x", toX(4) + 10, toY(2.2), col.muted, "rgba(255,255,255,0.95)", "rgba(148,163,184,0.35)", "left");
+      ctx.textAlign = "left";
     }
 
     // --- 5.11b: COMBINATORICS CARD 2 (Gas Stations on a Circular Track) ---
@@ -2568,25 +2617,42 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      // Compute cumulative fuel levels from station #1: S = [0, 2, -1, 0, -2, 2, 0]
+      // Cumulative fuel levels from station #1: baseS = [0, 2, -1, 0, -2, 2, 0] (always in [-2, +2])
       const baseS = [0];
       for (let i = 0; i < 6; i++) baseS.push(baseS[i] + state.gasDeltas[i]);
-      const shiftVal = baseS[state.gasStartIdx]; // new zero level!
+      const shiftVal = baseS[state.gasStartIdx]; // new zero reference level!
 
-      const padL = 46, padR = 28;
+      // Fixed vertical plot bounds so the curve NEVER touches the top badge or bottom station labels!
+      const padL = 52, padR = 32;
+      const plotTop = 64, plotBottom = h - 72;
+      const axisY = h - 34;
+      const centerY = (plotTop + plotBottom) / 2;
+      const unitY = (plotBottom - plotTop) / 4; // maps [-2, +2] strictly into [plotTop, plotBottom]
       const stepX = (w - padL - padR) / 6;
-      const cyZero = h * 0.50 + shiftVal * 26; // shifted zero axis
-      const toX = idx => padL + idx * stepX;
-      const toY = sVal => cyZero - (sVal - shiftVal) * 26;
 
-      // Shaded danger zone below new zero line
-      ctx.fillStyle = "rgba(239, 68, 68, 0.07)";
-      ctx.fillRect(padL, cyZero, w - padL - padR, h - cyZero - 22);
+      const toX = idx => padL + idx * stepX;
+      const toY = sVal => centerY - sVal * unitY;
+      const cyZero = toY(shiftVal);
+
+      // Shaded danger zone below new zero line (clipped above axisY)
+      if (cyZero < axisY) {
+        ctx.fillStyle = "rgba(239, 68, 68, 0.07)";
+        ctx.fillRect(padL, cyZero, w - padL - padR, axisY - cyZero);
+      }
+
+      // Bottom horizontal station axis separator
+      ctx.strokeStyle = col.grid;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(padL - 12, axisY);
+      ctx.lineTo(w - padR + 12, axisY);
+      ctx.stroke();
 
       // New zero horizontal line (dashed blue/green)
       const isOptimal = (state.gasStartIdx === 4);
-      ctx.setLineDash([5, 4]);
-      ctx.strokeStyle = isOptimal ? col.green : col.blue;
+      const zeroCol = isOptimal ? col.green : col.blue;
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = zeroCol;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(padL - 10, cyZero);
@@ -2594,9 +2660,27 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.font = "700 12px Inter, sans-serif";
-      ctx.fillStyle = isOptimal ? col.green : col.blue;
-      ctx.fillText(`Уровень 0 (Старт №${state.gasStartIdx + 1})`, padL + 6, cyZero - 7);
+      // Left-margin "0" tick on the dashed line + top header pill badge (never overlaps points!)
+      drawPillBadge(
+        ctx,
+        "0",
+        padL - 14,
+        cyZero,
+        zeroCol,
+        isOptimal ? "rgba(236,253,245,0.96)" : "rgba(239,246,255,0.96)",
+        isOptimal ? "rgba(16,185,129,0.4)" : "rgba(0,136,255,0.4)",
+        "right"
+      );
+      drawPillBadge(
+        ctx,
+        `Уровень 0 · Старт с колонки №${state.gasStartIdx + 1}`,
+        padL,
+        22,
+        zeroCol,
+        isOptimal ? "rgba(236,253,245,0.96)" : "rgba(239,246,255,0.96)",
+        isOptimal ? "rgba(16,185,129,0.35)" : "rgba(0,136,255,0.35)",
+        "left"
+      );
 
       // Fuel polyline
       ctx.beginPath();
@@ -2618,11 +2702,26 @@
         const dotColor = relFuel < 0 ? col.red : (isStart ? col.green : col.blue);
         drawDot(ctx, px, py, isStart ? 7.5 : 5.5, dotColor);
 
+        // Place value badge ABOVE local peaks (i=0,1,3,5,6) and BELOW local valleys (i=2,4)
+        const isValley = (i === 2 || i === 4);
+        const labelY = isValley ? py + 19 : py - 17;
+        const labelStr = relFuel > 0 ? `+${relFuel}` : String(relFuel);
+        drawPillBadge(
+          ctx,
+          labelStr,
+          px,
+          labelY,
+          relFuel < 0 ? col.red : (isStart ? col.green : col.ink),
+          "rgba(255,255,255,0.94)",
+          relFuel < 0 ? "rgba(239,68,68,0.3)" : "rgba(148,163,184,0.3)",
+          "center"
+        );
+
+        // Station number in dedicated bottom band below axisY
         ctx.font = "700 12px Inter, sans-serif";
-        ctx.fillStyle = relFuel < 0 ? col.red : col.ink;
+        ctx.fillStyle = isStart ? col.green : (relFuel < 0 ? col.red : col.ink);
         ctx.textAlign = "center";
-        ctx.fillText(`№${stIdx + 1}`, px, h - 10);
-        ctx.fillText(relFuel > 0 ? `+${relFuel}` : String(relFuel), px, py - 11);
+        ctx.fillText(`№${stIdx + 1}`, px, h - 12);
       }
       ctx.textAlign = "left";
     }
@@ -2962,7 +3061,7 @@
       const cvGas = document.getElementById("cvComboGas");
       cvGas.addEventListener("pointerdown", e => {
         const rect = cvGas.getBoundingClientRect();
-        const padL = 46, padR = 28;
+        const padL = 52, padR = 32;
         const stepX = (rect.width - padL - padR) / 6;
         const idx = Math.round(((e.clientX - rect.left) - padL) / stepX);
         if (idx >= 0 && idx <= 6) {
