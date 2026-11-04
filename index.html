@@ -2115,10 +2115,16 @@
       drawDot(ctx, ax, ay, 6.5, col.blue);
 
       ctx.font = "700 13.5px Inter, sans-serif";
-      ctx.fillStyle = col.ink;
-      ctx.fillText("O", cx - 18, cy + 5);
+      if (Math.abs(hVal) < 0.09) {
+        ctx.fillStyle = col.blue;
+        ctx.fillText("O = H", cx - 44, cy + 5);
+      } else {
+        ctx.fillStyle = col.ink;
+        ctx.fillText("O", cx - 18, cy + 5);
+        ctx.fillStyle = col.blue;
+        ctx.fillText("H", cx - 18, sy + 4);
+      }
       ctx.fillStyle = col.blue;
-      ctx.fillText("H", cx - 18, sy + 4);
       ctx.fillText("A", ax + 9, ay + 4);
       if (rSec > 0.18) {
         ctx.fillText("r", (cx + ax) / 2, sy - 7);
@@ -2564,7 +2570,7 @@
           return v > 0 ? "+10" : "−1";
         }).join(" ");
         const endNum = ((i0 + 3) % 13) + 1;
-        topText = `Четвёрка №${i0 + 1}–№${endNum}: (${terms}) = ${activeSum > 0 ? "+" + activeSum : activeSum} ${activeSum > 0 ? "> 0 ✓" : "≤ 0 ✗"}`;
+        topText = `№${i0 + 1}–№${endNum}: (${terms}) = ${activeSum > 0 ? "+" + activeSum : activeSum} ${activeSum > 0 ? "> 0 ✓" : "≤ 0 ✗"}`;
         if (activeSum <= 0) {
           topCol = col.red;
           topBg = "rgba(255,241,242,0.96)";
@@ -2572,17 +2578,17 @@
         }
       } else if (brokenIdx >= 0) {
         const endNum = ((brokenIdx + 3) % 13) + 1;
-        topText = `Нарушение условия! В дуге №${brokenIdx + 1}–№${endNum} четыре числа −1 подряд (сумма = −4 < 0) ✗`;
+        topText = `Сбой в дуге №${brokenIdx + 1}–№${endNum}: четыре −1 подряд (сумма −4) ✗`;
         topCol = col.red;
         topBg = "rgba(255,241,242,0.96)";
         topBorder = "rgba(239,68,68,0.35)";
       } else if (state.ringMode === "weak") {
-        topText = "Слабая оценка: 3 дуги по 4 числа дают лишь ≥ 3 плюсов (№13 вне дуг)";
+        topText = "Слабая оценка: 3 дуги по 4 числа (№13 вне дуг)";
         topCol = col.blue;
         topBg = "rgba(239,246,255,0.96)";
         topBorder = "rgba(0,136,255,0.35)";
       } else {
-        topText = "Якорь №1 (+10) + 3 дуги по 4 числа ⇒ в любой четвёрке сумма ≥ +7 > 0 ✓";
+        topText = "Якорь №1 + 3 дуги по 4 числа ⇒ все суммы ≥ +7 ✓";
       }
       drawPillBadge(ctx, topText, cx, 20, topCol, topBg, topBorder, "center");
 
@@ -2729,6 +2735,11 @@
       let rx = x - wPill / 2;
       if (align === "left") rx = x;
       else if (align === "right") rx = x - wPill;
+      // Clamp horizontally inside canvas bounds so pill badges never clip off the left/right edges
+      const cw = ctx.canvas ? ctx.canvas.width / (window.devicePixelRatio || 1) : 0;
+      if (cw > wPill + 8) {
+        rx = Math.max(4, Math.min(cw - wPill - 4, rx));
+      }
       const ry = y - hPill / 2;
 
       ctx.beginPath();
@@ -2762,11 +2773,11 @@
       const pVal = valid ? 0.5 * (n / k1 + n2 / k2) : 0;
       const isMax = valid && ((n === 1 && m === 0) || (n === 9 && m === 10));
 
-      // Top summary pill badge
+      // Top summary pill badge (concise so it fits comfortably even on 400px-wide canvases!)
       if (!valid) {
         drawPillBadge(
           ctx,
-          "Ошибка: урна не может быть пустой! В каждой урне должен быть ≥ 1 шар ✗",
+          "Пустая урна! Положите ≥ 1 шара в каждую ✗",
           w * 0.5,
           20,
           col.red,
@@ -2782,7 +2793,7 @@
         const pct = (pVal * 100).toFixed(2);
         drawPillBadge(
           ctx,
-          `P = ½ · (${n}/${k1} + ${n2}/${k2}) = ${fNum}/${fDen} ≈ ${pct}%` + (isMax ? " (Абсолютный максимум! ✓)" : ""),
+          `P = ½(${n}/${k1} + ${n2}/${k2}) = ${fNum}/${fDen} ≈ ${pct}%` + (isMax ? " (Макс! ✓)" : ""),
           w * 0.5,
           20,
           isMax ? col.green : col.blue,
@@ -2793,19 +2804,18 @@
       }
 
       const yTop = 84, yBot = h - 48;
-      const uw = 122;
-      const ux1 = w * 0.21, ux2 = w * 0.52;
+      const uw = Math.min(118, w * 0.28);
+      const ux1 = w * 0.19, ux2 = w * 0.54;
 
       function drawSingleUrn(ux, titleIdx, wBalls, bBalls) {
         const tot = wBalls + bBalls;
         const x0 = ux - uw / 2;
         const hUrn = yBot - yTop;
 
-        // Pill badge above urn
-        const pUrn = tot > 0 ? Math.round((wBalls / tot) * 100) : 0;
+        // Compact pill badge above urn (never overlaps neighbor urn!)
         drawPillBadge(
           ctx,
-          tot > 0 ? `Урна ${titleIdx}: ${wBalls}/${tot} (${pUrn}%)` : `Урна ${titleIdx}: Пусто!`,
+          tot > 0 ? `Урна ${titleIdx}: ${wBalls}/${tot}` : `Урна ${titleIdx}: пусто`,
           ux,
           60,
           tot === 0 ? col.red : (wBalls === tot ? col.green : col.blue),
@@ -2825,7 +2835,8 @@
 
         // Draw balls stacked in rows of 5 from bottom up
         const cols = 5;
-        const spX = 21.5, spY = 21.5;
+        const spX = Math.min(20.5, (uw - 22) / 4);
+        const spY = 20.5;
         const startX = ux - ((cols - 1) * spX) / 2;
         const startY = yBot - 16;
 
@@ -2837,35 +2848,34 @@
           const by = startY - row * spY;
 
           ctx.beginPath();
-          ctx.arc(bx, by, 8.2, 0, Math.PI * 2);
+          ctx.arc(bx, by, 7.8, 0, Math.PI * 2);
           ctx.fillStyle = isWhite ? "#FFFFFF" : "#1E293B";
           ctx.fill();
           ctx.strokeStyle = isWhite ? col.blue : "#0F172A";
           ctx.lineWidth = 1.8;
           ctx.stroke();
 
-          // Subtle specular highlight on black balls
           if (!isWhite) {
             ctx.beginPath();
-            ctx.arc(bx - 2.4, by - 2.4, 2.0, 0, Math.PI * 2);
+            ctx.arc(bx - 2.2, by - 2.2, 1.9, 0, Math.PI * 2);
             ctx.fillStyle = "rgba(255,255,255,0.45)";
             ctx.fill();
           }
         }
 
-        // Bottom caption below urn
+        // Compact bottom caption below urn
         ctx.font = "700 11.5px Inter, sans-serif";
         ctx.fillStyle = col.ink;
         ctx.textAlign = "center";
-        ctx.fillText(`Белых: ${wBalls} · Чёрн: ${bBalls}`, ux, h - 18);
+        ctx.fillText(`${wBalls}Б · ${bBalls}Ч`, ux, h - 18);
       }
 
       drawSingleUrn(ux1, 1, n, m);
       drawSingleUrn(ux2, 2, n2, m2);
 
       // Right-hand Probability Bar Meter
-      const mx = w * 0.82;
-      const mw = 34;
+      const mx = w * 0.83;
+      const mw = 32;
       const mh = yBot - yTop;
 
       drawPillBadge(ctx, "Шанс P", mx, 60, col.ink, "rgba(255,255,255,0.95)", "rgba(148,163,184,0.35)", "center");
@@ -2894,8 +2904,8 @@
       ctx.strokeStyle = col.muted;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(mx - mw / 2 - 6, y50);
-      ctx.lineTo(mx + mw / 2 + 6, y50);
+      ctx.moveTo(mx - mw / 2 - 5, y50);
+      ctx.lineTo(mx + mw / 2 + 5, y50);
       ctx.stroke();
 
       // 14/19 (~73.7%) theoretical max dashed line
@@ -2903,17 +2913,17 @@
       ctx.strokeStyle = col.green;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
-      ctx.moveTo(mx - mw / 2 - 6, yMax);
-      ctx.lineTo(mx + mw / 2 + 6, yMax);
+      ctx.moveTo(mx - mw / 2 - 5, yMax);
+      ctx.lineTo(mx + mw / 2 + 5, yMax);
       ctx.stroke();
       ctx.setLineDash([]);
 
       ctx.font = "700 11px Inter, sans-serif";
       ctx.textAlign = "left";
       ctx.fillStyle = col.muted;
-      ctx.fillText("50%", mx + mw / 2 + 8, y50 + 4);
+      ctx.fillText("50%", mx + mw / 2 + 6, y50 + 4);
       ctx.fillStyle = col.green;
-      ctx.fillText("14/19", mx + mw / 2 + 8, yMax + 4);
+      ctx.fillText("14/19", mx + mw / 2 + 6, yMax + 4);
 
       ctx.font = "700 12px Inter, sans-serif";
       ctx.textAlign = "center";
@@ -2929,9 +2939,9 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      // Grid 0..4 in X, 0..5 in Y — shifted slightly left so right margin has generous room for labels
-      const cell = Math.min((w - 175) / 4.1, (h - 76) / 5.1);
-      const ox = Math.max(64, (w - 4 * cell) * 0.40);
+      // Grid 0..4 in X, 0..5 in Y — positioned so right margin fits labels even at w=400px
+      const cell = Math.min((w - 176) / 4.0, (h - 76) / 5.1);
+      const ox = 52;
       const oy = h - 32;
       const toX = gx => ox + gx * cell;
       const toY = gy => oy - gy * cell;
@@ -3045,10 +3055,10 @@
       // (3; 5) placed cleanly ABOVE the top grid line at x = 3
       drawPillBadge(ctx, "(3; 5)", toX(3), toY(5) - 16, col.red, "rgba(255,241,242,0.95)", "rgba(239,68,68,0.3)", "center");
 
-      // Right-margin labels aligned neatly at x = toX(4) + 10
-      drawPillBadge(ctx, "Зеркало y = x + 1", toX(4) + 10, toY(5), col.red, "rgba(255,241,242,0.95)", "rgba(239,68,68,0.3)", "left");
-      drawPillBadge(ctx, "(4; 4)", toX(4) + 10, toY(4), col.blue, "rgba(239,246,255,0.95)", "rgba(0,136,255,0.3)", "left");
-      drawPillBadge(ctx, "Диагональ y = x", toX(4) + 10, toY(2.2), col.muted, "rgba(255,255,255,0.95)", "rgba(148,163,184,0.35)", "left");
+      // Right-margin labels aligned neatly at x = toX(4) + 8
+      drawPillBadge(ctx, "Зеркало y=x+1", toX(4) + 8, toY(5), col.red, "rgba(255,241,242,0.95)", "rgba(239,68,68,0.3)", "left");
+      drawPillBadge(ctx, "(4; 4)", toX(4) + 8, toY(4), col.blue, "rgba(239,246,255,0.95)", "rgba(0,136,255,0.3)", "left");
+      drawPillBadge(ctx, "Прямая y = x", toX(4) + 8, toY(2.2), col.muted, "rgba(255,255,255,0.95)", "rgba(148,163,184,0.35)", "left");
       ctx.textAlign = "left";
     }
 
