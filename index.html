@@ -870,32 +870,38 @@
       <!-- CARD 1: 13 чисел по кругу -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">13 чисел по кругу: почему точная оценка $\le 9$, а не $\le 10$?</div>
+          <div class="card-heading">13 чисел по кругу: «Оценка + Пример» и откуда берутся числа $+10$ и $-1$</div>
           <div class="card-pills" id="ringPills">
-            <button class="shk-pill" onclick="setRingMode('weak')">Слабая оценка ($\le 10$)</button>
-            <button class="shk-pill active" onclick="setRingMode('exact')">Якорь + 3 дуги ($\le 9$)</button>
+            <button class="shk-pill" onclick="setRingMode('weak')">1. Слабая оценка ($\le 10$)</button>
+            <button class="shk-pill active" onclick="setRingMode('exact')">2. Якорь + 3 дуги ($\le 9$)</button>
+            <button class="shk-pill" onclick="setRingMode('fail10')">3. Попытка 10 минусов (Сбой!)</button>
           </div>
         </div>
         <div class="card-grid">
           <div class="card-text-col">
             <p>
-              По кругу записаны 13 чисел, сумма любых 4 подряд положительна. Какое наибольшее количество отрицательных чисел может среди них быть?
+              <b>Задача:</b> по кругу записаны 13 чисел, сумма любых 4 подряд положительна. Какое наибольшее количество отрицательных чисел может среди них быть? В задачах типа «Оценка + Пример» решение всегда состоит из двух частей:
             </p>
-            <p>
-              Если просто накрыть круг <span class="inline-link" onclick="setRingMode('weak')">тремя дугами по 4 числа ($13 = 4+4+4+1$)</span>, мы найдём лишь $\ge 3$ плюса (оценка $\le 10$ минусов).
-            </p>
-            <p>
-              Чтобы получить точную оценку, сначала <span class="inline-link active" onclick="setRingMode('exact')">зафиксируем один плюс («якорь» в ячейке №1)</span>! Тогда оставшиеся $12$ чисел без остатка разбиваются на 3 четвёрки — в каждой ещё хотя бы по одному плюсу. Итого плюсов $\ge 1 + 3 = 4$, а минусов $\le 9$.
-            </p>
+            <div class="algo-list" id="listRingSteps">
+              <div class="algo-item" onclick="setRingMode('weak')">
+                <b>1. Слабая оценка ($\le 10$ минусов):</b> если просто накрыть круг тремя дугами по 4 числа ($13 = 4+4+4+1$, ячейка №1 осталась вне дуг), то в каждой дуге сумма $>0 \Rightarrow$ хотя бы один «$+$». Получаем лишь $\ge 3$ плюсов ($\le 10$ минусов).
+              </div>
+              <div class="algo-item active" onclick="setRingMode('exact')">
+                <b>2. Точная оценка ($\le 9$ минусов — приём «Якорь»):</b> сначала найдём хотя бы одно положительное число и зафиксируем его как <b>«якорь» (№1)</b>. Оставшиеся 12 чисел делятся без остатка на 3 дуги по 4 числа: (№2–5), (№6–9), (№10–13). В каждой дуге есть ещё минимум по одному «$+$», итого плюсов $\ge 1 + 3 = 4$, значит отрицательных чисел <b>не более $13 - 4 = 9$</b>!
+              </div>
+              <div class="algo-item" onclick="setRingMode('fail10')">
+                <b>3. Зачем нужны числа $+10$ и $-1$? (Конструкция примера):</b> чтобы доказать, что 9 минусов реально возможны, нужно предъявить конкретные числа! Возьмём все 9 отрицательных чисел равными <b>$-1$</b>, а 4 положительных сделаем большими с запасом — по <b>$+10$</b> (на местах №1, №5, №9, №13). Тогда в любую четвёрку подряд попадёт хотя бы одно $+10$ и не более трёх $-1$, и её сумма будет $\ge 10 - 1 - 1 - 1 = +7 > 0$. А если оставить всего 3 десятки и <b>10 чисел $-1$</b> (нажмите этот шаг!), то образуется дуга из четырёх $-1$ подряд с суммой $-4 < 0$!
+              </div>
+            </div>
             <div class="white-formula-box">
-              <span id="ringFormulaBox">Пример на 9 минусов: +10 на местах №1, 5, 9, 13 и −1 на остальных</span>
+              <span id="ringFormulaBox">Пример на 9 минусов работает: в любой четвёрке подряд есть хотя бы одно +10, сумма ≥ +7 > 0 ✓</span>
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvLogicRing"></canvas>
             </div>
-            <div class="stage-caption">Кликайте по кружкам для смены знака (+10 / −1) и водите мышкой для проверки четвёрок</div>
+            <div class="stage-caption">Наводите курсор на ячейки №1–№13 для проверки четвёрок или кликайте по кружкам для смены +10 ↔ −1</div>
           </div>
         </div>
       </article>
@@ -1154,7 +1160,7 @@
       // --- TOPIC 4: LOGIC & GAMES ---
       ringMode: "exact",
       ringVals: [10, -1, -1, -1, 10, -1, -1, -1, 10, -1, -1, -1, 10],
-      ringHover: 0,
+      ringHover: -1,
       gameN: 17,
       gamePos: 1,
       gameAiArc: null,
@@ -1407,11 +1413,44 @@
     };
 
     // --- TOPIC 4: LOGIC & GAMES CONTROLS ---
+    function syncRingFormulaBox() {
+      const posCnt = state.ringVals.filter(v => v > 0).length;
+      const negCnt = 13 - posCnt;
+      let brokenStart = -1;
+      for (let i = 0; i < 13; i++) {
+        const s4 = state.ringVals[i] + state.ringVals[(i+1)%13] + state.ringVals[(i+2)%13] + state.ringVals[(i+3)%13];
+        if (s4 <= 0) { brokenStart = i; break; }
+      }
+      const box = document.getElementById("ringFormulaBox");
+      if (brokenStart >= 0) {
+        const eIdx = ((brokenStart + 3) % 13) + 1;
+        box.textContent = `Плюсов: ${posCnt}, Минусов: ${negCnt} ⇒ Сбой в четвёрке №${brokenStart + 1}–№${eIdx} (сумма ≤ 0) ✗`;
+      } else if (state.ringMode === "weak") {
+        box.textContent = `Слабая оценка: 3 дуги по 4 числа дают лишь ≥ 3 плюсов (оценка ≤ 10 минусов)`;
+      } else {
+        box.textContent = `Плюсов (+10): ${posCnt}, Минусов (−1): ${negCnt} ⇒ В любой четвёрке сумма ≥ +7 > 0 ✓`;
+      }
+    }
+
     window.setRingMode = function(m) {
       state.ringMode = m;
+      if (m === "fail10") {
+        state.ringVals = [10, -1, -1, -1, 10, -1, -1, -1, -1, -1, -1, -1, 10];
+      } else {
+        state.ringVals = [10, -1, -1, -1, 10, -1, -1, -1, 10, -1, -1, -1, 10];
+      }
       const btns = document.querySelectorAll("#ringPills .shk-pill");
       btns[0].classList.toggle("active", m === "weak");
       btns[1].classList.toggle("active", m === "exact");
+      if (btns[2]) btns[2].classList.toggle("active", m === "fail10");
+
+      const items = document.querySelectorAll("#listRingSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", m === "weak");
+        items[1].classList.toggle("active", m === "exact");
+        items[2].classList.toggle("active", m === "fail10");
+      }
+      syncRingFormulaBox();
     };
 
     window.setGameN = function(n) {
@@ -2330,7 +2369,7 @@
       ctx.fillText("P(5; 1)", toX(5) - 18, toY(1) - 12);
     }
 
-    // --- 5.9: LOGIC CARD 1 (13 Numbers on a Circle) ---
+    // --- 5.9: LOGIC CARD 1 (13 Numbers on a Circle — Clear Evaluation + Example & Smooth Hover) ---
     function drawLogicRing() {
       const c = canvases.cvLogicRing;
       if (!c) return;
@@ -2338,46 +2377,148 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      const cx = w * 0.5, cy = h * 0.52, R = Math.min(w, h) * 0.34;
+      const cx = w * 0.5, cy = h * 0.55, R = Math.min(w, h) * 0.29;
 
-      // Partition arcs
+      // Subtle base ring connecting the 13 cells
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.strokeStyle = col.grid;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+
+      // Outer partition arcs (3 arcs of 4 cells each)
       const groups = state.ringMode === "weak" ? [[0,3],[4,7],[8,11]] : [[1,4],[5,8],[9,12]];
       groups.forEach(([s, e]) => {
-        const a1 = (s * 2 * Math.PI) / 13 - Math.PI / 2 - 0.12;
-        const a2 = (e * 2 * Math.PI) / 13 - Math.PI / 2 + 0.12;
+        const a1 = (s * 2 * Math.PI) / 13 - Math.PI / 2 - 0.11;
+        const a2 = (e * 2 * Math.PI) / 13 - Math.PI / 2 + 0.11;
         ctx.beginPath();
-        ctx.arc(cx, cy, R + 28, a1, a2);
-        ctx.strokeStyle = col.blue;
-        ctx.lineWidth = 4.5;
+        ctx.arc(cx, cy, R + 22, a1, a2);
+        ctx.strokeStyle = "rgba(0, 136, 255, 0.55)";
+        ctx.lineWidth = 4;
         ctx.stroke();
       });
 
-      // Hover 4-window
-      const hv = state.ringHover;
-      const s4 = state.ringVals[hv] + state.ringVals[(hv+1)%13] + state.ringVals[(hv+2)%13] + state.ringVals[(hv+3)%13];
-      ctx.font = "700 14px Inter, sans-serif";
-      ctx.fillStyle = s4 > 0 ? col.blue : col.red;
-      ctx.textAlign = "center";
-      ctx.fillText(`Сумма 4 подряд = ${s4 > 0 ? "+" + s4 : s4}`, cx, cy + 5);
+      // Find if any 4-window violates sum > 0
+      let brokenIdx = -1, brokenSum = 0;
+      for (let i = 0; i < 13; i++) {
+        const s = state.ringVals[i] + state.ringVals[(i+1)%13] + state.ringVals[(i+2)%13] + state.ringVals[(i+3)%13];
+        if (s <= 0) { brokenIdx = i; brokenSum = s; break; }
+      }
 
+      // Active 4-window to highlight on inner arc: either hovered cell hv..hv+3 or broken window
+      const activeWin = state.ringHover >= 0 ? state.ringHover : brokenIdx;
+      const inWindow = new Set();
+      let activeSum = 0;
+      if (activeWin >= 0) {
+        for (let d = 0; d < 4; d++) {
+          const idx = (activeWin + d) % 13;
+          inWindow.add(idx);
+          activeSum += state.ringVals[idx];
+        }
+        // Use unwrapped angle activeWin -> activeWin + 3 so arc NEVER wraps the wrong way!
+        const wa1 = (activeWin * 2 * Math.PI) / 13 - Math.PI / 2;
+        const wa2 = ((activeWin + 3) * 2 * Math.PI) / 13 - Math.PI / 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R - 22, wa1, wa2);
+        ctx.strokeStyle = activeSum > 0 ? col.green : col.red;
+        ctx.lineWidth = 4.5;
+        ctx.stroke();
+      }
+
+      // Top status pill badge (above the entire circle — never collides with ring cells!)
+      let topText = "";
+      let topCol = col.green;
+      let topBg = "rgba(236,253,245,0.96)";
+      let topBorder = "rgba(16,185,129,0.35)";
+      if (state.ringHover >= 0) {
+        const i0 = state.ringHover;
+        const terms = [0, 1, 2, 3].map(d => {
+          const v = state.ringVals[(i0 + d) % 13];
+          return v > 0 ? "+10" : "−1";
+        }).join(" ");
+        const endNum = ((i0 + 3) % 13) + 1;
+        topText = `Четвёрка №${i0 + 1}–№${endNum}: (${terms}) = ${activeSum > 0 ? "+" + activeSum : activeSum} ${activeSum > 0 ? "> 0 ✓" : "≤ 0 ✗"}`;
+        if (activeSum <= 0) {
+          topCol = col.red;
+          topBg = "rgba(255,241,242,0.96)";
+          topBorder = "rgba(239,68,68,0.35)";
+        }
+      } else if (brokenIdx >= 0) {
+        const endNum = ((brokenIdx + 3) % 13) + 1;
+        topText = `Нарушение условия! В дуге №${brokenIdx + 1}–№${endNum} четыре числа −1 подряд (сумма = −4 < 0) ✗`;
+        topCol = col.red;
+        topBg = "rgba(255,241,242,0.96)";
+        topBorder = "rgba(239,68,68,0.35)";
+      } else if (state.ringMode === "weak") {
+        topText = "Слабая оценка: 3 дуги по 4 числа дают лишь ≥ 3 плюсов (№13 вне дуг)";
+        topCol = col.blue;
+        topBg = "rgba(239,246,255,0.96)";
+        topBorder = "rgba(0,136,255,0.35)";
+      } else {
+        topText = "Якорь №1 (+10) + 3 дуги по 4 числа ⇒ в любой четвёрке сумма ≥ +7 > 0 ✓";
+      }
+      drawPillBadge(ctx, topText, cx, 20, topCol, topBg, topBorder, "center");
+
+      // Compact center summary inside the ring (short lines that fit well within inner radius R - 30)
+      const posCnt = state.ringVals.filter(v => v > 0).length;
+      const negCnt = 13 - posCnt;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      ctx.font = "700 12px Inter, sans-serif";
+      ctx.fillStyle = col.blue;
+      ctx.fillText(`Плюсов (+10): ${posCnt}`, cx, cy - 16);
+
+      ctx.fillStyle = negCnt > 9 ? col.red : col.ink;
+      ctx.fillText(`Минусов (−1): ${negCnt}`, cx, cy + 2);
+
+      ctx.font = "700 11.5px Inter, sans-serif";
+      if (activeWin >= 0) {
+        ctx.fillStyle = activeSum > 0 ? col.green : col.red;
+        ctx.fillText(`Сумма 4-ки: ${activeSum > 0 ? "+" + activeSum : activeSum}`, cx, cy + 20);
+      } else {
+        ctx.fillStyle = col.green;
+        ctx.fillText("Все суммы ≥ +7 ✓", cx, cy + 20);
+      }
+
+      // Draw the 13 number circles and outer cell labels №1..№13
       for (let i = 0; i < 13; i++) {
         const ang = (i * 2 * Math.PI) / 13 - Math.PI / 2;
         const nx = cx + R * Math.cos(ang), ny = cy + R * Math.sin(ang);
         const v = state.ringVals[i];
+        const isAnchor = (i === 0 && state.ringMode !== "weak");
+        const isHighlighted = inWindow.has(i);
+
+        if (isHighlighted) {
+          ctx.beginPath();
+          ctx.arc(nx, ny, 20.5, 0, Math.PI * 2);
+          ctx.strokeStyle = activeSum > 0 ? col.green : col.red;
+          ctx.lineWidth = 2.4;
+          ctx.stroke();
+        }
+
         ctx.beginPath();
-        ctx.arc(nx, ny, 18, 0, Math.PI * 2);
-        ctx.fillStyle = v > 0 ? col.blue : col.white;
+        ctx.arc(nx, ny, 16, 0, Math.PI * 2);
+        ctx.fillStyle = v > 0 ? (isAnchor ? col.green : col.blue) : col.white;
         ctx.fill();
-        ctx.strokeStyle = v > 0 ? col.blue : col.ink;
+        ctx.strokeStyle = v > 0 ? (isAnchor ? col.green : col.blue) : (isHighlighted && activeSum <= 0 ? col.red : col.ink);
         ctx.lineWidth = 1.8;
         ctx.stroke();
 
-        ctx.font = "700 11.5px Inter, sans-serif";
-        ctx.fillStyle = v > 0 ? "#FFFFFF" : col.ink;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(v > 0 ? "+10" : "−1", nx, ny);
+        // Value inside circle (+10 or −1)
+        ctx.font = "700 11px Inter, sans-serif";
+        ctx.fillStyle = v > 0 ? "#FFFFFF" : (isHighlighted && activeSum <= 0 ? col.red : col.ink);
+        ctx.fillText(v > 0 ? "+10" : "−1", nx, ny + 0.5);
+
+        // Outer index label №1..№13
+        const lx = cx + (R + 36) * Math.cos(ang);
+        const ly = cy + (R + 36) * Math.sin(ang);
+        ctx.font = isAnchor ? "700 11px Inter, sans-serif" : "600 10.5px Inter, sans-serif";
+        ctx.fillStyle = isAnchor ? col.green : col.muted;
+        ctx.fillText(isAnchor ? "№1·Якорь" : `№${i + 1}`, lx, ly);
       }
+
+      ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
     }
 
@@ -3003,25 +3144,32 @@
       });
       window.addEventListener("pointerup", () => { dragPen = false; });
 
-      // Logic Ring click/hover
+      // Logic Ring click/hover (smooth tracking + clean leave reset)
       const cvLR = document.getElementById("cvLogicRing");
       cvLR.addEventListener("pointermove", e => {
         const rect = cvLR.getBoundingClientRect();
-        const cx = rect.width * 0.5, cy = rect.height * 0.52, R = Math.min(rect.width, rect.height) * 0.34;
+        const cx = rect.width * 0.5, cy = rect.height * 0.55, R = Math.min(rect.width, rect.height) * 0.29;
+        let found = -1;
         for (let i = 0; i < 13; i++) {
           const ang = (i * 2 * Math.PI) / 13 - Math.PI / 2;
-          if (Math.hypot((e.clientX - rect.left) - (cx + R * Math.cos(ang)), (e.clientY - rect.top) - (cy + R * Math.sin(ang))) < 22) {
-            state.ringHover = i;
+          if (Math.hypot((e.clientX - rect.left) - (cx + R * Math.cos(ang)), (e.clientY - rect.top) - (cy + R * Math.sin(ang))) < 26) {
+            found = i;
+            break;
           }
         }
+        state.ringHover = found;
+      });
+      cvLR.addEventListener("pointerleave", () => {
+        state.ringHover = -1;
       });
       cvLR.addEventListener("pointerdown", e => {
         const rect = cvLR.getBoundingClientRect();
-        const cx = rect.width * 0.5, cy = rect.height * 0.52, R = Math.min(rect.width, rect.height) * 0.34;
+        const cx = rect.width * 0.5, cy = rect.height * 0.55, R = Math.min(rect.width, rect.height) * 0.29;
         for (let i = 0; i < 13; i++) {
           const ang = (i * 2 * Math.PI) / 13 - Math.PI / 2;
-          if (Math.hypot((e.clientX - rect.left) - (cx + R * Math.cos(ang)), (e.clientY - rect.top) - (cy + R * Math.sin(ang))) < 22) {
+          if (Math.hypot((e.clientX - rect.left) - (cx + R * Math.cos(ang)), (e.clientY - rect.top) - (cy + R * Math.sin(ang))) < 26) {
             state.ringVals[i] = state.ringVals[i] > 0 ? -1 : 10;
+            syncRingFormulaBox();
           }
         }
       });
