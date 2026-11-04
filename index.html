@@ -34,7 +34,7 @@
       --radius-md: 14px;
     }
 
-    body.dark-mode {
+    body.dark-mode, body[data-theme="dark"] {
       --shk-slate: #0F172A;
       --shk-card: #1E293B;
       --shk-subtle: #0B111E;
@@ -104,7 +104,7 @@
       overflow-x: auto;
     }
 
-    .sec-tab {
+    .sec-tab, .sec-btn {
       border: none;
       background: transparent;
       color: var(--shk-text-sec);
@@ -118,12 +118,12 @@
       transition: all 0.16s ease;
     }
 
-    .sec-tab:hover {
+    .sec-tab:hover, .sec-btn:hover {
       background: var(--shk-subtle);
       color: var(--shk-blue);
     }
 
-    .sec-tab.active {
+    .sec-tab.active, .sec-btn.active {
       background: var(--shk-blue);
       color: #FFFFFF;
       box-shadow: 0 3px 10px rgba(0, 133, 255, 0.25);
@@ -133,9 +133,10 @@
       background: var(--shk-subtle);
       border: 1px solid var(--shk-border);
       border-radius: 10px;
-      padding: 6px 10px;
+      padding: 6px 12px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
+      font-weight: 700;
       color: var(--shk-text);
     }
 
@@ -156,7 +157,7 @@
       gap: 10px;
     }
 
-    .task-btn {
+    .task-btn, .task-pill {
       background: var(--shk-card);
       border: 2px solid transparent;
       border-radius: 15px;
@@ -165,19 +166,22 @@
       cursor: pointer;
       transition: all 0.16s ease;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .task-btn:hover {
+    .task-btn:hover, .task-pill:hover {
       border-color: #90C8FF;
       transform: translateY(-1px);
     }
 
-    .task-btn.active {
+    .task-btn.active, .task-pill.active {
       border-color: var(--shk-blue);
       box-shadow: 0 6px 16px rgba(0, 133, 255, 0.14);
     }
 
-    .task-btn-num {
+    .task-btn-num, .task-pill-num {
       font-size: 10.5px;
       font-weight: 800;
       text-transform: uppercase;
@@ -185,7 +189,7 @@
       color: var(--shk-blue);
     }
 
-    .task-btn-title {
+    .task-btn-title, .task-pill-title {
       font-size: 13.5px;
       font-weight: 800;
       color: var(--shk-text);
@@ -280,6 +284,19 @@
       flex: 1;
     }
 
+    .step-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: var(--shk-blue-soft);
+      color: var(--shk-blue);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 4px 9px;
+      border-radius: 7px;
+      text-transform: uppercase;
+    }
+
     .step-card-title {
       font-size: 16px;
       font-weight: 800;
@@ -305,6 +322,37 @@
       font-size: 13.5px;
       color: var(--shk-text-sec);
       line-height: 1.55;
+    }
+
+    .ctrl-box {
+      background: var(--shk-card);
+      border: 1px solid var(--shk-border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--shk-text-sec);
+    }
+
+    .ctrl-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      color: var(--shk-blue);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--shk-blue);
+      cursor: pointer;
     }
 
     .aha-box {
@@ -388,19 +436,36 @@
       gap: 6px;
     }
 
-    .chip.ok {
+    .chip.blue {
+      background: var(--shk-blue-soft);
+      border-color: rgba(0, 133, 255, 0.35);
+      color: var(--shk-blue);
+    }
+
+    .chip.ok, .chip.green {
       background: var(--shk-green-soft);
       border-color: var(--shk-green);
       color: #065F46;
     }
 
-    .chip.err {
+    .chip.amber {
+      background: var(--shk-amber-soft);
+      border-color: var(--shk-amber);
+      color: #92400E;
+    }
+
+    .chip.err, .chip.red {
       background: var(--shk-red-soft);
       border-color: var(--shk-red);
       color: #991B1B;
     }
 
-    body.dark-mode .chip.ok, body.dark-mode .chip.err {
+    body.dark-mode .chip.ok, body.dark-mode .chip.green,
+    body.dark-mode .chip.err, body.dark-mode .chip.red,
+    body.dark-mode .chip.amber, body.dark-mode .chip.blue,
+    body[data-theme="dark"] .chip.ok, body[data-theme="dark"] .chip.green,
+    body[data-theme="dark"] .chip.err, body[data-theme="dark"] .chip.red,
+    body[data-theme="dark"] .chip.amber, body[data-theme="dark"] .chip.blue {
       color: #F8FAFC;
     }
 
@@ -411,7 +476,7 @@
       flex-wrap: wrap;
     }
 
-    .act-btn {
+    .act-btn, .action-btn {
       background: var(--shk-blue-soft);
       color: var(--shk-blue);
       border: 1px solid rgba(0, 133, 255, 0.3);
@@ -424,7 +489,7 @@
       transition: all 0.15s;
     }
 
-    .act-btn:hover, .act-btn.primary {
+    .act-btn:hover, .act-btn.primary, .action-btn:hover, .action-btn.primary {
       background: var(--shk-blue);
       color: #FFFFFF;
     }
@@ -440,7 +505,7 @@
       user-select: none;
     }
 
-    body.dark-mode .canvas-container {
+    body.dark-mode .canvas-container, body[data-theme="dark"] .canvas-container {
       background: #0B111E;
     }
 
@@ -456,7 +521,7 @@
   <!-- HEADER -->
   <header class="shk-header">
     <div class="shk-header-inner">
-      <a href="#" class="shk-logo" onclick="selectSec('graphs'); return false;">
+      <a href="#" class="shk-logo" onclick="selectSection('graphs'); return false;">
         <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
           <line x1="6" y1="12" x2="2" y2="9" stroke="#1890FF" stroke-width="2.4" stroke-linecap="round"/>
           <line x1="11" y1="6" x2="9" y2="2" stroke="#1890FF" stroke-width="2.4" stroke-linecap="round"/>
@@ -472,7 +537,7 @@
 
       <nav class="sec-nav" id="secNav"></nav>
 
-      <button class="theme-btn" id="themeBtn" title="Переключить тему">☀️ / 🌙</button>
+      <button class="theme-btn" id="themeBtn" title="Переключить тему">🌙 Ночь</button>
     </div>
   </header>
 
@@ -491,10 +556,11 @@
         <div class="step-tabs" id="stepTabs"></div>
 
         <div class="step-card">
+          <div class="step-badge" id="stepBadge">ШАГ 1 ИЗ 4</div>
           <h2 class="step-card-title" id="stepTitle"></h2>
           <div class="try-box">
             <span>🎯</span>
-            <span id="stepTry"></span>
+            <span id="stepTryText"></span>
           </div>
           <div class="step-short-text" id="stepExplain"></div>
           <div id="stepCustomControls"></div>
