@@ -520,7 +520,7 @@
     <!-- =================================================================== -->
     <section class="topic-section active" id="sec-stereo">
       <div class="page-kicker">Задачи к вебинару · Интерактивная 3D-лаборатория</div>
-      <h1 class="page-title">№1–4. Развёртки, сечения куба, шар и достраивание тетраэдра до параллелепипеда</h1>
+      <h1 class="page-title">№1–5. Развёртки, сечение $C_1TP$ ($3 : 2$), шар, тетраэдр и параллелепипед в сфере</h1>
 
       <!-- CARD 1: 3D разворот грани (Метод развёртки / Паук и муха) -->
       <article class="sandbox-card">
@@ -565,48 +565,48 @@
         </div>
       </article>
 
-      <!-- CARD 2: Пошаговый алгоритм построения сечения куба (Метод следов) -->
+      <!-- CARD 2: Сечение параллелепипеда плоскостью C1TP и отношение D1N : ND = 3 : 2 -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">Алгоритм построения сечения куба плоскостью (Метод следов)</div>
+          <div class="card-heading">Сечение параллелепипеда плоскостью $C_1TP$ ($AP:PD = 1:4$) и отношение $D_1N : ND = 3 : 2$</div>
           <div class="stepper-ctrl">
             <button class="step-arrow" id="stTracePrev" onclick="stepStereoTrace(-1)">‹</button>
-            <span class="step-counter" id="stTraceLabel">Шаг 1 из 4</span>
+            <span class="step-counter" id="stTraceLabel">Шаг 4 из 4</span>
             <button class="step-arrow next-active" id="stTraceNext" onclick="stepStereoTrace(1)">›</button>
           </div>
         </div>
         <div class="card-grid">
           <div class="card-text-col">
+            <p>
+              <b>Задача:</b> в параллелепипеде $ABCDA_1B_1C_1D_1$ точка $T$ — середина ребра $BB_1$, точка $P$ лежит на ребре $AD$ так, что $AP : PD = 1 : 4$. <b>(a)</b> Постройте сечение параллелепипеда плоскостью $C_1TP$. <b>(b)</b> Найдите отношение $D_1N : ND$, в котором плоскость делит ребро $DD_1$.
+            </p>
             <ul class="algo-list" id="listStereoTrace">
-              <li class="algo-item active" onclick="setStereoTraceStep(0)">
+              <li class="algo-item" onclick="setStereoTraceStep(0)">
                 <span class="algo-num">1.</span>
-                <span>В гранях куба заданы три точки $P, Q, R$. Точки $P$ и $Q$ лежат в нижней грани $ABCD$, поэтому проведём отрезок сечения $PQ$ и продлим прямую $PQ$ до пересечения с продолжениями рёбер $BC$ и $DC$ в точках следа $E_1$ и $E_2$.</span>
+                <span><b>Шаг 1 — Прямая $C_1T$ и выносная точка $L$ на продолжении $CB$:</b> в правой грани $(BCC_1B_1)$ проведём прямую $C_1T$ до пересечения с прямой $CB$ в точке $L$. Пусть $B_1T = TB = y$ ($CC_1 = 2y$) и $CB = x$. Из подобия $\triangle CC_1L \sim \triangle BTL$: $\frac{C_1C}{TB} = \frac{CL}{BL} = 2 \implies \frac{x + BL}{BL} = 2 \implies \mathbf{BL = x}$.</span>
               </li>
               <li class="algo-item" onclick="setStereoTraceStep(1)">
                 <span class="algo-num">2.</span>
-                <span>Точка $E_1$ лежит на прямой $BC$, а значит и в боковой грани $BCC_1B_1$ вместе с точкой $R$. Проведём прямую $E_1 R$ и получим точки пересечения с рёбрами грани — отрезок сечения $KL$.</span>
+                <span><b>Шаг 2 — След основания $LP$ и точки $M$ (на $BA$) и $O$ (на $CD$):</b> проведём в плоскости основания $(ABCD)$ прямую $LP$ — она пересекает ребро $BA$ в точке $M$, а прямую $CD$ в точке $O$. Так как $PA = \frac{x}{5}$ и $DP = \frac{4x}{5}$, при $AM = z$ из $\triangle PAM \sim \triangle BLM$ имеем $\frac{MB}{AM} = \frac{BL}{PA} = 5 \implies MB = 5z, AB = DC = 6z$, а из $\triangle ODP \sim \triangle PAM$ находим $\frac{OD}{AM} = \frac{DP}{PA} = 4 \implies \mathbf{OD = 4z}$.</span>
               </li>
               <li class="algo-item" onclick="setStereoTraceStep(2)">
                 <span class="algo-num">3.</span>
-                <span>Аналогично соединим второй след $E_2$ с точкой $R$ в задней грани $DCC_1D_1$ (или проведём параллельные линии сечения в противоположных гранях куба).</span>
+                <span><b>Шаг 3 — Прямая $OC_1$, точка $N$ на $DD_1$ и сечение $C_1TMPN$:</b> в задней грани $(DCC_1D_1)$ соединим точку следа $O$ с вершиной $C_1$ — отрезок $OC_1$ пересекает ребро $DD_1$ в искомой точке $N$. Замыкая контур по граням, получаем пятиугольное сечение <b>$C_1TMPN$</b>!</span>
               </li>
-              <li class="algo-item" onclick="setStereoTraceStep(3)">
+              <li class="algo-item active" onclick="setStereoTraceStep(3)">
                 <span class="algo-num">4.</span>
-                <span>Замыкаем все отрезки в гранях куба — получаем искомое <b>шестиугольное сечение</b> $PQKRMN$!</span>
+                <span><b>Шаг 4 — Находим отношение $D_1N : ND = 3 : 2$:</b> в задней грани $\triangle ODN \sim \triangle OCC_1$, где $OD = 4z$, а $OC = OD + DC = 4z + 6z = 10z$. Тогда $\frac{ND}{CC_1} = \frac{OD}{OC} = \frac{4}{10} \implies ND = \frac{4}{10}\cdot 2y = \mathbf{\frac{4y}{5}}$, а $D_1N = 2y - \frac{4y}{5} = \mathbf{\frac{6y}{5}}$. Отсюда <b>$\frac{D_1N}{ND} = \frac{6/5}{4/5} = \frac{3}{2}$</b>!</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="traceFormulaText">След прямой PQ на плоскости основания: точки E₁ и E₂</span>
-            </div>
-            <div class="muted-note">
-              Совет: зажмите левую кнопку мыши на чертеже справа, чтобы покрутить 3D-куб вместе с построенными линиями следов под любым углом.
+              <span id="traceFormulaText">Подобие △ODN ~ △OCC₁: ND = 4y/5, D₁N = 6y/5 ⇒ Отношение D₁N : ND = 3 : 2 ✓</span>
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvStereoTrace"></canvas>
             </div>
-            <div class="stage-caption">Потяните чертёж мышкой для 3D-вращения куба и следов</div>
+            <div class="stage-caption">Переключайте шаги 1–4 и вращайте 3D-параллелепипед мышкой вместе с выносными точками следа L и O!</div>
           </div>
         </div>
       </article>
@@ -693,6 +693,55 @@
           </div>
         </div>
       </article>
+
+      <!-- CARD 5: Параллелепипед объёма 8, вписанный в сферу радиуса sqrt(3) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Параллелепипед объёма $8$, вписанный в сферу радиуса $\sqrt{3}$: почему это куб $2 \times 2 \times 2$ и $S_{\text{полн}} = 24$?</div>
+          <div class="card-pills" id="inscribedPills">
+            <button class="shk-pill active" onclick="setInscribedRatio(1.0)">Куб $2 \times 2 \times 2$ ($V = 8$ ✓)</button>
+            <button class="shk-pill" onclick="setInscribedRatio(1.45)">Деформация ($V < 8$ ✗)</button>
+            <button class="shk-pill" onclick="setInscribedRatio(0.65)">Плоский ($V < 8$ ✗)</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> в сферу радиуса $R = \sqrt{3}$ вписан прямоугольный параллелепипед, объём которого равен $V = 8$. Найдите площадь полной поверхности параллелепипеда.
+            </p>
+            <ul class="algo-list" id="listInscribedSteps">
+              <li class="algo-item" onclick="setInscribedRatio(1.45)">
+                <span class="algo-num">1.</span>
+                <span><b>Главная диагональ параллелепипеда — диаметр сферы $B_1D = 2R$:</b> все прямые двугранные углы опираются на диагональ $B_1D$ как на диаметр описанной сферы с центром $O$. По пространственной теореме Пифагора: <b>$a^2 + b^2 + c^2 = (2R)^2 = (2\sqrt{3})^2 = 12$</b>.</span>
+              </li>
+              <li class="algo-item active" onclick="setInscribedRatio(1.0)">
+                <span class="algo-num">2.</span>
+                <span><b>Неравенство о средних (почему возможен только куб $a = b = c = 2$):</b> при фиксированной сумме квадратов $a^2 + b^2 + c^2 = 12$ среднее арифметическое не меньше среднего геометрического: $\frac{a^2 + b^2 + c^2}{3} \ge \sqrt[3]{a^2b^2c^2} \implies 4 \ge (abc)^{2/3} \implies \mathbf{V = abc \le 8}$. Причём равенство $V = 8$ достигается <b>только при $a = b = c = 2$</b>!</span>
+              </li>
+              <li class="algo-item" onclick="setInscribedRatio(0.65)">
+                <span class="algo-num">3.</span>
+                <span><b>Находим площадь полной поверхности (Ответ: $24$):</b> так как наш параллелепипед обязательно является кубом с ребром $a = b = c = 2$, площадь его полной поверхности равна <b>$S_{\text{полн}} = 2(ab + bc + ca) = 6 \cdot 2^2 = 24$</b>!</span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="inscribedFormulaText">Рёбра: a = 2.00, b = 2.00, c = 2.00 | d² = a²+b²+c² = 12 | V = abc = 8.00 (Максимум!) ⇒ S = 24.00 ✓</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Деформация рёбер $(a, b, c)$ внутри сферы $a^2+b^2+c^2 = 12$</span>
+                <span class="slider-val-badge" id="valInscribedRatio">a = b = c = 2.00 · V = 8.00 ✓</span>
+              </div>
+              <input type="range" class="shk-range" id="rngInscribedRatio" min="50" max="160" value="100" />
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvStereoInscribed"></canvas>
+            </div>
+            <div class="stage-caption">Вращайте сферу с параллелепипедом мышкой и двигайте ползунок — объём V = 8 достигается только у куба 2×2×2!</div>
+          </div>
+        </div>
+      </article>
     </section>
 
     <!-- =================================================================== -->
@@ -700,7 +749,7 @@
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-graphs">
       <div class="page-kicker">Задачи к вебинару · Интерактивный конспект по графам</div>
-      <h1 class="page-title">№1–3. Изоморфизм графов, деревья и планарность</h1>
+      <h1 class="page-title">№1–3. Изоморфизм графов, выделение остовного дерева и формула Эйлера ($7$ озёр и $10$ каналов)</h1>
 
       <!-- CARD 1: Четыре коня на доске 3x3 (развёртка звезды в кольцо C8) -->
       <article class="sandbox-card">
@@ -739,10 +788,10 @@
         </div>
       </article>
 
-      <!-- CARD 2: Деревья и пошаговое отрезание висячих листьев V - E = 1 -->
+      <!-- CARD 2: Задача 15 — Выделение остовного дерева из связного графа (Удаление рёбер циклов) -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">Алгоритм индукции в деревьях: $E = V - 1$ и висячие листья</div>
+          <div class="card-heading">Выделение остовного дерева из связного графа: разрушение циклов без потери связности</div>
           <div class="stepper-ctrl">
             <button class="step-arrow" id="stTreePrev" onclick="stepTreeAlgo(-1)">‹</button>
             <span class="step-counter" id="stTreeLabel">Шаг 1 из 3</span>
@@ -751,76 +800,78 @@
         </div>
         <div class="card-grid">
           <div class="card-text-col">
+            <p>
+              <b>Задача:</b> докажите, что из любого связного графа можно выделить дерево, содержащее все его вершины (такое дерево называют <i>остовным деревом</i>).
+            </p>
             <ul class="algo-list" id="listTreeAlgo">
               <li class="algo-item active" onclick="setTreeAlgoStep(0)">
                 <span class="algo-num">1.</span>
-                <span>В любом дереве с $V \ge 2$ вершинами найдём крайний тупик — <b>висячий лист</b> (зелёную вершину степени $1$), выйдя из корня по самому длинному простому пути без разворотов.</span>
+                <span><b>Ищем цикл в связном графе:</b> если в связном графе ($V = 7$ вершин, $E = 10$ рёбер) нет циклов, он уже является деревом. Пока циклы есть, выберем любой цикл и отметим входящие в циклы рёбра <b>зелёным цветом</b>.</span>
               </li>
               <li class="algo-item" onclick="setTreeAlgoStep(1)">
                 <span class="algo-num">2.</span>
-                <span>Отрежем висячий лист вместе с единственным ведущим в него ребром: число вершин $V$ и число рёбер $E$ уменьшатся ровно на $1$, а граф останется связным деревом!</span>
+                <span><b>Удаление ребра цикла не нарушает связность:</b> удалим любое ребро цикла. Если какой-то маршрут между вершинами раньше проходил по удалённому ребру, то теперь между его концами можно пройти <b>в обход по оставшейся дуге этого же цикла</b>!</span>
               </li>
               <li class="algo-item" onclick="setTreeAlgoStep(2)">
                 <span class="algo-num">3.</span>
-                <span>Повторяя отрезание листьев, спустимся к одной вершине и $0$ рёбрам ($V - E = 1 - 0 = 1$). Значит, и в исходном дереве $V - E = 1 \implies E = V - 1$.</span>
+                <span><b>Процесс конечен — получаем остовное дерево ($E = V - 1$):</b> продолжая по одному удалять рёбра циклов (в нашем графе мы убираем $10 - 6 = 4$ ребра), мы уничтожим все циклы, сохранив связность всех $V = 7$ вершин. Полученный граф из $6$ синих рёбер — искомое <b>остовное дерево</b>!</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="treeStatFormula">Сейчас в дереве: V = 8 вершин, E = 7 рёбер (V − E = 1)</span>
+              <span id="treeStatFormula">Вершин: V = 7 | Рёбер: E = 10 | Независимых циклов: E − V + 1 = 4 (кликните по зелёному ребру!)</span>
             </div>
             <div class="muted-note" id="treeHintNote">
-              Кликайте прямо по зелёным висячим листьям на чертеже справа, чтобы срезать их вручную (а если кликнуть на синюю развилку — увидите, почему её нельзя удалять!).
+              Кликайте прямо по зелёным рёбрам циклов на чертеже справа, чтобы удалять их и видеть обходной путь по оставшейся части цикла!
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvGraphTrees"></canvas>
             </div>
-            <div class="stage-caption">Нажмите на любую зелёную вершину-лист, чтобы отрезать её вместе с ребром</div>
+            <div class="stage-caption">Кликните по любому зелёному ребру цикла, чтобы удалить его (или по синему мосту — увидите, почему его нельзя удалять!)</div>
           </div>
         </div>
       </article>
 
-      <!-- CARD 3: Домики и Колодцы K3,3 и формула Эйлера -->
+      <!-- CARD 3: Задача 3 — В городе Озёрске 7 озёр и 10 каналов (Формула Эйлера V - E + F = 2) -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">Три домика и три колодца ($K_{3,3}$) и теорема Жордана</div>
+          <div class="card-heading">В городе Озёрске $7$ озёр и $10$ каналов: сколько островов (граней) по формуле Эйлера?</div>
           <div class="card-pills" id="k33Presets">
-            <button class="shk-pill" onclick="setK33Mode(6)">1. Контур $C_6$ (6 рёбер)</button>
-            <button class="shk-pill" onclick="setK33Mode(8)">2. Внутри + Снаружи (8 рёбер)</button>
-            <button class="shk-pill active" onclick="setK33Mode(9, 0)">3. 9-е ребро: Через центр</button>
-            <button class="shk-pill" onclick="setK33Mode(9, 1)">9-е: Сверху</button>
-            <button class="shk-pill" onclick="setK33Mode(9, 2)">9-е: Снизу</button>
+            <button class="shk-pill active" onclick="setK33Mode(10)">10 каналов ($F = 5$ ✓)</button>
+            <button class="shk-pill" onclick="setK33Mode(6)">Остов: 6 каналов ($F = 1$)</button>
+            <button class="shk-pill" onclick="setK33Mode(8)">8 каналов ($F = 3$)</button>
+            <button class="shk-pill" onclick="setK33Mode(9)">9 каналов ($F = 4$)</button>
           </div>
         </div>
         <div class="card-grid">
           <div class="card-text-col">
             <p>
-              Можно ли соединить три домика ($Д_1, Д_2, Д_3$) с тремя колодцами ($К_1, К_2, К_3$) девятью непересекающимися тропинками?
+              <b>Задача:</b> в городе Озёрске семь озёр, соединённых десятью каналами так, что от любого озера можно доплыть до любого другого. Сколько островов (областей суши) в Озёрске?
             </p>
             <ul class="algo-list" id="listK33Steps">
               <li class="algo-item" onclick="setK33Mode(6)">
                 <span class="algo-num">1.</span>
-                <span><b>Замкнутый цикл $C_6$ (6 тропинок):</b> чередующийся цикл $Д_1 - К_1 - Д_2 - К_2 - Д_3 - К_3 - Д_1$ образует правильный шестиугольник и по теореме Жордана делит плоскость на <b>внутреннюю</b> и <b>внешнюю</b> области ($0$ пересечений).</span>
+                <span><b>Перевод на язык плоских графов:</b> примем <b>озёра за вершины ($V = 7$)</b>, а соединяющие их непересекающиеся <b>каналы — за рёбра ($E = 10$)</b> связного плоского графа. Пока каналов всего $E = V - 1 = 6$ (остовное дерево без циклов), суша не разделена: грань всего одна ($F = 1$).</span>
               </li>
               <li class="algo-item" onclick="setK33Mode(8)">
                 <span class="algo-num">2.</span>
-                <span><b>7-я и 8-я тропинки без пересечений:</b> проведём $7$-ю тропинку <b>$Д_1 - К_2$</b> прямо внутри шестиугольника (она делит внутренность пополам, запирая $Д_3$ слева, а $К_1$ справа). Поэтому $8$-ю тропинку <b>$К_3 - Д_2$</b> пустим плавной дугой <b>снаружи</b> контура ($8$ тропинок, $0$ пересечений!).</span>
+                <span><b>Каждый новый канал сверх дерева добавляет $+1$ грань:</b> когда мы прорываем очередной канал, замыкающий цикл ($7$-й, $8$-й, $9$-й, $10$-й), он разрезает одну из областей суши на две части ($\Delta E = +1 \implies \Delta F = +1$), поэтому разность $V - E + F = 2$ остаётся инвариантом!</span>
               </li>
-              <li class="algo-item active" onclick="setK33Mode(9, 0)">
+              <li class="algo-item active" onclick="setK33Mode(10)">
                 <span class="algo-num">3.</span>
-                <span><b>Капкан для 9-й тропинки ($Д_3 - К_1$):</b> внутри шестиугольника $Д_3$ и $К_1$ разделены хордой $Д_1 - К_2$, а снаружи колодец $К_1$ заперт в кармане под внешней дугой $К_3 - Д_2$! Попробуйте потянуть точку <b>$P$</b> мышкой куда угодно — $9$-я тропинка неизбежно пересечёт преграду!</span>
+                <span><b>Формула Эйлера $V - E + F = 2$ (Ответ: $5$):</b> подставляя $V = 7$ озёр и $E = 10$ каналов в теорему Эйлера для связного плоского графа, получаем: <b>$7 - 10 + F = 2 \implies F = 5$</b>! (На карте это $4$ внутренних острова $F_1..F_4$ и внешняя область $F_5$).</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="k33FormulaBox">9-я тропинка Д₃–К₁ идёт внутри шестиугольника и пересекает внутреннюю хорду Д₁–К₂! ✗</span>
+              <span id="k33FormulaBox">Озёр: V = 7 | Каналов: E = 10 ⇒ По формуле Эйлера 7 − 10 + F = 2 ⇒ F = 5 граней (Ответ: 5) ✓</span>
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvGraphK33"></canvas>
             </div>
-            <div class="stage-caption" id="k33Caption">Тяните контрольную точку P девятой тропинки мышкой — проверьте любой обход внутри и снаружи!</div>
+            <div class="stage-caption" id="k33Caption">Кликайте по пунктирным/сплошным каналам №7–№10, чтобы прорывать или закапывать их и следить за числом граней F!</div>
           </div>
         </div>
       </article>
@@ -1428,35 +1479,47 @@
       unfoldT: 0,          // 0 (3D cube) .. 1 (unfolded 90 deg into plane)
       spiderH: 0.5,        // 0.05 .. 0.95 along edge BB1
       rot1: { yaw: -0.38, pitch: 0.32 },
-      traceStep: 0,
-      rot2: { yaw: 0.42, pitch: 0.34 },
+      traceStep: 3,        // Default to Step 4 (full section C1TMPN + 3:2 ratio shown)
+      rot2: { yaw: -0.64, pitch: 0.33 },
       sphereH: 0.0,
       rot3: { yaw: -0.5, pitch: 0.35 },
       tetraExplode: 0.0,
       rot4: { yaw: -0.38, pitch: 0.32 },
+      inscribedRatio: 1.0, // 1.0 = Cube 2x2x2 with V=8, S=24 inscribed in sphere R=sqrt(3)
+      rot5: { yaw: -0.52, pitch: 0.32 },
 
       // --- TOPIC 2: GRAPH THEORY ---
       knightMorph: 0,      // 0 (on 3x3 board) .. 1 (unfolded circle C8)
       knights: ["W", null, "B", null, "B", null, "W", null],
       selKnight: 0,
+      // Card 2: Spanning Tree extraction by breaking cycles (7 vertices, 10 edges -> 6 tree edges)
       treeStep: 0,
-      treeNodes: [
-        { id: 1, x: 0.16, y: 0.52, alive: true, name: "1" },
-        { id: 2, x: 0.36, y: 0.30, alive: true, name: "2" },
-        { id: 3, x: 0.36, y: 0.74, alive: true, name: "3" },
-        { id: 4, x: 0.58, y: 0.42, alive: true, name: "4" },
-        { id: 5, x: 0.56, y: 0.14, alive: true, name: "5" },
-        { id: 6, x: 0.60, y: 0.82, alive: true, name: "6" },
-        { id: 7, x: 0.82, y: 0.25, alive: true, name: "7" },
-        { id: 8, x: 0.82, y: 0.58, alive: true, name: "8" }
+      spanNodes: [
+        { id: 1, x: 0.22, y: 0.24, name: "1" },
+        { id: 2, x: 0.50, y: 0.16, name: "2" },
+        { id: 3, x: 0.78, y: 0.26, name: "3" },
+        { id: 4, x: 0.80, y: 0.72, name: "4" },
+        { id: 5, x: 0.50, y: 0.84, name: "5" },
+        { id: 6, x: 0.20, y: 0.72, name: "6" },
+        { id: 7, x: 0.50, y: 0.50, name: "7" }
       ],
-      treeEdges: [
-        [1,2], [1,3], [2,5], [2,4], [3,6], [4,7], [4,8]
+      spanEdges: [
+        { u: 1, v: 2, alive: true },
+        { u: 2, v: 3, alive: true },
+        { u: 3, v: 4, alive: true },
+        { u: 4, v: 5, alive: true },
+        { u: 5, v: 6, alive: true },
+        { u: 2, v: 7, alive: true },
+        // 4 cycle-forming chords:
+        { u: 6, v: 1, alive: true },
+        { u: 1, v: 7, alive: true },
+        { u: 3, v: 7, alive: true },
+        { u: 4, v: 7, alive: true }
       ],
-      k33Mode: 9,
-      k33RoutePreset: 0,   // 0: through center, 1: around top, 2: around bottom
-      k33WayP: { x: 0.50, y: 0.55 }, // draggable control point P for 9th edge D3 -> K1
-      k33DraggingP: false,
+      spanLastRemoved: null, // { u, v, path: [u, ..., v] }
+      // Card 3: Ozersk 7 Lakes & 10 Canals (Euler's Formula V - E + F = 2 => F = 5)
+      k33Mode: 10,
+      lakeExtraCanals: [true, true, true, true], // 4 extra canals beyond the 6-edge spanning tree
 
       // --- TOPIC 3: ALGEBRA & PARAMETERS ---
       algModA: 3.0,
@@ -1616,7 +1679,7 @@
       animateValue("unfoldT", 1.0, 550, syncUnfoldUI);
     };
 
-    // Card 2: Stereo Trace Stepper
+    // Card 2: Stereo Trace Stepper (Parallelepiped C1TP section & D1N:ND = 3:2)
     window.setStereoTraceStep = function(idx) {
       state.traceStep = Math.max(0, Math.min(3, idx));
       document.getElementById("stTraceLabel").textContent = `Шаг ${state.traceStep + 1} из 4`;
@@ -1625,10 +1688,10 @@
       const items = document.querySelectorAll("#listStereoTrace .algo-item");
       items.forEach((el, i) => el.classList.toggle("active", i === state.traceStep));
       const captions = [
-        "След прямой PQ на плоскости основания: точки E₁ и E₂",
-        "Соединяем след E₁ с точкой R: получаем отрезок сечения KL в правой грани",
-        "Соединяем второй след E₂ с точкой R: получаем рёбра сечения в задней и верхней гранях",
-        "Готово! Шестиугольное сечение PQKRMN полностью построено"
+        "Шаг 1: C₁T ∩ CB = L в грани (BCC₁B₁). Из △CC₁L ∼ △BTL (TB = B₁T = y) ⇒ BL = CB = x",
+        "Шаг 2: Прямая LP в плоскости (ABCD) пересекает BA в точке M и продолжение CD в точке O",
+        "Шаг 3: В грани (CDD₁C₁) прямая OC₁ пересекает DD₁ в точке N ⇒ пятиугольник C₁TMPN",
+        "Шаг 4: AM = z ⇒ MB = 5z, AB = 6z, OD = 4z, OC = 10z ⇒ ND = 4y/5, D₁N = 6y/5 ⇒ D₁N : ND = 3 : 2"
       ];
       document.getElementById("traceFormulaText").textContent = captions[state.traceStep];
     };
@@ -1674,6 +1737,47 @@
       animateValue("tetraExplode", state.tetraExplode > 0.5 ? 0 : 1, 560, syncTetraUI);
     };
 
+    // Card 5: Parallelepiped of volume 8 inscribed in sphere of radius sqrt(3)
+    function getInscribedDims(ratio) {
+      const r = Math.max(0.55, Math.min(1.45, ratio));
+      const a0 = r, b0 = 1 / r, c0 = 1 + 0.35 * (r - 1);
+      const norm = Math.sqrt(12 / (a0 * a0 + b0 * b0 + c0 * c0));
+      const a = a0 * norm, b = b0 * norm, c = c0 * norm;
+      const V = a * b * c;
+      const S = 2 * (a * b + b * c + c * a);
+      return { a, b, c, V, S, isCube: Math.abs(r - 1.0) < 0.015 };
+    }
+
+    function syncInscribedUI() {
+      const d = getInscribedDims(state.inscribedRatio);
+      const rng = document.getElementById("rngInscribedRatio");
+      if (rng) rng.value = Math.round(state.inscribedRatio * 100);
+      const valEl = document.getElementById("valInscribedDims");
+      if (valEl) {
+        valEl.textContent = d.isCube
+          ? "a = b = c = 2.00 (Куб) · V = 8.00 · S = 24.00"
+          : `a=${d.a.toFixed(2)}, b=${d.b.toFixed(2)}, c=${d.c.toFixed(2)} · V = ${d.V.toFixed(2)} < 8`;
+      }
+      const fBox = document.getElementById("inscribedFormulaBox");
+      if (fBox) {
+        fBox.textContent = d.isCube
+          ? "B₁D = 2R = 2√3 ⇒ a² + b² + c² = 12, V = abc = 8 ⇒ куб 2 × 2 × 2 ⇒ Sполн = 6 · 2² = 24 ✓"
+          : `При (a,b,c) ≠ (2,2,2) и a²+b²+c² = 12: объём V = ${d.V.toFixed(2)} < 8 (S = ${d.S.toFixed(2)} < 24)`;
+      }
+    }
+
+    const rngInsc = document.getElementById("rngInscribedRatio");
+    if (rngInsc) {
+      rngInsc.addEventListener("input", function() {
+        state.inscribedRatio = parseFloat(this.value) / 100;
+        syncInscribedUI();
+      });
+    }
+
+    window.setInscribedRatio = function(val) {
+      animateValue("inscribedRatio", val, 420, syncInscribedUI);
+    };
+
     // --- TOPIC 2: GRAPH THEORY CONTROLS ---
     function syncKnightUI() {
       const pct = Math.round(state.knightMorph * 100);
@@ -1703,17 +1807,69 @@
       state.selKnight = 0;
     };
 
-    // Tree Algo Stepper
-    function resetTreeFull() {
-      state.treeNodes.forEach(n => n.alive = true);
+    // Card 2 (Graphs): Spanning Tree by breaking cycles (Problem 15)
+    function findSpanPath(startU, targetV, excludeEdgeIdx = -1) {
+      const adj = new Map();
+      state.spanNodes.forEach(n => adj.set(n.id, []));
+      state.spanEdges.forEach((e, idx) => {
+        if (!e.active || idx === excludeEdgeIdx) return;
+        adj.get(e.u).push({ to: e.v, idx });
+        adj.get(e.v).push({ to: e.u, idx });
+      });
+      const visited = new Set([startU]);
+      const parent = new Map();
+      const queue = [startU];
+      while (queue.length > 0) {
+        const cur = queue.shift();
+        if (cur === targetV) {
+          const pathEdges = [];
+          let node = targetV;
+          while (node !== startU) {
+            const p = parent.get(node);
+            pathEdges.push(p.edgeIdx);
+            node = p.prev;
+          }
+          return pathEdges;
+        }
+        for (const nb of (adj.get(cur) || [])) {
+          if (!visited.has(nb.to)) {
+            visited.add(nb.to);
+            parent.set(nb.to, { prev: cur, edgeIdx: nb.idx });
+            queue.push(nb.to);
+          }
+        }
+      }
+      return null;
     }
 
-    function updateTreeStatBox() {
-      const V = state.treeNodes.filter(n => n.alive).length;
-      const aliveSet = new Set(state.treeNodes.filter(n => n.alive).map(n => n.id));
-      const E = state.treeEdges.filter(([u, v]) => aliveSet.has(u) && aliveSet.has(v)).length;
-      document.getElementById("treeStatFormula").textContent =
-        `Сейчас в дереве: V = ${V} вершин, E = ${E} рёбер (Инвариант V − E = ${V - E})`;
+    function analyzeSpanGraph() {
+      const V = state.spanNodes.length;
+      const activeIndices = [];
+      const inCycle = new Array(state.spanEdges.length).fill(false);
+      state.spanEdges.forEach((e, idx) => {
+        if (!e.active) return;
+        activeIndices.push(idx);
+        const detour = findSpanPath(e.u, e.v, idx);
+        if (detour !== null) inCycle[idx] = true;
+      });
+      const E = activeIndices.length;
+      const cycles = Math.max(0, E - (V - 1));
+      return { V, E, cycles, inCycle };
+    }
+
+    function updateTreeStatBox(customMsg = null) {
+      const el = document.getElementById("treeStatFormula");
+      if (!el) return;
+      if (customMsg) {
+        el.textContent = customMsg;
+        return;
+      }
+      const { V, E, cycles } = analyzeSpanGraph();
+      if (cycles === 0) {
+        el.textContent = `Остовное дерево получено! V = ${V}, E = ${E} = V − 1, циклов: 0 (граф связен ✓)`;
+      } else {
+        el.textContent = `Сейчас в графе: V = ${V}, E = ${E} рёбер, циклов: ${cycles} (можно удалить ещё ${cycles} ${cycles === 1 ? "ребро" : "ребра"})`;
+      }
     }
 
     window.setTreeAlgoStep = function(idx) {
@@ -1724,15 +1880,18 @@
       document.querySelectorAll("#listTreeAlgo .algo-item").forEach((el, i) => {
         el.classList.toggle("active", i === state.treeStep);
       });
-      if (state.treeStep === 0) {
-        resetTreeFull();
-      } else if (state.treeStep === 1) {
-        resetTreeFull();
-        // Prune leaves 7 and 8 to show step 2
-        state.treeNodes.find(n => n.id === 7).alive = false;
-        state.treeNodes.find(n => n.id === 8).alive = false;
+      state.spanEdges.forEach(e => { e.active = true; });
+      state.spanLastRemoved = null;
+      if (state.treeStep === 1) {
+        // Remove 1 cycle edge (1,3) and highlight the detour path 1 -> 2 -> 3
+        state.spanEdges[1].active = false;
+        const detour = findSpanPath(state.spanEdges[1].u, state.spanEdges[1].v, 1) || [];
+        state.spanLastRemoved = { edgeIdx: 1, detourEdges: detour };
       } else if (state.treeStep === 2) {
-        state.treeNodes.forEach(n => n.alive = (n.id === 1));
+        // Remove 4 cycle edges to leave spanning tree of E = 6 edges
+        [1, 3, 6, 8].forEach(i => { state.spanEdges[i].active = false; });
+        const detour = findSpanPath(state.spanEdges[8].u, state.spanEdges[8].v, 8) || [];
+        state.spanLastRemoved = { edgeIdx: 8, detourEdges: detour };
       }
       updateTreeStatBox();
     };
@@ -1741,37 +1900,87 @@
       setTreeAlgoStep(state.treeStep + dir);
     };
 
-    window.setK33Mode = function(mode, routePreset = 0) {
-      state.k33Mode = mode;
-      state.k33RoutePreset = routePreset;
-      if (mode === 9) {
-        if (routePreset === 0) state.k33WayP = { x: 0.50, y: 0.55 };      // Inside hexagon -> crosses D1-K2
-        else if (routePreset === 1) state.k33WayP = { x: 0.32, y: 0.12 }; // Outside top -> crosses outer arc K3-D2
-        else if (routePreset === 2) state.k33WayP = { x: 0.68, y: 0.90 }; // Outside bottom -> crosses outer arc K3-D2
+    window.resetSpanGraphFull = function() {
+      setTreeAlgoStep(0);
+    };
+
+    window.stripCyclesToTree = function() {
+      setTreeAlgoStep(2);
+    };
+
+    function toggleSpanEdgeAt(edgeIdx) {
+      const e = state.spanEdges[edgeIdx];
+      if (!e) return;
+      if (!e.active) {
+        e.active = true;
+        state.spanLastRemoved = null;
+        updateTreeStatBox();
+        return;
       }
+      const detour = findSpanPath(e.u, e.v, edgeIdx);
+      if (detour !== null) {
+        e.active = false;
+        state.spanLastRemoved = { edgeIdx, detourEdges: detour };
+        const { cycles } = analyzeSpanGraph();
+        state.treeStep = cycles === 0 ? 2 : 1;
+        document.getElementById("stTreeLabel").textContent = `Шаг ${state.treeStep + 1} из 3`;
+        document.getElementById("stTreePrev").disabled = (state.treeStep === 0);
+        document.getElementById("stTreeNext").disabled = (state.treeStep === 2);
+        document.querySelectorAll("#listTreeAlgo .algo-item").forEach((el, i) => {
+          el.classList.toggle("active", i === state.treeStep);
+        });
+        updateTreeStatBox(`Удалено ребро (${e.u}–${e.v}) из цикла: связность сохранена по обходному пути! ✓`);
+      } else {
+        updateTreeStatBox(`Ребро (${e.u}–${e.v}) — мост (не входит в цикл)! Его нельзя удалять ✗`);
+      }
+    }
+
+    // Card 3 (Graphs): Ozersk 7 Lakes & 10 Canals (Euler's Formula V - E + F = 2)
+    function syncOzerskUI() {
+      const extraCount = state.lakeExtraCanals.filter(Boolean).length;
+      const E = 6 + extraCount;
+      const V = 7;
+      const F = E - V + 2;
+      const islands = F - 1;
       const btns = document.querySelectorAll("#k33Presets .shk-pill");
-      if (btns.length === 5) {
-        btns[0].classList.toggle("active", mode === 6);
-        btns[1].classList.toggle("active", mode === 8);
-        btns[2].classList.toggle("active", mode === 9 && routePreset === 0);
-        btns[3].classList.toggle("active", mode === 9 && routePreset === 1);
-        btns[4].classList.toggle("active", mode === 9 && routePreset === 2);
+      if (btns.length === 4) {
+        btns[0].classList.toggle("active", E === 10);
+        btns[1].classList.toggle("active", E === 6);
+        btns[2].classList.toggle("active", E === 8);
+        btns[3].classList.toggle("active", E === 9);
       }
       const items = document.querySelectorAll("#listK33Steps .algo-item");
       if (items.length === 3) {
-        items[0].classList.toggle("active", mode === 6);
-        items[1].classList.toggle("active", mode === 8);
-        items[2].classList.toggle("active", mode === 9);
+        items[0].classList.toggle("active", E === 6);
+        items[1].classList.toggle("active", E > 6 && E < 10);
+        items[2].classList.toggle("active", E === 10);
       }
       const box = document.getElementById("k33FormulaBox");
       if (box) {
-        if (mode === 6) box.textContent = "Шаг 1: 6 тропинок образуют правильный шестиугольник C₆ (0 пересечений ✓)";
-        else if (mode === 8) box.textContent = "Шаг 2: 7-я тропинка Д₁–К₂ внутри + 8-я дуга К₃–Д₂ снаружи (8 тропинок, 0 пересечений ✓)";
-        else if (routePreset === 0) box.textContent = "9-я тропинка Д₃–К₁ идёт внутри шестиугольника и пересекает хорду Д₁–К₂! ✗";
-        else if (routePreset === 1) box.textContent = "9-я тропинка Д₃–К₁ идёт в обход сверху и упирается во внешнюю дугу К₃–Д₂! ✗";
-        else box.textContent = "9-я тропинка Д₃–К₁ идёт в обход снизу и снова пересекает внешнюю дугу К₃–Д₂! ✗";
+        if (E === 10) {
+          box.textContent = "Формула Эйлера: В − Р + Г = 2 ⇒ 7 − 10 + Г = 2 ⇒ Г = 5 суш (4 острова + 1 внешняя суша) ✓";
+        } else if (E === 6) {
+          box.textContent = "Остовное дерево: В = 7 озёр, Р = 6 каналов ⇒ Г = 2 − 7 + 6 = 1 (ни одного острова, только внешняя суша)";
+        } else {
+          box.textContent = `Сейчас: В = 7 озёр, Р = ${E} каналов ⇒ Г = 2 − 7 + ${E} = ${F} (${islands} ${islands === 1 ? "остров" : "острова"} + 1 внешняя суша)`;
+        }
       }
+    }
+
+    window.setK33Mode = function(mode) {
+      state.k33Mode = mode;
+      if (mode === 6) state.lakeExtraCanals = [false, false, false, false];
+      else if (mode === 8) state.lakeExtraCanals = [true, true, false, false];
+      else if (mode === 9) state.lakeExtraCanals = [true, true, true, false];
+      else state.lakeExtraCanals = [true, true, true, true];
+      syncOzerskUI();
     };
+
+    function toggleLakeCanal(extraIdx) {
+      if (extraIdx < 0 || extraIdx >= 4) return;
+      state.lakeExtraCanals[extraIdx] = !state.lakeExtraCanals[extraIdx];
+      syncOzerskUI();
+    }
 
     // --- TOPIC 3: ALGEBRA CONTROLS ---
     function syncAlgModUI() {
@@ -2523,7 +2732,7 @@
     // =========================================================================
     const canvases = {};
     const CANVAS_IDS = [
-      "cvStereoUnfold", "cvStereoTrace", "cvStereoSphere", "cvStereoTetra",
+      "cvStereoUnfold", "cvStereoTrace", "cvStereoSphere", "cvStereoTetra", "cvStereoInscribed",
       "cvGraphKnights", "cvGraphTrees", "cvGraphK33",
       "cvAlgMod", "cvAlgPencil", "cvAlgRegion",
       "cvLogicRing", "cvLogicApples", "cvLogicGame",
@@ -2743,7 +2952,7 @@
       ctx.fillText("M", pM.x + 10, pM.y + 4);
     }
 
-    // --- 5.2: STEREO CARD 2 (Method of Traces on 3D Cube — Large & Crisp Orthographic Cube) ---
+    // --- 5.2: STEREO CARD 2 (Parallelepiped Section by Plane C1TP, AP:PD = 1:4, and D1N:ND = 3:2) ---
     function drawStereoTrace() {
       const c = canvases.cvStereoTrace;
       if (!c) return;
@@ -2751,11 +2960,17 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      // Large scale so the orthographic cube fills the stage cleanly while keeping traces E1, E2 inside bounds
-      const sc = Math.min(w, h) * 0.41;
-      const p = pt => project3D(pt, state.rot2, w * 1.04, h * 0.90, sc);
+      // Scale and center offset so cube [-0.5,0.5]^3 + exterior trace points L(0.5,-1.5,-0.5) and O(-7/6,0.5,-0.5) fit cleanly
+      const sc = Math.min(w, h) * 0.275;
+      const p = pt => project3D(
+        { x: pt.x + 0.16, y: pt.y + 0.26, z: pt.z - 0.04 },
+        state.rot2,
+        w,
+        h,
+        sc
+      );
 
-      // Exact unit cube [-0.5, 0.5]^3
+      // Exact unit cube [-0.5, 0.5]^3 representing parallelepiped ABCDA1B1C1D1
       const V = {
         A:  { x: -0.5, y: -0.5, z: -0.5 },
         B:  { x:  0.5, y: -0.5, z: -0.5 },
@@ -2767,16 +2982,14 @@
         D1: { x: -0.5, y:  0.5, z:  0.5 }
       };
 
-      // Midpoints for classic regular hexagonal cross-section PQKRMN and traces E1, E2
+      // Section & trace points for plane C1TP (T = midpoint of BB1, AP:PD = 1:4)
       const S = {
-        P:  { x:  0.0, y: -0.5, z: -0.5 },
-        Q:  { x: -0.5, y:  0.0, z: -0.5 },
-        K:  { x:  0.5, y: -0.5, z:  0.0 },
-        R:  { x:  0.5, y:  0.0, z:  0.5 },
-        M:  { x:  0.0, y:  0.5, z:  0.5 },
-        N:  { x: -0.5, y:  0.5, z:  0.0 },
-        E1: { x:  0.5, y: -1.0, z: -0.5 }, // Intersection of line PQ with line BC (x=0.5)
-        E2: { x: -1.0, y:  0.5, z: -0.5 }  // Intersection of line PQ with line DC (y=0.5)
+        T: { x:  0.5,      y: -0.5, z:  0.0 }, // Midpoint of BB1 (B1T = TB = y)
+        P: { x: -0.5,      y: -0.3, z: -0.5 }, // On AD with AP : PD = 1 : 4 (AP = x/5, PD = 4x/5)
+        L: { x:  0.5,      y: -1.5, z: -0.5 }, // C1T ∩ CB (BL = CB = x)
+        M: { x: -1 / 3,    y: -0.5, z: -0.5 }, // LP ∩ AB (AM = z, MB = 5z)
+        O: { x: -7 / 6,    y:  0.5, z: -0.5 }, // LP ∩ CD (OD = 4z, OC = 10z)
+        N: { x: -0.5,      y:  0.5, z: -0.1 }  // OC1 ∩ DD1 (ND = 4y/5, D1N = 6y/5 => D1N:ND = 3:2)
       };
 
       const pv = {};
@@ -2784,99 +2997,145 @@
       const ps = {};
       Object.keys(S).forEach(k => ps[k] = p(S[k]));
 
-      drawOrthoCubeEdges(ctx, pv, state.rot2, col.ink, col.muted, 2.0, 1.5);
+      drawOrthoCubeEdges(ctx, pv, state.rot2, col.ink, col.muted, 1.9, 1.4);
 
-      // Step >= 0: Extended edges CB -> E1 and CD -> E2 and trace line E2 - Q - P - E1
+      // Step >= 0: Extension of CB to L and line C1 -> T -> L in face (BCC1B1)
       ctx.setLineDash([5, 4]);
       ctx.strokeStyle = col.blue;
-      ctx.lineWidth = 1.7;
+      ctx.lineWidth = 1.65;
       ctx.beginPath();
-      ctx.moveTo(pv.B.x, pv.B.y); ctx.lineTo(ps.E1.x, ps.E1.y);
-      ctx.moveTo(pv.D.x, pv.D.y); ctx.lineTo(ps.E2.x, ps.E2.y);
-      ctx.moveTo(ps.E2.x, ps.E2.y); ctx.lineTo(ps.E1.x, ps.E1.y);
+      ctx.moveTo(pv.B.x, pv.B.y); ctx.lineTo(ps.L.x, ps.L.y);
+      ctx.moveTo(ps.T.x, ps.T.y); ctx.lineTo(ps.L.x, ps.L.y);
       ctx.stroke();
 
-      // Step >= 1: Line E1 -> K -> R
+      // Step >= 1: Extension of CD to O and trace line L -> M -> P -> O in base plane (ABCD)
       if (state.traceStep >= 1) {
         ctx.beginPath();
-        ctx.moveTo(ps.E1.x, ps.E1.y); ctx.lineTo(ps.R.x, ps.R.y);
+        ctx.moveTo(pv.D.x, pv.D.y); ctx.lineTo(ps.O.x, ps.O.y);
+        ctx.moveTo(ps.L.x, ps.L.y); ctx.lineTo(ps.O.x, ps.O.y);
         ctx.stroke();
       }
 
-      // Step >= 2: Line E2 -> N -> M
+      // Step >= 2: Line O -> N -> C1 in back face (CDD1C1)
       if (state.traceStep >= 2) {
         ctx.beginPath();
-        ctx.moveTo(ps.E2.x, ps.E2.y); ctx.lineTo(ps.M.x, ps.M.y);
+        ctx.moveTo(ps.O.x, ps.O.y); ctx.lineTo(ps.N.x, ps.N.y);
         ctx.stroke();
       }
       ctx.setLineDash([]);
 
       // Solid section segments per step
       ctx.strokeStyle = col.blue;
-      ctx.lineWidth = 3.2;
+      ctx.lineWidth = 3.0;
       ctx.beginPath();
-      ctx.moveTo(ps.Q.x, ps.Q.y); ctx.lineTo(ps.P.x, ps.P.y);
+      ctx.moveTo(pv.C1.x, pv.C1.y);
+      ctx.lineTo(ps.T.x, ps.T.y);
       if (state.traceStep >= 1) {
-        ctx.lineTo(ps.K.x, ps.K.y);
-        ctx.lineTo(ps.R.x, ps.R.y);
+        ctx.lineTo(ps.M.x, ps.M.y);
+        ctx.lineTo(ps.P.x, ps.P.y);
       }
       if (state.traceStep >= 2) {
-        ctx.moveTo(ps.Q.x, ps.Q.y);
         ctx.lineTo(ps.N.x, ps.N.y);
-        ctx.lineTo(ps.M.x, ps.M.y);
+        ctx.lineTo(pv.C1.x, pv.C1.y);
       }
       ctx.stroke();
 
-      // Step 3: Full shaded hexagonal section!
-      if (state.traceStep >= 3) {
+      // Step >= 2: Shaded pentagonal section C1 - T - M - P - N
+      if (state.traceStep >= 2) {
+        const poly = [pv.C1, ps.T, ps.M, ps.P, ps.N];
         ctx.beginPath();
-        ["P", "K", "R", "M", "N", "Q"].forEach((k, idx) => {
-          if (idx === 0) ctx.moveTo(ps[k].x, ps[k].y);
-          else ctx.lineTo(ps[k].x, ps[k].y);
+        poly.forEach((pt, idx) => {
+          if (idx === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
         });
         ctx.closePath();
-        ctx.fillStyle = col.blueFill;
+        ctx.fillStyle = "rgba(0, 136, 255, 0.19)";
         ctx.fill();
         ctx.strokeStyle = col.blue;
-        ctx.lineWidth = 3.2;
+        ctx.lineWidth = 3.0;
         ctx.stroke();
       }
 
-      // Subtle cube vertex labels
-      ctx.font = "600 12px Inter, sans-serif";
+      // Highlight segment D1N (green, 3 parts) and ND (amber, 2 parts) on Step 3
+      if (state.traceStep === 3) {
+        ctx.beginPath();
+        ctx.moveTo(pv.D1.x, pv.D1.y); ctx.lineTo(ps.N.x, ps.N.y);
+        ctx.strokeStyle = col.green;
+        ctx.lineWidth = 4.2;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(ps.N.x, ps.N.y); ctx.lineTo(pv.D.x, pv.D.y);
+        ctx.strokeStyle = col.amber;
+        ctx.lineWidth = 4.2;
+        ctx.stroke();
+
+        // Ratio labels from the screenshot (6y/5, 4y/5, y, x, 4z, 5z)
+        ctx.font = "700 11px Inter, sans-serif";
+        ctx.fillStyle = col.green;
+        ctx.fillText("6y/5", (pv.D1.x + ps.N.x) * 0.5 - 28, (pv.D1.y + ps.N.y) * 0.5 + 3);
+        ctx.fillStyle = col.amber;
+        ctx.fillText("4y/5", (ps.N.x + pv.D.x) * 0.5 - 28, (ps.N.y + pv.D.y) * 0.5 + 4);
+        ctx.fillStyle = col.blue;
+        ctx.fillText("x", (pv.B.x + ps.L.x) * 0.5 + 6, (pv.B.y + ps.L.y) * 0.5 + 4);
+        ctx.fillText("4z", (pv.D.x + ps.O.x) * 0.5 - 6, (pv.D.y + ps.O.y) * 0.5 - 6);
+      }
+
+      // Cube vertex labels
+      ctx.font = "600 11.5px Inter, sans-serif";
       ctx.fillStyle = col.muted;
-      ctx.fillText("A", pv.A.x - 5, pv.A.y + 16);
-      ctx.fillText("B", pv.B.x + 7, pv.B.y - 4);
+      ctx.fillText("A", pv.A.x - 14, pv.A.y + 13);
+      ctx.fillText("B", pv.B.x + 7, pv.B.y + 3);
       ctx.fillText("C", pv.C.x + 6, pv.C.y - 4);
-      ctx.fillText("D", pv.D.x - 15, pv.D.y - 4);
-      ctx.fillText("A₁", pv.A1.x - 18, pv.A1.y + 4);
-      ctx.fillText("B₁", pv.B1.x + 8, pv.B1.y + 4);
-      ctx.fillText("C₁", pv.C1.x - 6, pv.C1.y - 10);
-      ctx.fillText("D₁", pv.D1.x - 20, pv.D1.y - 4);
+      ctx.fillText("D", pv.D.x - 13, pv.D.y - 5);
+      ctx.fillText("A₁", pv.A1.x - 17, pv.A1.y - 4);
+      ctx.fillText("B₁", pv.B1.x + 7, pv.B1.y - 4);
+      ctx.fillText("D₁", pv.D1.x - 18, pv.D1.y - 5);
 
-      // Section & trace points
-      ["P", "Q", "R"].forEach(k => drawDot(ctx, ps[k].x, ps[k].y, 6.5, col.blue));
-      drawDot(ctx, ps.E1.x, ps.E1.y, 5.5, col.ink);
-      drawDot(ctx, ps.E2.x, ps.E2.y, 5.5, col.ink);
-      if (state.traceStep >= 1) drawDot(ctx, ps.K.x, ps.K.y, 6, col.blue);
-      if (state.traceStep >= 2) {
-        drawDot(ctx, ps.M.x, ps.M.y, 6, col.blue);
-        drawDot(ctx, ps.N.x, ps.N.y, 6, col.blue);
-      }
+      // Given points C1, T, P & constructed points L, M, O, N
+      drawDot(ctx, pv.C1.x, pv.C1.y, 6.2, col.blue);
+      drawDot(ctx, ps.T.x, ps.T.y, 6.2, col.blue);
+      drawDot(ctx, ps.P.x, ps.P.y, 6.2, col.blue);
+      drawDot(ctx, ps.L.x, ps.L.y, 5.2, col.ink);
 
-      ctx.font = "700 13px Inter, sans-serif";
+      ctx.font = "700 12.5px Inter, sans-serif";
       ctx.fillStyle = col.blue;
-      ctx.fillText("P", ps.P.x + 2, ps.P.y + 19);
-      ctx.fillText("Q", ps.Q.x - 14, ps.Q.y + 18);
-      ctx.fillText("R", ps.R.x + 9, ps.R.y - 6);
-      if (state.traceStep >= 1) ctx.fillText("K", ps.K.x + 9, ps.K.y + 4);
-      if (state.traceStep >= 2) {
-        ctx.fillText("M", ps.M.x - 6, ps.M.y - 10);
-        ctx.fillText("N", ps.N.x - 18, ps.N.y + 3);
-      }
+      ctx.fillText("C₁", pv.C1.x + 7, pv.C1.y - 6);
+      ctx.fillText("T", ps.T.x + 8, ps.T.y + 4);
+      ctx.fillText("P", ps.P.x - 15, ps.P.y + 5);
       ctx.fillStyle = col.ink;
-      ctx.fillText("E₁", ps.E1.x + 8, ps.E1.y + 5);
-      ctx.fillText("E₂", ps.E2.x - 22, ps.E2.y + 5);
+      ctx.fillText("L", ps.L.x + 8, ps.L.y + 5);
+
+      if (state.traceStep >= 1) {
+        drawDot(ctx, ps.M.x, ps.M.y, 5.8, col.blue);
+        drawDot(ctx, ps.O.x, ps.O.y, 5.2, col.ink);
+        ctx.fillStyle = col.blue;
+        ctx.fillText("M", ps.M.x - 4, ps.M.y + 16);
+        ctx.fillStyle = col.ink;
+        ctx.fillText("O", ps.O.x - 15, ps.O.y + 4);
+      }
+      if (state.traceStep >= 2) {
+        drawDot(ctx, ps.N.x, ps.N.y, 6.2, state.traceStep === 3 ? col.green : col.blue);
+        ctx.fillStyle = state.traceStep === 3 ? col.green : col.blue;
+        ctx.fillText("N", ps.N.x + 7, ps.N.y + 4);
+      }
+
+      const stepBadges = [
+        "Шаг 1: C₁T ∩ CB = L (BL = CB = x)",
+        "Шаг 2: LP ∩ AB = M, LP ∩ CD = O",
+        "Шаг 3: OC₁ ∩ DD₁ = N ⇒ сечение C₁TMPN ✓",
+        "Пункт б: ND = 4y/5, D₁N = 6y/5 ⇒ D₁N : ND = 3 : 2 ✓"
+      ];
+      drawPillBadge(
+        ctx,
+        stepBadges[state.traceStep],
+        w * 0.5,
+        19,
+        state.traceStep === 3 ? col.green : col.blue,
+        state.traceStep === 3 ? "rgba(236,253,245,0.95)" : "rgba(239,246,255,0.95)",
+        state.traceStep === 3 ? "rgba(16,185,129,0.35)" : "rgba(0,136,255,0.35)",
+        "center"
+      );
     }
 
     // --- 5.3: STEREO CARD 3 (Sphere Section) ---
@@ -3079,6 +3338,128 @@
       );
     }
 
+    // --- 5.3c: STEREO CARD 5 (Parallelepiped of Volume 8 Inscribed in Sphere of Radius sqrt(3)) ---
+    function drawStereoInscribed() {
+      const c = canvases.cvStereoInscribed;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      const d = getInscribedDims(state.inscribedRatio);
+      const R3D = Math.sqrt(3); // Sphere radius R = sqrt(3)
+      const sc = Math.min(w, h) * 0.21;
+      const cx = w * 0.5, cy = h * 0.54;
+      const Rpx = R3D * sc;
+
+      // 1. Outer sphere contour (radius R = sqrt(3)) + equator ellipse
+      ctx.beginPath();
+      ctx.arc(cx, cy, Rpx, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(0, 136, 255, 0.05)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(0, 136, 255, 0.55)";
+      ctx.lineWidth = 2.0;
+      ctx.stroke();
+
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, Rpx, Rpx * 0.27, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(100, 116, 139, 0.35)";
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 2. Inscribed rectangular parallelepiped of dimensions (a, b, c) with a^2 + b^2 + c^2 = 12
+      const hx = d.a * 0.5, hy = d.b * 0.5, hz = d.c * 0.5;
+      const V = {
+        A:  { x: -hx, y: -hy, z: -hz },
+        B:  { x:  hx, y: -hy, z: -hz },
+        C:  { x:  hx, y:  hy, z: -hz },
+        D:  { x: -hx, y:  hy, z: -hz },
+        A1: { x: -hx, y: -hy, z:  hz },
+        B1: { x:  hx, y: -hy, z:  hz },
+        C1: { x:  hx, y:  hy, z:  hz },
+        D1: { x: -hx, y:  hy, z:  hz }
+      };
+
+      const p = pt => {
+        const pr = project3D(pt, state.rot5, w, h, sc);
+        return { x: pr.x, y: pr.y + (cy - h * 0.52), depth: pr.depth };
+      };
+
+      const pv = {};
+      Object.keys(V).forEach(k => pv[k] = p(V[k]));
+      const pO = p({ x: 0, y: 0, z: 0 });
+
+      // Shaded right triangle B1 - D1 - D showing B1D^2 = a^2 + b^2 + c^2 = (2R)^2 = 12
+      ctx.beginPath();
+      ctx.moveTo(pv.B1.x, pv.B1.y);
+      ctx.lineTo(pv.D1.x, pv.D1.y);
+      ctx.lineTo(pv.D.x, pv.D.y);
+      ctx.closePath();
+      ctx.fillStyle = d.isCube ? "rgba(16, 185, 129, 0.14)" : "rgba(245, 158, 11, 0.14)";
+      ctx.fill();
+
+      // Parallelepiped edges
+      drawOrthoCubeEdges(ctx, pv, state.rot5, col.ink, col.muted, 2.0, 1.4);
+
+      // Main space diagonal B1 - O - D (length 2R = 2*sqrt(3))
+      ctx.beginPath();
+      ctx.moveTo(pv.B1.x, pv.B1.y);
+      ctx.lineTo(pv.D.x, pv.D.y);
+      ctx.strokeStyle = d.isCube ? col.green : col.amber;
+      ctx.lineWidth = 3.0;
+      ctx.stroke();
+
+      // Face diagonal B1 - D1
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(pv.B1.x, pv.B1.y);
+      ctx.lineTo(pv.D1.x, pv.D1.y);
+      ctx.strokeStyle = col.blue;
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Vertices on sphere + center O
+      Object.keys(pv).forEach(k => {
+        const isDiag = (k === "B1" || k === "D");
+        drawDot(ctx, pv[k].x, pv[k].y, isDiag ? 5.8 : 4.2, isDiag ? (d.isCube ? col.green : col.amber) : col.blue);
+      });
+      drawDot(ctx, pO.x, pO.y, 5.2, col.ink);
+
+      // Labels
+      ctx.font = "600 11.5px Inter, sans-serif";
+      ctx.fillStyle = col.muted;
+      ctx.fillText("A", pv.A.x - 14, pv.A.y + 12);
+      ctx.fillText("B", pv.B.x + 7, pv.B.y + 11);
+      ctx.fillText("C", pv.C.x + 7, pv.C.y - 4);
+      ctx.fillText("A₁", pv.A1.x - 17, pv.A1.y - 4);
+      ctx.fillText("C₁", pv.C1.x + 7, pv.C1.y - 5);
+      ctx.fillText("D₁", pv.D1.x - 18, pv.D1.y - 5);
+
+      ctx.font = "700 12.5px Inter, sans-serif";
+      ctx.fillStyle = d.isCube ? col.green : col.amber;
+      ctx.fillText("B₁", pv.B1.x + 8, pv.B1.y - 4);
+      ctx.fillText("D", pv.D.x - 15, pv.D.y - 4);
+      ctx.fillText("2R = 2√3", pO.x + 8, pO.y - 7);
+      ctx.fillStyle = col.ink;
+      ctx.fillText("O", pO.x - 15, pO.y + 4);
+
+      drawPillBadge(
+        ctx,
+        d.isCube
+          ? "Куб 2×2×2 в сфере R=√3: V = 8, Sполн = 24 ✓"
+          : `Диагональ 2√3: V = ${d.V.toFixed(2)} < 8 (S = ${d.S.toFixed(1)})`,
+        w * 0.5,
+        19,
+        d.isCube ? col.green : col.amber,
+        d.isCube ? "rgba(236,253,245,0.95)" : "rgba(254,243,199,0.95)",
+        d.isCube ? "rgba(16,185,129,0.35)" : "rgba(245,158,11,0.35)",
+        "center"
+      );
+    }
+
     // --- 5.4: GRAPH CARD 1 (Knights on 3x3 -> Circle C8) ---
     const KNIGHT_CYCLE = [
       { code: "a1", r: 2, c: 0 },
@@ -3184,17 +3565,7 @@
       ctx.textBaseline = "alphabetic";
     }
 
-    // --- 5.5: GRAPH CARD 2 (Tree Leaf Pruning) ---
-    function getTreeDegMap() {
-      const alive = new Set(state.treeNodes.filter(n => n.alive).map(n => n.id));
-      const deg = {};
-      alive.forEach(id => deg[id] = 0);
-      state.treeEdges.forEach(([u, v]) => {
-        if (alive.has(u) && alive.has(v)) { deg[u]++; deg[v]++; }
-      });
-      return deg;
-    }
-
+    // --- 5.5: GRAPH CARD 2 (Spanning Tree by Breaking Cycles Without Losing Connectivity — Problem 15) ---
     function drawGraphTrees() {
       const c = canvases.cvGraphTrees;
       if (!c) return;
@@ -3202,58 +3573,130 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      const deg = getTreeDegMap();
+      const { V, E, cycles, inCycle } = analyzeSpanGraph();
       const byId = {};
-      state.treeNodes.forEach(n => byId[n.id] = n);
+      state.spanNodes.forEach(n => { byId[n.id] = n; });
+      const detourSet = new Set(state.spanLastRemoved ? state.spanLastRemoved.detourEdges : []);
 
-      // Edges
-      state.treeEdges.forEach(([u, v]) => {
-        const nu = byId[u], nv = byId[v];
-        if (!nu.alive || !nv.alive) return;
-        const isLeafEdge = deg[u] === 1 || deg[v] === 1;
+      // 1. Draw removed edges (dashed grey/red with X marker on the most recently removed cycle edge)
+      state.spanEdges.forEach((e, idx) => {
+        if (e.active) return;
+        const nu = byId[e.u], nv = byId[e.v];
+        const x1 = nu.x * w, y1 = nu.y * h;
+        const x2 = nv.x * w, y2 = nv.y * h;
+        const isLast = state.spanLastRemoved && state.spanLastRemoved.edgeIdx === idx;
+        ctx.save();
+        ctx.setLineDash([5, 4]);
         ctx.beginPath();
-        ctx.moveTo(nu.x * w, nu.y * h);
-        ctx.lineTo(nv.x * w, nv.y * h);
-        ctx.strokeStyle = isLeafEdge ? col.green : col.ink;
-        ctx.lineWidth = isLeafEdge ? 2.8 : 2.2;
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = isLast ? col.red : "rgba(100,116,139,0.35)";
+        ctx.lineWidth = isLast ? 2.2 : 1.5;
+        ctx.stroke();
+        ctx.restore();
+
+        if (isLast) {
+          const mx = (x1 + x2) * 0.5, my = (y1 + y2) * 0.5;
+          drawDot(ctx, mx, my, 8.5, col.red, "#FFFFFF", 2);
+          ctx.strokeStyle = "#FFFFFF";
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.moveTo(mx - 3, my - 3); ctx.lineTo(mx + 3, my + 3);
+          ctx.moveTo(mx + 3, my - 3); ctx.lineTo(mx - 3, my + 3);
+          ctx.stroke();
+        }
+      });
+
+      // 2. Draw active edges (green = in cycle & removable, amber = detour path for last removed edge, blue = bridge/tree edge)
+      state.spanEdges.forEach((e, idx) => {
+        if (!e.active) return;
+        const nu = byId[e.u], nv = byId[e.v];
+        const x1 = nu.x * w, y1 = nu.y * h;
+        const x2 = nv.x * w, y2 = nv.y * h;
+        const isDetour = detourSet.has(idx);
+        const cyc = inCycle[idx];
+
+        if (isDetour) {
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.strokeStyle = "rgba(245, 158, 11, 0.25)";
+          ctx.lineWidth = 8.5;
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = isDetour ? col.amber : (cyc ? col.green : col.blue);
+        ctx.lineWidth = isDetour ? 3.4 : (cyc ? 3.0 : 2.5);
         ctx.stroke();
       });
 
-      // Nodes
-      state.treeNodes.forEach(n => {
-        if (!n.alive) return;
-        const d = deg[n.id] || 0;
-        const isLeaf = d === 1;
+      // 3. Draw vertices 1..7
+      state.spanNodes.forEach(n => {
         const x = n.x * w, y = n.y * h;
         ctx.beginPath();
-        ctx.arc(x, y, 19, 0, Math.PI * 2);
-        ctx.fillStyle = isLeaf ? col.green : col.blue;
+        ctx.arc(x, y, 17.5, 0, Math.PI * 2);
+        ctx.fillStyle = cycles === 0 ? col.blue : col.ink;
         ctx.fill();
         ctx.strokeStyle = "#FFFFFF";
         ctx.lineWidth = 2.2;
         ctx.stroke();
 
-        ctx.font = "700 13px Inter, sans-serif";
+        ctx.font = "700 12.5px Inter, sans-serif";
         ctx.fillStyle = "#FFFFFF";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(n.name, x, y);
       });
+      ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
+
+      const badgeText = cycles === 0
+        ? `Остовное дерево: V = ${V}, E = ${E}, циклов: 0 ✓`
+        : `Связно! V = ${V}, E = ${E}, циклов: ${cycles} (кликни зелёное ребро)`;
+      drawPillBadge(
+        ctx,
+        badgeText,
+        w * 0.5,
+        19,
+        cycles === 0 ? col.green : col.blue,
+        cycles === 0 ? "rgba(236,253,245,0.95)" : "rgba(239,246,255,0.95)",
+        cycles === 0 ? "rgba(16,185,129,0.35)" : "rgba(0,136,255,0.35)",
+        "center"
+      );
     }
 
-    // --- 5.6: GRAPH CARD 3 (K3,3 Houses & Wells) ---
-    function segCross(A, B, C, D) {
-      const ccw = (p1, p2, p3) => (p3.y - p1.y) * (p2.x - p1.x) > (p2.y - p1.y) * (p3.x - p1.x);
-      if (ccw(A, C, D) !== ccw(B, C, D) && ccw(A, B, C) !== ccw(A, B, D)) {
-        const a1 = B.y - A.y, b1 = A.x - B.x, c1 = a1 * A.x + b1 * A.y;
-        const a2 = D.y - C.y, b2 = C.x - D.x, c2 = a2 * C.x + b2 * C.y;
-        const det = a1 * b2 - a2 * b1;
-        if (Math.abs(det) > 1e-5) {
-          return { x: (b2 * c1 - b1 * c2) / det, y: (a1 * c2 - a2 * c1) / det };
-        }
-      }
-      return null;
+    // --- 5.6: GRAPH CARD 3 (Ozersk: 7 Lakes & 10 Canals — Euler's Formula V - E + F = 2) ---
+    function getOzerskLayout(w, h) {
+      // 7 lakes: L0..L5 around perimeter, L6 in center
+      const lakes = [
+        { id: 1, label: "Оз.1", x: w * 0.25, y: h * 0.26 },
+        { id: 2, label: "Оз.2", x: w * 0.75, y: h * 0.26 },
+        { id: 3, label: "Оз.3", x: w * 0.85, y: h * 0.56 },
+        { id: 4, label: "Оз.4", x: w * 0.70, y: h * 0.84 },
+        { id: 5, label: "Оз.5", x: w * 0.30, y: h * 0.84 },
+        { id: 6, label: "Оз.6", x: w * 0.15, y: h * 0.56 },
+        { id: 7, label: "Оз.7", x: w * 0.50, y: h * 0.53 }
+      ];
+      // 6 base tree canals (always active, E_tree = 6)
+      const baseCanals = [
+        [6, 0], // Оз.7 - Оз.1
+        [6, 1], // Оз.7 - Оз.2
+        [6, 2], // Оз.7 - Оз.3
+        [6, 4], // Оз.7 - Оз.5
+        [0, 5], // Оз.1 - Оз.6
+        [2, 3]  // Оз.3 - Оз.4
+      ];
+      // 4 cycle-closing canals (each closes 1 bounded island!)
+      const extraCanals = [
+        { u: 0, v: 1, islandPts: [6, 0, 1],    name: "Остров 1", cx: w * 0.50, cy: h * 0.34 },
+        { u: 1, v: 2, islandPts: [6, 1, 2],    name: "Остров 2", cx: w * 0.69, cy: h * 0.45 },
+        { u: 3, v: 4, islandPts: [6, 2, 3, 4], name: "Остров 3", cx: w * 0.58, cy: h * 0.70 },
+        { u: 4, v: 5, islandPts: [6, 4, 5, 0], name: "Остров 4", cx: w * 0.31, cy: h * 0.56 }
+      ];
+      return { lakes, baseCanals, extraCanals };
     }
 
     function drawGraphK33() {
@@ -3263,218 +3706,103 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      // Fixed clean regular hexagon C6: D1(top), K1(top-right), D2(bot-right), K2(bottom), D3(bot-left), K3(top-left)
-      const cx = w * 0.48, cy = h * 0.56;
-      const R = Math.min(w, h) * 0.29;
-      const hexMeta = [
-        { label: "Д₁", type: "H", ang: -Math.PI / 2 },
-        { label: "К₁", type: "W", ang: -Math.PI / 6 },
-        { label: "Д₂", type: "H", ang:  Math.PI / 6 },
-        { label: "К₂", type: "W", ang:  Math.PI / 2 },
-        { label: "Д₃", type: "H", ang:  (5 * Math.PI) / 6 },
-        { label: "К₃", type: "W", ang: -(5 * Math.PI) / 6 }
-      ];
-      const pts = hexMeta.map((m, id) => ({
-        id,
-        label: m.label,
-        type: m.type,
-        px: cx + R * Math.cos(m.ang),
-        py: cy + R * Math.sin(m.ang)
-      }));
+      const { lakes, baseCanals, extraCanals } = getOzerskLayout(w, h);
+      const V = 7;
+      let activeExtra = 0;
 
-      // 1. Shade hexagon interior (Jordan interior of C6)
-      ctx.beginPath();
-      pts.forEach((p, i) => {
-        if (i === 0) ctx.moveTo(p.px, p.py);
-        else ctx.lineTo(p.px, p.py);
-      });
-      ctx.closePath();
-      ctx.fillStyle = "rgba(0, 136, 255, 0.07)";
-      ctx.fill();
-
-      // Build barrier polylines for exact intersection checking against the 9th path
-      const barriers = [];
-      // 6 edges of C6
-      for (let i = 0; i < 6; i++) {
-        const u = pts[i], v = pts[(i + 1) % 6];
-        barriers.push({ p1: { x: u.px, y: u.py }, p2: { x: v.px, y: v.py }, kind: "C6", u: i, v: (i + 1) % 6 });
-      }
-
-      // Draw 6 edges of hexagon C6
-      ctx.strokeStyle = col.ink;
-      ctx.lineWidth = 2.2;
-      for (let i = 0; i < 6; i++) {
-        const u = pts[i], v = pts[(i + 1) % 6];
+      // 1. Shade enclosed islands for each active cycle-closing canal
+      let islandNum = 0;
+      extraCanals.forEach((ec, idx) => {
+        const isOn = state.lakeExtraCanals[idx];
+        if (!isOn) return;
+        activeExtra++;
+        islandNum++;
         ctx.beginPath();
-        ctx.moveTo(u.px, u.py);
-        ctx.lineTo(v.px, v.py);
-        ctx.stroke();
-      }
-
-      // 2. If mode >= 8: Draw 7th edge (inner chord D1-K2) and 8th edge (outer arc K3-D2 around top-right)
-      const outerArcPts = [];
-      if (state.k33Mode >= 8) {
-        // 7th edge: Inner vertical chord D1(0) -> K2(3)
-        ctx.beginPath();
-        ctx.moveTo(pts[0].px, pts[0].py);
-        ctx.lineTo(pts[3].px, pts[3].py);
-        ctx.strokeStyle = col.green;
-        ctx.lineWidth = 2.6;
-        ctx.stroke();
-        barriers.push({
-          p1: { x: pts[0].px, y: pts[0].py },
-          p2: { x: pts[3].px, y: pts[3].py },
-          kind: "inner",
-          u: 0,
-          v: 3
-        });
-
-        // 8th edge: Smooth outer arc from K3(5) around D1(0) & K1(1) to D2(2)
-        // Parametrize angle from -150 deg (-5pi/6) through -30 deg (-pi/6) to +30 deg (+pi/6) with bloated outer radius
-        const stepsArc = 28;
-        const aStart = -(5 * Math.PI) / 6;
-        const aEnd = Math.PI / 6;
-        for (let s = 0; s <= stepsArc; s++) {
-          const t = s / stepsArc;
-          const ang = aStart + (aEnd - aStart) * t;
-          const bulge = Math.sin(Math.PI * t); // 0 at endpoints K3 and D2, 1 in middle!
-          const rad = R + bulge * (R * 0.56);
-          outerArcPts.push({
-            x: cx + rad * Math.cos(ang),
-            y: cy + rad * Math.sin(ang)
-          });
-        }
-        ctx.beginPath();
-        outerArcPts.forEach((pt, idx) => {
-          if (idx === 0) ctx.moveTo(pt.x, pt.y);
+        ec.islandPts.forEach((pIdx, i) => {
+          const pt = lakes[pIdx];
+          if (i === 0) ctx.moveTo(pt.x, pt.y);
           else ctx.lineTo(pt.x, pt.y);
         });
-        ctx.strokeStyle = col.blue;
-        ctx.lineWidth = 2.6;
-        ctx.stroke();
+        ctx.closePath();
+        ctx.fillStyle = "rgba(16, 185, 129, 0.16)";
+        ctx.fill();
 
-        for (let s = 0; s < outerArcPts.length - 1; s++) {
-          barriers.push({
-            p1: outerArcPts[s],
-            p2: outerArcPts[s + 1],
-            kind: "outer",
-            u: s === 0 ? 5 : -1,
-            v: s === outerArcPts.length - 2 ? 2 : -1
-          });
-        }
-      }
-
-      // 3. If mode === 9: Draw 9th edge from D3(4) through draggable waypoint P to K1(1) and detect crossings!
-      let crossPts = [];
-      let hitKinds = new Set();
-      if (state.k33Mode === 9) {
-        const P = { x: state.k33WayP.x * w, y: state.k33WayP.y * h };
-        const A = { x: pts[4].px, y: pts[4].py }; // D3
-        const B = { x: pts[1].px, y: pts[1].py }; // K1
-        // Quadratic Bezier control point C so curve at t=0.5 passes right through P:
-        // 0.25*A + 0.5*C + 0.25*B = P  =>  C = 2*P - 0.5*(A + B)
-        const ctrl = {
-          x: 2 * P.x - 0.5 * (A.x + B.x),
-          y: 2 * P.y - 0.5 * (A.y + B.y)
-        };
-        const curvePts = [];
-        const N_SEG = 28;
-        for (let s = 0; s <= N_SEG; s++) {
-          const t = s / N_SEG;
-          const mt = 1 - t;
-          curvePts.push({
-            x: mt * mt * A.x + 2 * mt * t * ctrl.x + t * t * B.x,
-            y: mt * mt * A.y + 2 * mt * t * ctrl.y + t * t * B.y
-          });
-        }
-
-        // Check intersections of curve segments against barriers (ignoring tiny neighborhood of endpoints D3=4 and K1=1)
-        for (let s = 0; s < N_SEG; s++) {
-          const c1 = curvePts[s], c2 = curvePts[s + 1];
-          for (const b of barriers) {
-            if (s === 0 && (b.u === 4 || b.v === 4)) continue;
-            if (s === N_SEG - 1 && (b.u === 1 || b.v === 1)) continue;
-            const cr = segCross(c1, c2, b.p1, b.p2);
-            if (cr) {
-              // Avoid duplicate crossing points within 6px
-              if (!crossPts.some(p => Math.hypot(p.x - cr.x, p.y - cr.y) < 8)) {
-                crossPts.push(cr);
-                hitKinds.add(b.kind);
-              }
-            }
-          }
-        }
-
-        // Draw 9th path D3 -> P -> K1 in red dashed/solid line
-        ctx.save();
-        ctx.setLineDash([6, 4]);
-        ctx.beginPath();
-        curvePts.forEach((pt, idx) => {
-          if (idx === 0) ctx.moveTo(pt.x, pt.y);
-          else ctx.lineTo(pt.x, pt.y);
-        });
-        ctx.strokeStyle = col.red;
-        ctx.lineWidth = 2.8;
-        ctx.stroke();
-        ctx.restore();
-
-        // Draw intersection markers (red circle with white X)
-        crossPts.forEach(cr => {
-          drawDot(ctx, cr.x, cr.y, 8, col.red, "#FFFFFF", 2);
-          ctx.strokeStyle = "#FFFFFF";
-          ctx.lineWidth = 1.8;
-          ctx.beginPath();
-          ctx.moveTo(cr.x - 3.2, cr.y - 3.2); ctx.lineTo(cr.x + 3.2, cr.y + 3.2);
-          ctx.moveTo(cr.x + 3.2, cr.y - 3.2); ctx.lineTo(cr.x - 3.2, cr.y + 3.2);
-          ctx.stroke();
-        });
-
-        // Draw draggable control point handle P
-        drawDot(ctx, P.x, P.y, 10, col.red, "#FFFFFF", 2.4);
-        ctx.font = "700 10.5px Inter, sans-serif";
-        ctx.fillStyle = "#FFFFFF";
+        // Island label
+        ctx.font = "700 11px Inter, sans-serif";
+        ctx.fillStyle = "#047857";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText("P", P.x, P.y + 0.5);
-      }
+        ctx.fillText(`Остров ${islandNum}`, ec.cx, ec.cy);
+      });
 
-      // 4. Top status pill badge
-      let badgeStr = "";
-      let badgeCol = col.green;
-      let badgeBg = "rgba(236,253,245,0.96)";
-      let badgeBorder = "rgba(16,185,129,0.35)";
-      if (state.k33Mode === 6) {
-        badgeStr = "Шаг 1: цикл C₆ из 6 тропинок (0 пересечений ✓)";
-      } else if (state.k33Mode === 8) {
-        badgeStr = "8 тропинок: Д₁–К₂ внутри + К₃–Д₂ снаружи (0 пер. ✓)";
-      } else {
-        badgeCol = col.red;
-        badgeBg = "rgba(255,241,242,0.96)";
-        badgeBorder = "rgba(239,68,68,0.35)";
-        const hitName = hitKinds.has("inner")
-          ? "хорду Д₁–К₂"
-          : (hitKinds.has("outer") ? "дугу К₃–Д₂" : "контур C₆");
-        badgeStr = `9-я тропинка Д₃–К₁ пересекает ${hitName} (${crossPts.length || 1} пер.) ✗`;
-      }
-      drawPillBadge(ctx, badgeStr, w * 0.5, 19, badgeCol, badgeBg, badgeBorder, "center");
+      const E = 6 + activeExtra;
+      const F = E - V + 2;
 
-      // 5. Draw the 6 vertices (Houses in Blue, Wells in Green)
-      pts.forEach(p => {
+      // Outer land face label (Грань F: Внешняя суша)
+      ctx.font = "700 11px Inter, sans-serif";
+      ctx.fillStyle = col.muted;
+      ctx.textAlign = "right";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillText(`Внешняя суша (Грань ${F})`, w - 12, h - 10);
+
+      // 2. Draw 6 base tree canals (solid blue)
+      ctx.strokeStyle = col.blue;
+      ctx.lineWidth = 3.0;
+      baseCanals.forEach(([u, v]) => {
         ctx.beginPath();
-        ctx.arc(p.px, p.py, 17, 0, Math.PI * 2);
-        ctx.fillStyle = p.type === "H" ? col.blue : col.green;
+        ctx.moveTo(lakes[u].x, lakes[u].y);
+        ctx.lineTo(lakes[v].x, lakes[v].y);
+        ctx.stroke();
+      });
+
+      // 3. Draw 4 toggleable extra canals (solid green when active, dashed muted when off)
+      extraCanals.forEach((ec, idx) => {
+        const isOn = state.lakeExtraCanals[idx];
+        const p1 = lakes[ec.u], p2 = lakes[ec.v];
+        ctx.save();
+        if (!isOn) ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = isOn ? col.green : "rgba(100,116,139,0.45)";
+        ctx.lineWidth = isOn ? 3.2 : 1.8;
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // 4. Draw 7 lakes (vertices)
+      lakes.forEach(lk => {
+        ctx.beginPath();
+        ctx.arc(lk.x, lk.y, 17, 0, Math.PI * 2);
+        ctx.fillStyle = col.blue;
         ctx.fill();
         ctx.strokeStyle = "#FFFFFF";
         ctx.lineWidth = 2.2;
         ctx.stroke();
-        ctx.font = "700 12px Inter, sans-serif";
+
+        ctx.font = "700 11px Inter, sans-serif";
         ctx.fillStyle = "#FFFFFF";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(p.label, p.px, p.py);
+        ctx.fillText(lk.label, lk.x, lk.y);
       });
       ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
+
+      // 5. Top Euler formula pill badge
+      const badgeStr = E === 10
+        ? "Формула Эйлера: В−Р+Г = 7−10+5 = 2 ⇒ Г = 5 суш ✓"
+        : `В = 7 озёр, Р = ${E} кан. ⇒ Г = 2−7+${E} = ${F} (${F - 1} остр. + 1 внеш.)`;
+      drawPillBadge(
+        ctx,
+        badgeStr,
+        w * 0.5,
+        19,
+        E === 10 ? col.green : col.blue,
+        E === 10 ? "rgba(236,253,245,0.96)" : "rgba(239,246,255,0.96)",
+        E === 10 ? "rgba(16,185,129,0.35)" : "rgba(0,136,255,0.35)",
+        "center"
+      );
     }
 
     // --- 5.7: ALGEBRA CARD 1 (||x-1|-3| = a) ---
@@ -5298,11 +5626,20 @@
       cv.addEventListener("pointerup", () => { dragging = false; });
     }
 
+    function distToSegment(px, py, x1, y1, x2, y2) {
+      const dx = x2 - x1, dy = y2 - y1;
+      const len2 = dx * dx + dy * dy;
+      if (len2 < 1e-6) return Math.hypot(px - x1, py - y1);
+      const t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / len2));
+      return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+    }
+
     function initCanvasInteractions() {
       bind3DRotation("cvStereoUnfold", state.rot1);
       bind3DRotation("cvStereoTrace", state.rot2);
       bind3DRotation("cvStereoSphere", state.rot3);
       bind3DRotation("cvStereoTetra", state.rot4);
+      bind3DRotation("cvStereoInscribed", state.rot5);
 
       // Knights click
       const cvK = document.getElementById("cvGraphKnights");
@@ -5327,50 +5664,47 @@
         }
       });
 
-      // Tree leaf click
+      // Spanning Tree cycle-edge click (Problem 15)
       const cvT = document.getElementById("cvGraphTrees");
       cvT.addEventListener("pointerdown", e => {
         const rect = cvT.getBoundingClientRect();
         const px = e.clientX - rect.left, py = e.clientY - rect.top;
-        const deg = getTreeDegMap();
-        for (const n of state.treeNodes) {
-          if (!n.alive) continue;
-          if (Math.hypot(px - n.x * rect.width, py - n.y * rect.height) < 24) {
-            if (deg[n.id] === 1) {
-              n.alive = false;
-              updateTreeStatBox();
-              document.getElementById("treeHintNote").textContent =
-                `✂️ Срезан лист №${n.name}: ушли 1 вершина и 1 ребро, разность V − E = 1 не изменилась!`;
-            } else if (deg[n.id] >= 2) {
-              document.getElementById("treeHintNote").textContent =
-                `⚠️ Вершина №${n.name} имеет степень ${deg[n.id]} — её удаление развалит дерево на куски! Ищите зелёный лист.`;
-            }
-            break;
+        const byId = {};
+        state.spanNodes.forEach(n => { byId[n.id] = n; });
+        let bestIdx = -1, bestDist = 18;
+        state.spanEdges.forEach((ed, idx) => {
+          const nu = byId[ed.u], nv = byId[ed.v];
+          const d = distToSegment(px, py, nu.x * rect.width, nu.y * rect.height, nv.x * rect.width, nv.y * rect.height);
+          if (d < bestDist) {
+            bestDist = d;
+            bestIdx = idx;
           }
+        });
+        if (bestIdx >= 0) {
+          toggleSpanEdgeAt(bestIdx);
         }
       });
 
-      // K3,3 waypoint P drag (smoothly steers the 9th path D3 -> P -> K1)
+      // Ozersk 7 Lakes & 10 Canals click (Problem 3)
       const cvK33 = document.getElementById("cvGraphK33");
       cvK33.addEventListener("pointerdown", e => {
         const rect = cvK33.getBoundingClientRect();
-        const px = Math.max(0.08, Math.min(0.92, (e.clientX - rect.left) / rect.width));
-        const py = Math.max(0.14, Math.min(0.92, (e.clientY - rect.top) / rect.height));
-        if (state.k33Mode !== 9) {
-          setK33Mode(9, state.k33RoutePreset);
+        const px = e.clientX - rect.left, py = e.clientY - rect.top;
+        const { lakes, extraCanals } = getOzerskLayout(rect.width, rect.height);
+        let bestIdx = -1, bestDist = 22;
+        extraCanals.forEach((ec, idx) => {
+          const p1 = lakes[ec.u], p2 = lakes[ec.v];
+          const d = distToSegment(px, py, p1.x, p1.y, p2.x, p2.y);
+          if (d < bestDist) {
+            bestDist = d;
+            bestIdx = idx;
+          }
+        });
+        if (bestIdx >= 0) {
+          toggleLakeCanal(bestIdx);
         }
-        state.k33DraggingP = true;
-        state.k33WayP = { x: px, y: py };
-        cvK33.setPointerCapture(e.pointerId);
-      });
-      cvK33.addEventListener("pointermove", e => {
-        if (!state.k33DraggingP) return;
-        const rect = cvK33.getBoundingClientRect();
-        state.k33WayP.x = Math.max(0.08, Math.min(0.92, (e.clientX - rect.left) / rect.width));
-        state.k33WayP.y = Math.max(0.14, Math.min(0.92, (e.clientY - rect.top) / rect.height));
       });
       window.addEventListener("pointerup", () => {
-        state.k33DraggingP = false;
         state.geomDragKey = null;
         state.auxDragKey = null;
       });
@@ -5762,6 +6096,7 @@
         drawStereoTrace();
         drawStereoSphere();
         drawStereoTetra();
+        drawStereoInscribed();
       } else if (state.activeTopic === "graphs") {
         drawGraphKnights();
         drawGraphTrees();
