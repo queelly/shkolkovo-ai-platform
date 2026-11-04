@@ -786,9 +786,11 @@
         <div class="card-top-bar">
           <div class="card-heading">Три домика и три колодца ($K_{3,3}$) и теорема Жордана</div>
           <div class="card-pills" id="k33Presets">
-            <button class="shk-pill active" onclick="setK33Mode(6)">6 рёбер (Контур)</button>
-            <button class="shk-pill" onclick="setK33Mode(8)">8 рёбер (Без пересечений)</button>
-            <button class="shk-pill" onclick="setK33Mode(9)">9-е ребро (Капкан!)</button>
+            <button class="shk-pill" onclick="setK33Mode(6)">1. Контур $C_6$ (6 рёбер)</button>
+            <button class="shk-pill" onclick="setK33Mode(8)">2. Внутри + Снаружи (8 рёбер)</button>
+            <button class="shk-pill active" onclick="setK33Mode(9, 0)">3. 9-е ребро: Через центр</button>
+            <button class="shk-pill" onclick="setK33Mode(9, 1)">9-е: Сверху</button>
+            <button class="shk-pill" onclick="setK33Mode(9, 2)">9-е: Снизу</button>
           </div>
         </div>
         <div class="card-grid">
@@ -796,21 +798,29 @@
             <p>
               Можно ли соединить три домика ($Д_1, Д_2, Д_3$) с тремя колодцами ($К_1, К_2, К_3$) девятью непересекающимися тропинками?
             </p>
-            <p>
-              Первые <span class="inline-link active" onclick="setK33Mode(6)">6 тропинок образуют замкнутый шестиугольник</span>, который делит плоскость на внутреннюю и внешнюю области.
-            </p>
-            <p>
-              Восьмую и седьмую тропинки можно спрятать <span class="inline-link" onclick="setK33Mode(8)">одну внутри контура, а другую — снаружи</span>. Но тогда для <span class="inline-link" onclick="setK33Mode(9)">девятой тропинки ($Д_3 - К_1$)</span> путь перегорожен и внутри, и снаружи!
-            </p>
+            <ul class="algo-list" id="listK33Steps">
+              <li class="algo-item" onclick="setK33Mode(6)">
+                <span class="algo-num">1.</span>
+                <span><b>Замкнутый цикл $C_6$ (6 тропинок):</b> чередующийся цикл $Д_1 - К_1 - Д_2 - К_2 - Д_3 - К_3 - Д_1$ образует правильный шестиугольник и по теореме Жордана делит плоскость на <b>внутреннюю</b> и <b>внешнюю</b> области ($0$ пересечений).</span>
+              </li>
+              <li class="algo-item" onclick="setK33Mode(8)">
+                <span class="algo-num">2.</span>
+                <span><b>7-я и 8-я тропинки без пересечений:</b> проведём $7$-ю тропинку <b>$Д_1 - К_2$</b> прямо внутри шестиугольника (она делит внутренность пополам, запирая $Д_3$ слева, а $К_1$ справа). Поэтому $8$-ю тропинку <b>$К_3 - Д_2$</b> пустим плавной дугой <b>снаружи</b> контура ($8$ тропинок, $0$ пересечений!).</span>
+              </li>
+              <li class="algo-item active" onclick="setK33Mode(9, 0)">
+                <span class="algo-num">3.</span>
+                <span><b>Капкан для 9-й тропинки ($Д_3 - К_1$):</b> внутри шестиугольника $Д_3$ и $К_1$ разделены хордой $Д_1 - К_2$, а снаружи колодец $К_1$ заперт в кармане под внешней дугой $К_3 - Д_2$! Попробуйте потянуть точку <b>$P$</b> мышкой куда угодно — $9$-я тропинка неизбежно пересечёт преграду!</span>
+              </li>
+            </ul>
             <div class="white-formula-box">
-              <span>Формула Эйлера без треугольников: $E \le 2V - 4 = 8 < 9$</span>
+              <span id="k33FormulaBox">9-я тропинка Д₃–К₁ идёт внутри шестиугольника и пересекает внутреннюю хорду Д₁–К₂! ✗</span>
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvGraphK33"></canvas>
             </div>
-            <div class="stage-caption" id="k33Caption">Перетаскивайте вершины мышкой — детектор пересечений работает в реальном времени</div>
+            <div class="stage-caption" id="k33Caption">Тяните контрольную точку P девятой тропинки мышкой — проверьте любой обход внутри и снаружи!</div>
           </div>
         </div>
       </article>
@@ -953,7 +963,50 @@
         </div>
       </article>
 
-      <!-- CARD 2: Игра с конца на полоске 1 x N -->
+      <!-- CARD 2: Халк и Танос — 20 яблок в ряд (Симметричная стратегия) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Халк и Танос: $20$ яблок в ряд и симметричная стратегия</div>
+          <div class="card-pills" id="applePills">
+            <button class="shk-pill active" onclick="setAppleTakeMode(1)">Брать по 1 яблоку</button>
+            <button class="shk-pill" onclick="setAppleTakeMode(2)">Брать по 2 соседних</button>
+            <button class="shk-pill" onclick="resetApplesGame(true)">Сбросить (Халк взял №10–11)</button>
+            <button class="shk-pill" onclick="resetApplesGame(false)">Начать с 20 яблок</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> на столе нарисован ряд из $20$ секторов, в каждом лежит по яблоку. За ход можно взять либо <b>одно яблоко</b>, либо <b>два яблока из соседних секторов</b>. Начинает Халк, проигрывает тот, кто не может сделать ход. Кто победит при правильной игре?
+            </p>
+            <ul class="algo-list" id="listAppleSteps">
+              <li class="algo-item active" onclick="resetApplesGame(true)">
+                <span class="algo-num">1.</span>
+                <span><b>Первый ход Халка — два центральных яблока (№10 и №11):</b> Халк забирает пару центральных яблок №10 и №11, разбивая ряд на <b>два отдельных ряда по $9$ яблок</b>: левый (№1–№9) и правый (№12–№20).</span>
+              </li>
+              <li class="algo-item" onclick="setAppleTakeMode(2)">
+                <span class="algo-num">2.</span>
+                <span><b>Симметричный ответ $i \leftrightarrow 21 - i$:</b> так как центр (№10–11) пуст, Танос не может взять два яблока из разных половин. На любой ход Таноса в одной половине (сектор №$i$ или пара №$i, i+1$) Халк берёт <b>симметричные яблоки из другого ряда</b>: №$(21 - i)$!</span>
+              </li>
+              <li class="algo-item" onclick="setAppleTakeMode(1)">
+                <span class="algo-num">3.</span>
+                <span><b>Инвариант симметрии и победа Халка:</b> после каждого хода Халка обе половины ряда абсолютно симметричны относительно центра. Значит, пока ход есть у Таноса, симметричный ответ гарантированно есть и у Халка. <b>Ответ: побеждает Халк.</b></span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="appleStatusBox">Халк первым ходом забрал центр №10 и №11! Ваш ход за Таноса: кликните по любому яблоку.</span>
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvLogicApples"></canvas>
+            </div>
+            <div class="stage-caption">Кликайте по яблокам в левом (№1–9) или правом (№12–20) ряду — Халк ответит симметрично через центр!</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 3: Игра с конца на полоске 1 x N -->
       <article class="sandbox-card">
         <div class="card-top-bar">
           <div class="card-heading">Анализ игры с конца и стратегия дополнения $(4 - k)$</div>
@@ -989,8 +1042,8 @@
     <!-- TOPIC 5: КОМБИНАТОРИКА                                              -->
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-combo">
-      <div class="page-kicker">Задачи к вебинару · Вероятность, раскраски клетчатых досок и экстремальный принцип</div>
-      <h1 class="page-title">№1–3. Задача о двух урнах ($10$ белых и $10$ чёрных шаров), полоски $1 \times 3$ на доске $8 \times 8$ и бензоколонки</h1>
+      <div class="page-kicker">Задачи к вебинару · Вероятность, фигуры на клетчатой доске и экстремальный принцип</div>
+      <h1 class="page-title">№1–3. Задача о двух урнах ($10$ белых и $10$ чёрных шаров), $k$ ладей и $k$ коней на доске $8 \times 8$ и бензоколонки</h1>
 
       <!-- CARD 1: 10 белых и 10 чёрных шаров по двум урнам -->
       <article class="sandbox-card">
@@ -1046,52 +1099,52 @@
         </div>
       </article>
 
-      <!-- CARD 2: Доска 8x8 без одной клетки и полоски 1x3 (Трёхцветная раскраска и укладка) -->
+      <!-- CARD 2: k ладей и k коней на доске 8x8 (Оценка (8-k)^2 и пример k=5) -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">Доска $8 \times 8$ без одной клетки и полоски $1 \times 3$: трёхцветная раскраска и укладка</div>
+          <div class="card-heading">$k$ ладей и $k$ коней на доске $8 \times 8$: при каком наибольшем $k$ никто никого не бьёт?</div>
           <div class="card-pills" id="gridPills">
-            <button class="shk-pill" onclick="setGridMode(0)">Диагонали ↗ (22 кл.)</button>
-            <button class="shk-pill" onclick="setGridMode(1)">Пересечение ↗ ∩ ↘ (4 кл.!)</button>
-            <button class="shk-pill active" onclick="setGridMode(2)">Укладка 21 полоски $1 \times 3$</button>
-            <button class="shk-pill" onclick="selectGridCell(1, 1)">Проверить плохую ($b7$)</button>
+            <button class="shk-pill" onclick="setRookKnightPreset(6)">Оценка $k = 6$ (Осталось 4 кл. &lt; 6!)</button>
+            <button class="shk-pill" onclick="setRookKnightPreset(50)">Ладьи $k = 5$ (9 свободных кл.)</button>
+            <button class="shk-pill active" onclick="setRookKnightPreset(5)">Пример $k = 5$ (5Л + 5К ✓)</button>
+            <button class="shk-pill" onclick="toggleCustomPieceTool()" id="btnCustomTool">Свой ход: Конь ♞</button>
           </div>
         </div>
         <div class="card-grid">
           <div class="card-text-col">
             <p>
-              Из клетчатой доски $8 \times 8$ вырезали одну клетку. При каких положениях вырезанной клетки оставшиеся $63$ клетки можно разрезать на $21$ прямоугольную полоску $1 \times 3$ (тримино)?
+              <b>Задача:</b> на шахматную доску $8 \times 8$ поставили $k$ ладей и $k$ коней так, что ни одна из фигур не бьёт никакую другую. При каком наибольшем $k$ такое возможно?
             </p>
             <ul class="algo-list" id="listGridSteps">
-              <li class="algo-item" onclick="setGridMode(0)">
+              <li class="algo-item" onclick="setRookKnightPreset(6)">
                 <span class="algo-num">1.</span>
-                <span><b>Трёхцветная диагональная раскраска $(r + c) \bmod 3$:</b> раскрасим диагонали доски в 3 цвета. Так как $64 = 21 \cdot 3 + 1$, клеток цвета №1 ровно <b>$22$</b>, а цветов №2 и №3 — по <b>$21$</b>. Любая полоска $1 \times 3$ всегда накрывает <i>ровно по одной клетке каждого цвета</i>, поэтому вырезанная клетка обязана иметь избыточный цвет №1 ($22$ кандидата).</span>
+                <span><b>Оценка ($k \le 5$):</b> все $k$ ладей должны стоять на разных горизонталях и разных вертикалях. Вычёркивая $k$ строк и $k$ столбцов, находящихся под боем ладей, получаем ровно <b>$(8 - k)^2$ небитых клеток</b> для коней. При <b>$k \ge 6$</b> остаётся не более $(8 - 6)^2 = 2 \times 2 = \mathbf{4}$ небитых клеток — и $6$ коней на них уже не расставить ($4 < 6$)!</span>
               </li>
-              <li class="algo-item" onclick="setGridMode(1)">
+              <li class="algo-item" onclick="setRookKnightPreset(50)">
                 <span class="algo-num">2.</span>
-                <span><b>Поворот раскраски на $90^\circ$ (вторая диагональ):</b> повернём трёхцветную раскраску на $90^\circ$. По тем же причинам вырезанная клетка должна иметь цвет избытка и во второй раскраске! Пересечение двух диагональных условий оставляет <b>всего 4 клетки на всей доске</b>: <b>$c3, f3, c6, f6$</b>.</span>
+                <span><b>Структура при $k = 5$:</b> при $k = 5$ остаётся $(8 - 5)^2 = 3 \times 3 = \mathbf{9}$ клеток, не битых ладьями. Но кони ещё и сами не должны бить ладьи! Поставим $5$ ладей на <b>$b2, c3, e5, f6, g7$</b> — тогда свободными от боя ладей останутся пересечения горизонталей $1, 4, 8$ и вертикалей $a, d, h$.</span>
               </li>
-              <li class="algo-item active" onclick="setGridMode(2)">
+              <li class="algo-item active" onclick="setRookKnightPreset(5)">
                 <span class="algo-num">3.</span>
-                <span><b>Явная укладка («мельница» из $21$ полоски $1 \times 3$):</b> для любой из 4 клеток $c3, f3, c6, f6$ замощение существует! Внешняя рамка доски разбивается в «мельницу» из четырёх блоков $2 \times 6$ ($16$ полосок $1 \times 3$), а центральный квадрат $4 \times 4$ без угловой клетки — ещё на $5$ полосок ($1 + 4 = 5$, итого $21$).</span>
+                <span><b>Эталонный пример для $k = 5$ (Ответ: $5$):</b> в оставшиеся $9$ зелёных клеток ставим $5$ коней — в четыре угла доски (<b>$a1, a8, h1, h8$</b>) и в центр (<b>$d4$</b>). Ни один конь не бьёт ни одну из $5$ ладей ($b2, c3, e5, f6, g7$) и не бьёт других коней!</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="gridFormulaText">Вырезана c6 (хорошая клетка!): остаток цветов 21 : 21 : 21 ⇒ укладка из 21 полоски 1×3 готова! ✓</span>
+              <span id="gridFormulaText">Пример k = 5: 5 ладей (b2, c3, e5, f6, g7) + 5 коней (a1, a8, h1, h8, d4) — 0 конфликтов! Ответ: 5 ✓</span>
             </div>
             <div class="slider-panel">
               <div class="slider-header">
-                <span>Пошаговая укладка полосок $1 \times 3$ на доску</span>
-                <span class="slider-val-badge" id="valGridTiles">21 из 21 полосок (Замощено!)</span>
+                <span>Число ладей $k$ и остаток $(8 - k)^2$ клеток для коней</span>
+                <span class="slider-val-badge" id="valGridTiles">k = 5 ладей ⇒ 3×3 = 9 кл. (5 коней ✓)</span>
               </div>
-              <input type="range" class="shk-range" id="rngGridTiles" min="0" max="21" value="21" />
+              <input type="range" class="shk-range" id="rngGridTiles" min="1" max="7" value="5" />
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvComboGrid"></canvas>
             </div>
-            <div class="stage-caption">Кликайте по любой клетке доски 8×8, чтобы вырезать её и проверить баланс 3-цветной раскраски</div>
+            <div class="stage-caption">Наводите курсор на ладьи и коней для проверки полей боя или кликайте по клеткам доски 8×8</div>
           </div>
         </div>
       </article>
@@ -1254,16 +1307,10 @@
       treeEdges: [
         [1,2], [1,3], [2,5], [2,4], [3,6], [4,7], [4,8]
       ],
-      k33Mode: 6,
-      k33Nodes: [
-        { id: 0, label: "Д₁", type: "H", x: 0.50, y: 0.13 },
-        { id: 1, label: "К₁", type: "W", x: 0.82, y: 0.32 },
-        { id: 2, label: "Д₂", type: "H", x: 0.76, y: 0.78 },
-        { id: 3, label: "К₂", type: "W", x: 0.50, y: 0.54 },
-        { id: 4, label: "Д₃", type: "H", x: 0.24, y: 0.78 },
-        { id: 5, label: "К₃", type: "W", x: 0.18, y: 0.32 }
-      ],
-      k33DragIdx: -1,
+      k33Mode: 9,
+      k33RoutePreset: 0,   // 0: through center, 1: around top, 2: around bottom
+      k33WayP: { x: 0.50, y: 0.55 }, // draggable control point P for 9th edge D3 -> K1
+      k33DraggingP: false,
 
       // --- TOPIC 3: ALGEBRA & PARAMETERS ---
       algModA: 3.0,
@@ -1273,18 +1320,37 @@
       ringMode: "exact",
       ringVals: [10, -1, -1, -1, 10, -1, -1, -1, 10, -1, -1, -1, 10],
       ringHover: -1,
+      // Card 2: Hulk & Thanos 20 Apples symmetry game (0 = empty, 1 = apple present)
+      apples: [1,1,1,1,1,1,1,1,1, 0,0, 1,1,1,1,1,1,1,1,1],
+      appleTakeCount: 1,   // 1: take 1 apple, 2: take 2 adjacent apples
+      appleHoverIdx: -1,
+      appleLastArc: { from: [10, 11], to: [10, 11], firstMove: true },
+      appleLock: false,
+      // Card 3: 1xN Strip Game
       gameN: 17,
       gamePos: 1,
       gamePlayerArc: null,
       gameAiArc: null,
 
-      // --- TOPIC 5: COMBINATORICS (Two Urns, 8x8 Grid Coloring & Trominoes, Circular Gas Shift) ---
+      // --- TOPIC 5: COMBINATORICS (Two Urns, k Rooks & k Knights on 8x8, Circular Gas Shift) ---
       urnN: 1,             // 0..10 white balls in Urn 1
       urnM: 0,             // 0..10 black balls in Urn 1
-      gridMode: 2,         // 0: 3-color diag 1, 1: intersection (4 valid cells), 2: 21 trominoes tiling
-      gridCutR: 2,         // 0..7 (default r=2, c=2 -> cell c6, one of the 4 valid cells)
-      gridCutC: 2,         // 0..7
-      gridTiles: 21,       // 0..21 trominoes placed
+      rkMode: 5,           // 5: k=5 full solution, 50: k=5 rooks only, 6: k=6 bound, 0: custom
+      rkK: 5,              // 1..7 slider value
+      rkTool: "N",         // "N" (Knight) or "R" (Rook) when clicking board
+      rkHover: null,       // { r, c } hovered cell on 8x8 board
+      rkPieces: [          // Exact k=5 solution from Shkolkovo screenshot!
+        { r: 1, c: 6, type: "R" }, // g7
+        { r: 2, c: 5, type: "R" }, // f6
+        { r: 3, c: 4, type: "R" }, // e5
+        { r: 5, c: 2, type: "R" }, // c3
+        { r: 6, c: 1, type: "R" }, // b2
+        { r: 0, c: 0, type: "N" }, // a8
+        { r: 0, c: 7, type: "N" }, // h8
+        { r: 4, c: 3, type: "N" }, // d4
+        { r: 7, c: 0, type: "N" }, // a1
+        { r: 7, c: 7, type: "N" }  // h1
+      ],
       gasStartIdx: 4,      // 0..5 (4 = station #5, the global minimum!)
       gasDeltas: [2, -3, 1, -2, 4, -2],
 
@@ -1499,10 +1565,36 @@
       setTreeAlgoStep(state.treeStep + dir);
     };
 
-    window.setK33Mode = function(mode) {
+    window.setK33Mode = function(mode, routePreset = 0) {
       state.k33Mode = mode;
+      state.k33RoutePreset = routePreset;
+      if (mode === 9) {
+        if (routePreset === 0) state.k33WayP = { x: 0.50, y: 0.55 };      // Inside hexagon -> crosses D1-K2
+        else if (routePreset === 1) state.k33WayP = { x: 0.32, y: 0.12 }; // Outside top -> crosses outer arc K3-D2
+        else if (routePreset === 2) state.k33WayP = { x: 0.68, y: 0.90 }; // Outside bottom -> crosses outer arc K3-D2
+      }
       const btns = document.querySelectorAll("#k33Presets .shk-pill");
-      btns.forEach(b => b.classList.toggle("active", b.textContent.startsWith(String(mode))));
+      if (btns.length === 5) {
+        btns[0].classList.toggle("active", mode === 6);
+        btns[1].classList.toggle("active", mode === 8);
+        btns[2].classList.toggle("active", mode === 9 && routePreset === 0);
+        btns[3].classList.toggle("active", mode === 9 && routePreset === 1);
+        btns[4].classList.toggle("active", mode === 9 && routePreset === 2);
+      }
+      const items = document.querySelectorAll("#listK33Steps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", mode === 6);
+        items[1].classList.toggle("active", mode === 8);
+        items[2].classList.toggle("active", mode === 9);
+      }
+      const box = document.getElementById("k33FormulaBox");
+      if (box) {
+        if (mode === 6) box.textContent = "Шаг 1: 6 тропинок образуют правильный шестиугольник C₆ (0 пересечений ✓)";
+        else if (mode === 8) box.textContent = "Шаг 2: 7-я тропинка Д₁–К₂ внутри + 8-я дуга К₃–Д₂ снаружи (8 тропинок, 0 пересечений ✓)";
+        else if (routePreset === 0) box.textContent = "9-я тропинка Д₃–К₁ идёт внутри шестиугольника и пересекает хорду Д₁–К₂! ✗";
+        else if (routePreset === 1) box.textContent = "9-я тропинка Д₃–К₁ идёт в обход сверху и упирается во внешнюю дугу К₃–Д₂! ✗";
+        else box.textContent = "9-я тропинка Д₃–К₁ идёт в обход снизу и снова пересекает внешнюю дугу К₃–Д₂! ✗";
+      }
     };
 
     // --- TOPIC 3: ALGEBRA CONTROLS ---
@@ -1590,6 +1682,32 @@
       syncRingFormulaBox();
     };
 
+    // Card 2 (Logic): Hulk vs Thanos — 20 Apples in a Row Symmetry Game
+    window.setAppleTakeMode = function(cnt) {
+      state.appleTakeCount = cnt;
+      const btns = document.querySelectorAll("#applePills .shk-pill");
+      if (btns.length >= 2) {
+        btns[0].classList.toggle("active", cnt === 1);
+        btns[1].classList.toggle("active", cnt === 2);
+      }
+    };
+
+    window.resetApplesGame = function(hulkMovedFirst = true) {
+      state.appleLock = false;
+      state.apples = new Array(20).fill(1);
+      if (hulkMovedFirst) {
+        state.apples[9] = 0;  // Sector #10
+        state.apples[10] = 0; // Sector #11
+        state.appleLastArc = { from: [10, 11], to: [10, 11], firstMove: true };
+        document.getElementById("appleStatusBox").textContent =
+          "Халк первым ходом забрал центр №10 и №11! Ваш ход за Таноса: кликните по яблоку.";
+      } else {
+        state.appleLastArc = null;
+        document.getElementById("appleStatusBox").textContent =
+          "На столе все 20 яблок! Сделайте первый ход за Халка (подсказка: берите пару №10 и №11).";
+      }
+    };
+
     window.setGameN = function(n) {
       state.gameN = n;
       state.gamePos = 1;
@@ -1668,90 +1786,145 @@
       }
     };
 
-    function isGridCellValid(r, c) {
-      return (r === 2 || r === 5) && (c === 2 || c === 5);
-    }
-
     function getGridCellName(r, c) {
       return "abcdefgh"[c] + String(8 - r);
     }
 
-    function syncGridUI() {
-      const r = state.gridCutR, c = state.gridCutC;
-      const cellName = getGridCellName(r, c);
-      const valid = isGridCellValid(r, c);
-      const tCount = state.gridTiles;
+    function buildRookKnightPresetPieces(mode, kVal) {
+      if (mode === 5 || (mode === 50)) {
+        const rooks = [
+          { r: 1, c: 6, type: "R" }, // g7
+          { r: 2, c: 5, type: "R" }, // f6
+          { r: 3, c: 4, type: "R" }, // e5
+          { r: 5, c: 2, type: "R" }, // c3
+          { r: 6, c: 1, type: "R" }  // b2
+        ];
+        if (mode === 50) return rooks;
+        return rooks.concat([
+          { r: 0, c: 0, type: "N" }, // a8
+          { r: 0, c: 7, type: "N" }, // h8
+          { r: 4, c: 3, type: "N" }, // d4
+          { r: 7, c: 0, type: "N" }, // a1
+          { r: 7, c: 7, type: "N" }  // h1
+        ]);
+      }
+      // For arbitrary kVal (e.g. k=6 bound): place kVal rooks on diagonal (0..kVal-1)
+      const pcs = [];
+      for (let i = 0; i < kVal; i++) {
+        pcs.push({ r: i, c: i, type: "R" });
+      }
+      return pcs;
+    }
 
-      document.getElementById("rngGridTiles").value = tCount;
+    function analyzeRookKnightBoard() {
+      const rooks = state.rkPieces.filter(p => p.type === "R");
+      const knights = state.rkPieces.filter(p => p.type === "N");
+      const rookRows = new Set(rooks.map(r => r.r));
+      const rookCols = new Set(rooks.map(r => r.c));
+      const conflicts = [];
+
+      // Check all pairs for attacks
+      for (let i = 0; i < state.rkPieces.length; i++) {
+        for (let j = i + 1; j < state.rkPieces.length; j++) {
+          const p1 = state.rkPieces[i], p2 = state.rkPieces[j];
+          let hit = false;
+          if (p1.type === "R" && p2.type === "R") {
+            if (p1.r === p2.r || p1.c === p2.c) hit = true;
+          } else if (p1.type === "N" && p2.type === "N") {
+            const dr = Math.abs(p1.r - p2.r), dc = Math.abs(p1.c - p2.c);
+            if ((dr === 1 && dc === 2) || (dr === 2 && dc === 1)) hit = true;
+          } else {
+            const rk = p1.type === "R" ? p1 : p2;
+            const kn = p1.type === "N" ? p1 : p2;
+            const dr = Math.abs(rk.r - kn.r), dc = Math.abs(rk.c - kn.c);
+            if (rk.r === kn.r || rk.c === kn.c || (dr === 1 && dc === 2) || (dr === 2 && dc === 1)) {
+              hit = true;
+            }
+          }
+          if (hit) conflicts.push([p1, p2]);
+        }
+      }
+      const freeRows = 8 - rookRows.size;
+      const freeCols = 8 - rookCols.size;
+      return { rooks, knights, rookRows, rookCols, freeCells: freeRows * freeCols, freeRows, freeCols, conflicts };
+    }
+
+    function syncRookKnightUI() {
+      const info = analyzeRookKnightBoard();
+      const kR = info.rooks.length;
+      const kN = info.knights.length;
+      document.getElementById("rngGridTiles").value = Math.max(1, Math.min(7, kR || state.rkK));
       document.getElementById("valGridTiles").textContent =
-        valid
-          ? (tCount === 21 ? "21 из 21 полосок (Замощено!)" : `${tCount} из 21 полосок`)
-          : "Укладка невозможна (нарушен баланс цветов)";
+        `Ладей: ${kR} ⇒ небитых клеток: ${info.freeRows}×${info.freeCols} = ${info.freeCells} (Коней: ${kN})`;
 
       const fBox = document.getElementById("gridFormulaText");
-      if (valid) {
+      if (info.conflicts.length > 0) {
+        const [a, b] = info.conflicts[0];
         fBox.textContent =
-          `Вырезана ${cellName} (одна из 4 хороших клеток!): остаток цветов 21 : 21 : 21 ⇒ укладка из 21 полоски 1×3 готова! ✓`;
+          `Конфликт боя: фигура на ${getGridCellName(a.r, a.c)} и фигура на ${getGridCellName(b.r, b.c)} бьют друг друга! ✗`;
+      } else if (kR === 6) {
+        fBox.textContent =
+          `Оценка при k = 6: 6 ладей вычёркивают 6 строк и 6 столбцов, оставляя лишь 2×2 = 4 клетки — 6 коней не поместить (4 < 6)! ✗`;
+      } else if (kR === 5 && kN === 5) {
+        fBox.textContent =
+          `Пример k = 5: 5 ладей (b2, c3, e5, f6, g7) + 5 коней (a1, a8, h1, h8, d4) — 0 конфликтов! Ответ: 5 ✓`;
       } else {
-        const d1 = (r + c) % 3;
-        const d2 = (r + 7 - c) % 3;
-        if (d1 !== 1) {
-          const c0 = 21 - (d1 === 0 ? 1 : 0);
-          const c1 = 22;
-          const c2 = 21 - (d1 === 2 ? 1 : 0);
-          fBox.textContent =
-            `Вырезана ${cellName}: в диагональной раскраске ↗ осталось цветов ${c1} : ${c0} : ${c2} ≠ 21 : 21 : 21 ⇒ разрезать на полоски 1×3 нельзя!`;
-        } else {
-          fBox.textContent =
-            `Вырезана ${cellName}: прямая диагональ ↗ сходится (21:21:21), но повёрнутая ↘ даёт 22 : 20 : 21 ≠ 21 : 21 : 21 ⇒ нельзя!`;
-        }
+        fBox.textContent =
+          `На доске ${kR} ладей и ${kN} коней (небитых ладьями клеток: ${info.freeCells}, конфликтов: 0 ✓)`;
       }
 
       const btns = document.querySelectorAll("#gridPills .shk-pill");
       if (btns.length === 4) {
-        btns[0].classList.toggle("active", state.gridMode === 0 && valid);
-        btns[1].classList.toggle("active", state.gridMode === 1 && valid);
-        btns[2].classList.toggle("active", state.gridMode === 2 && valid);
-        btns[3].classList.toggle("active", !valid);
+        btns[0].classList.toggle("active", state.rkMode === 6);
+        btns[1].classList.toggle("active", state.rkMode === 50);
+        btns[2].classList.toggle("active", state.rkMode === 5);
+        btns[3].textContent = state.rkTool === "N" ? "Свой ход: Конь ♞" : "Свой ход: Ладья ♜";
+        btns[3].classList.toggle("active", state.rkMode === 0);
       }
 
       const items = document.querySelectorAll("#listGridSteps .algo-item");
       if (items.length === 3) {
-        items.forEach((el, i) => el.classList.toggle("active", i === state.gridMode));
+        items[0].classList.toggle("active", state.rkMode === 6);
+        items[1].classList.toggle("active", state.rkMode === 50);
+        items[2].classList.toggle("active", state.rkMode === 5);
       }
     }
 
     document.getElementById("rngGridTiles").addEventListener("input", function() {
-      state.gridTiles = parseInt(this.value, 10);
-      state.gridMode = 2;
-      if (!isGridCellValid(state.gridCutR, state.gridCutC)) {
-        state.gridCutR = 2;
-        state.gridCutC = 2;
+      const k = parseInt(this.value, 10);
+      state.rkK = k;
+      if (k === 5) {
+        state.rkMode = 5;
+        state.rkPieces = buildRookKnightPresetPieces(5, 5);
+      } else {
+        state.rkMode = k === 6 ? 6 : 0;
+        state.rkPieces = buildRookKnightPresetPieces(k, k);
       }
-      syncGridUI();
+      syncRookKnightUI();
     });
 
-    window.setGridMode = function(mode) {
-      state.gridMode = mode;
-      if (!isGridCellValid(state.gridCutR, state.gridCutC)) {
-        state.gridCutR = 2;
-        state.gridCutC = 2;
-      }
-      if (mode === 2 && state.gridTiles === 0) {
-        state.gridTiles = 21;
-      }
-      syncGridUI();
+    window.setRookKnightPreset = function(mode) {
+      state.rkMode = mode;
+      state.rkK = mode === 6 ? 6 : 5;
+      state.rkPieces = buildRookKnightPresetPieces(mode, state.rkK);
+      syncRookKnightUI();
     };
 
-    window.selectGridCell = function(r, c) {
-      state.gridCutR = r;
-      state.gridCutC = c;
-      if (isGridCellValid(r, c)) {
-        if (state.gridTiles === 0) state.gridTiles = 21;
+    window.toggleCustomPieceTool = function() {
+      state.rkMode = 0;
+      state.rkTool = state.rkTool === "N" ? "R" : "N";
+      syncRookKnightUI();
+    };
+
+    window.toggleBoardPieceAt = function(r, c) {
+      const idx = state.rkPieces.findIndex(p => p.r === r && p.c === c);
+      state.rkMode = 0;
+      if (idx >= 0) {
+        state.rkPieces.splice(idx, 1);
       } else {
-        state.gridMode = ((r + c) % 3 !== 1) ? 0 : 1;
+        state.rkPieces.push({ r, c, type: state.rkTool });
       }
-      syncGridUI();
+      syncRookKnightUI();
     };
 
     window.setGasStart = function(idx) {
@@ -1841,7 +2014,7 @@
       "cvStereoUnfold", "cvStereoTrace", "cvStereoSphere", "cvStereoTetra",
       "cvGraphKnights", "cvGraphTrees", "cvGraphK33",
       "cvAlgMod", "cvAlgPencil",
-      "cvLogicRing", "cvLogicGame",
+      "cvLogicRing", "cvLogicApples", "cvLogicGame",
       "cvComboUrns", "cvComboGrid", "cvComboGas",
       "cvGeomMedian", "cvGeomCircle"
     ];
@@ -2578,56 +2751,209 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      const pts = state.k33Nodes.map(n => ({ ...n, px: n.x * w, py: n.y * h }));
-      const edges = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]];
-      if (state.k33Mode >= 8) edges.push([0,3], [2,5]);
-      if (state.k33Mode >= 9) edges.push([4,1]);
+      // Fixed clean regular hexagon C6: D1(top), K1(top-right), D2(bot-right), K2(bottom), D3(bot-left), K3(top-left)
+      const cx = w * 0.48, cy = h * 0.56;
+      const R = Math.min(w, h) * 0.29;
+      const hexMeta = [
+        { label: "Д₁", type: "H", ang: -Math.PI / 2 },
+        { label: "К₁", type: "W", ang: -Math.PI / 6 },
+        { label: "Д₂", type: "H", ang:  Math.PI / 6 },
+        { label: "К₂", type: "W", ang:  Math.PI / 2 },
+        { label: "Д₃", type: "H", ang:  (5 * Math.PI) / 6 },
+        { label: "К₃", type: "W", ang: -(5 * Math.PI) / 6 }
+      ];
+      const pts = hexMeta.map((m, id) => ({
+        id,
+        label: m.label,
+        type: m.type,
+        px: cx + R * Math.cos(m.ang),
+        py: cy + R * Math.sin(m.ang)
+      }));
 
-      // Shade hexagon interior
+      // 1. Shade hexagon interior (Jordan interior of C6)
       ctx.beginPath();
-      for (let i = 0; i < 6; i++) {
-        if (i === 0) ctx.moveTo(pts[i].px, pts[i].py);
-        else ctx.lineTo(pts[i].px, pts[i].py);
-      }
+      pts.forEach((p, i) => {
+        if (i === 0) ctx.moveTo(p.px, p.py);
+        else ctx.lineTo(p.px, p.py);
+      });
       ctx.closePath();
       ctx.fillStyle = "rgba(0, 136, 255, 0.07)";
       ctx.fill();
 
-      // Find crossings
-      const badEdges = new Set();
-      const crossPts = [];
-      for (let i = 0; i < edges.length; i++) {
-        for (let j = i + 1; j < edges.length; j++) {
-          const [u1, v1] = edges[i], [u2, v2] = edges[j];
-          if (u1 === u2 || u1 === v2 || v1 === u2 || v1 === v2) continue;
-          const cr = segCross(
-            { x: pts[u1].px, y: pts[u1].py },
-            { x: pts[v1].px, y: pts[v1].py },
-            { x: pts[u2].px, y: pts[u2].py },
-            { x: pts[v2].px, y: pts[v2].py }
-          );
-          if (cr) { badEdges.add(i); badEdges.add(j); crossPts.push(cr); }
+      // Build barrier polylines for exact intersection checking against the 9th path
+      const barriers = [];
+      // 6 edges of C6
+      for (let i = 0; i < 6; i++) {
+        const u = pts[i], v = pts[(i + 1) % 6];
+        barriers.push({ p1: { x: u.px, y: u.py }, p2: { x: v.px, y: v.py }, kind: "C6", u: i, v: (i + 1) % 6 });
+      }
+
+      // Draw 6 edges of hexagon C6
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 2.2;
+      for (let i = 0; i < 6; i++) {
+        const u = pts[i], v = pts[(i + 1) % 6];
+        ctx.beginPath();
+        ctx.moveTo(u.px, u.py);
+        ctx.lineTo(v.px, v.py);
+        ctx.stroke();
+      }
+
+      // 2. If mode >= 8: Draw 7th edge (inner chord D1-K2) and 8th edge (outer arc K3-D2 around top-right)
+      const outerArcPts = [];
+      if (state.k33Mode >= 8) {
+        // 7th edge: Inner vertical chord D1(0) -> K2(3)
+        ctx.beginPath();
+        ctx.moveTo(pts[0].px, pts[0].py);
+        ctx.lineTo(pts[3].px, pts[3].py);
+        ctx.strokeStyle = col.green;
+        ctx.lineWidth = 2.6;
+        ctx.stroke();
+        barriers.push({
+          p1: { x: pts[0].px, y: pts[0].py },
+          p2: { x: pts[3].px, y: pts[3].py },
+          kind: "inner",
+          u: 0,
+          v: 3
+        });
+
+        // 8th edge: Smooth outer arc from K3(5) around D1(0) & K1(1) to D2(2)
+        // Parametrize angle from -150 deg (-5pi/6) through -30 deg (-pi/6) to +30 deg (+pi/6) with bloated outer radius
+        const stepsArc = 28;
+        const aStart = -(5 * Math.PI) / 6;
+        const aEnd = Math.PI / 6;
+        for (let s = 0; s <= stepsArc; s++) {
+          const t = s / stepsArc;
+          const ang = aStart + (aEnd - aStart) * t;
+          const bulge = Math.sin(Math.PI * t); // 0 at endpoints K3 and D2, 1 in middle!
+          const rad = R + bulge * (R * 0.56);
+          outerArcPts.push({
+            x: cx + rad * Math.cos(ang),
+            y: cy + rad * Math.sin(ang)
+          });
+        }
+        ctx.beginPath();
+        outerArcPts.forEach((pt, idx) => {
+          if (idx === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        });
+        ctx.strokeStyle = col.blue;
+        ctx.lineWidth = 2.6;
+        ctx.stroke();
+
+        for (let s = 0; s < outerArcPts.length - 1; s++) {
+          barriers.push({
+            p1: outerArcPts[s],
+            p2: outerArcPts[s + 1],
+            kind: "outer",
+            u: s === 0 ? 5 : -1,
+            v: s === outerArcPts.length - 2 ? 2 : -1
+          });
         }
       }
 
-      edges.forEach(([u, v], idx) => {
+      // 3. If mode === 9: Draw 9th edge from D3(4) through draggable waypoint P to K1(1) and detect crossings!
+      let crossPts = [];
+      let hitKinds = new Set();
+      if (state.k33Mode === 9) {
+        const P = { x: state.k33WayP.x * w, y: state.k33WayP.y * h };
+        const A = { x: pts[4].px, y: pts[4].py }; // D3
+        const B = { x: pts[1].px, y: pts[1].py }; // K1
+        // Quadratic Bezier control point C so curve at t=0.5 passes right through P:
+        // 0.25*A + 0.5*C + 0.25*B = P  =>  C = 2*P - 0.5*(A + B)
+        const ctrl = {
+          x: 2 * P.x - 0.5 * (A.x + B.x),
+          y: 2 * P.y - 0.5 * (A.y + B.y)
+        };
+        const curvePts = [];
+        const N_SEG = 28;
+        for (let s = 0; s <= N_SEG; s++) {
+          const t = s / N_SEG;
+          const mt = 1 - t;
+          curvePts.push({
+            x: mt * mt * A.x + 2 * mt * t * ctrl.x + t * t * B.x,
+            y: mt * mt * A.y + 2 * mt * t * ctrl.y + t * t * B.y
+          });
+        }
+
+        // Check intersections of curve segments against barriers (ignoring tiny neighborhood of endpoints D3=4 and K1=1)
+        for (let s = 0; s < N_SEG; s++) {
+          const c1 = curvePts[s], c2 = curvePts[s + 1];
+          for (const b of barriers) {
+            if (s === 0 && (b.u === 4 || b.v === 4)) continue;
+            if (s === N_SEG - 1 && (b.u === 1 || b.v === 1)) continue;
+            const cr = segCross(c1, c2, b.p1, b.p2);
+            if (cr) {
+              // Avoid duplicate crossing points within 6px
+              if (!crossPts.some(p => Math.hypot(p.x - cr.x, p.y - cr.y) < 8)) {
+                crossPts.push(cr);
+                hitKinds.add(b.kind);
+              }
+            }
+          }
+        }
+
+        // Draw 9th path D3 -> P -> K1 in red dashed/solid line
+        ctx.save();
+        ctx.setLineDash([6, 4]);
         ctx.beginPath();
-        ctx.moveTo(pts[u].px, pts[u].py);
-        ctx.lineTo(pts[v].px, pts[v].py);
-        ctx.strokeStyle = badEdges.has(idx) ? col.red : (idx >= 6 ? col.blue : col.ink);
-        ctx.lineWidth = idx >= 6 ? 2.8 : 2;
+        curvePts.forEach((pt, idx) => {
+          if (idx === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        });
+        ctx.strokeStyle = col.red;
+        ctx.lineWidth = 2.8;
         ctx.stroke();
-      });
+        ctx.restore();
 
-      crossPts.forEach(pt => drawDot(ctx, pt.x, pt.y, 7, col.red));
+        // Draw intersection markers (red circle with white X)
+        crossPts.forEach(cr => {
+          drawDot(ctx, cr.x, cr.y, 8, col.red, "#FFFFFF", 2);
+          ctx.strokeStyle = "#FFFFFF";
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.moveTo(cr.x - 3.2, cr.y - 3.2); ctx.lineTo(cr.x + 3.2, cr.y + 3.2);
+          ctx.moveTo(cr.x + 3.2, cr.y - 3.2); ctx.lineTo(cr.x - 3.2, cr.y + 3.2);
+          ctx.stroke();
+        });
 
+        // Draw draggable control point handle P
+        drawDot(ctx, P.x, P.y, 10, col.red, "#FFFFFF", 2.4);
+        ctx.font = "700 10.5px Inter, sans-serif";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("P", P.x, P.y + 0.5);
+      }
+
+      // 4. Top status pill badge
+      let badgeStr = "";
+      let badgeCol = col.green;
+      let badgeBg = "rgba(236,253,245,0.96)";
+      let badgeBorder = "rgba(16,185,129,0.35)";
+      if (state.k33Mode === 6) {
+        badgeStr = "Шаг 1: цикл C₆ из 6 тропинок (0 пересечений ✓)";
+      } else if (state.k33Mode === 8) {
+        badgeStr = "8 тропинок: Д₁–К₂ внутри + К₃–Д₂ снаружи (0 пер. ✓)";
+      } else {
+        badgeCol = col.red;
+        badgeBg = "rgba(255,241,242,0.96)";
+        badgeBorder = "rgba(239,68,68,0.35)";
+        const hitName = hitKinds.has("inner")
+          ? "хорду Д₁–К₂"
+          : (hitKinds.has("outer") ? "дугу К₃–Д₂" : "контур C₆");
+        badgeStr = `9-я тропинка Д₃–К₁ пересекает ${hitName} (${crossPts.length || 1} пер.) ✗`;
+      }
+      drawPillBadge(ctx, badgeStr, w * 0.5, 19, badgeCol, badgeBg, badgeBorder, "center");
+
+      // 5. Draw the 6 vertices (Houses in Blue, Wells in Green)
       pts.forEach(p => {
         ctx.beginPath();
-        ctx.arc(p.px, p.py, 18, 0, Math.PI * 2);
+        ctx.arc(p.px, p.py, 17, 0, Math.PI * 2);
         ctx.fillStyle = p.type === "H" ? col.blue : col.green;
         ctx.fill();
         ctx.strokeStyle = "#FFFFFF";
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.2;
         ctx.stroke();
         ctx.font = "700 12px Inter, sans-serif";
         ctx.fillStyle = "#FFFFFF";
@@ -2635,6 +2961,7 @@
         ctx.textBaseline = "middle";
         ctx.fillText(p.label, p.px, p.py);
       });
+      ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
     }
 
@@ -2915,7 +3242,213 @@
       ctx.textBaseline = "alphabetic";
     }
 
-    // --- 5.10: LOGIC CARD 2 (Game 1 x N — Unified Strip, Green Playable Cells & Period-4 Brackets) ---
+    // --- 5.9b: LOGIC CARD 2 (Hulk & Thanos — 20 Apples in a Row Symmetry Strategy) ---
+    function drawLogicApples() {
+      const c = canvases.cvLogicApples;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      const N = 20;
+      const cellW = Math.min(24, (w - 20) / N);
+      const cellH = 34;
+      const sx = (w - N * cellW) / 2;
+      const cy = h * 0.52;
+      const topY = cy - cellH / 2;
+      const botY = cy + cellH / 2;
+      const sectorX = idx1 => sx + (idx1 - 0.5) * cellW; // 1..20
+
+      // Count remaining apples in Left (1..9) and Right (12..20)
+      let leftCnt = 0, rightCnt = 0, totalCnt = 0;
+      for (let i = 0; i < 20; i++) {
+        if (state.apples[i]) {
+          totalCnt++;
+          if (i < 9) leftCnt++;
+          else if (i >= 11) rightCnt++;
+        }
+      }
+
+      // 1. Top status badge
+      let topMsg = "";
+      let topColor = col.green;
+      if (totalCnt === 0) {
+        topMsg = "Яблок не осталось! Халк забрал последние и победил ✓";
+      } else if (totalCnt === 20) {
+        topMsg = "Старт (20 яблок): возьмите 2 центральных №10 и №11!";
+        topColor = col.blue;
+      } else {
+        topMsg = `Слева: ${leftCnt} ябл. | Справа: ${rightCnt} ябл. (Симметрия i ↔ 21−i ✓)`;
+      }
+      drawPillBadge(ctx, topMsg, w * 0.5, 20, topColor, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center");
+
+      // 2. Vertical Axis of Symmetry right between Sector 10 and Sector 11
+      const symX = sx + 10 * cellW;
+      ctx.save();
+      ctx.setLineDash([5, 4]);
+      ctx.strokeStyle = col.green;
+      ctx.lineWidth = 2.0;
+      ctx.beginPath();
+      ctx.moveTo(symX, 42);
+      ctx.lineTo(symX, h - 22);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.font = "700 10.5px Inter, sans-serif";
+      ctx.fillStyle = col.green;
+      ctx.textAlign = "center";
+      ctx.fillText("Ось симметрии (10 | 11)", symX, h - 10);
+
+      // 3. Draw unified 20-sector strip & apples
+      ctx.beginPath();
+      ctx.roundRect(sx, topY, N * cellW, cellH, 7);
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fill();
+
+      // Determine hovered sectors
+      const hovSet = new Set();
+      if (state.appleHoverIdx >= 0 && !state.appleLock) {
+        const h0 = state.appleHoverIdx;
+        if (state.appleTakeCount === 1 && state.apples[h0]) {
+          hovSet.add(h0);
+        } else if (state.appleTakeCount === 2) {
+          if (h0 < 19 && state.apples[h0] && state.apples[h0 + 1]) {
+            hovSet.add(h0); hovSet.add(h0 + 1);
+          } else if (h0 > 0 && state.apples[h0 - 1] && state.apples[h0]) {
+            hovSet.add(h0 - 1); hovSet.add(h0);
+          }
+        }
+      }
+
+      for (let i = 0; i < N; i++) {
+        const rx = sx + i * cellW;
+        const isCenter = (i === 9 || i === 10);
+        const hasApple = state.apples[i] === 1;
+        const isHov = hovSet.has(i);
+
+        if (isHov) {
+          ctx.fillStyle = "rgba(16, 185, 129, 0.22)";
+          ctx.fillRect(rx + 0.5, topY + 0.5, cellW - 1, cellH - 1);
+        } else if (isCenter) {
+          ctx.fillStyle = "rgba(16, 185, 129, 0.10)";
+          ctx.fillRect(rx + 0.5, topY + 0.5, cellW - 1, cellH - 1);
+        } else if (!hasApple) {
+          ctx.fillStyle = "rgba(148, 163, 184, 0.12)";
+          ctx.fillRect(rx + 0.5, topY + 0.5, cellW - 1, cellH - 1);
+        }
+
+        if (i > 0) {
+          ctx.beginPath();
+          ctx.moveTo(rx, topY);
+          ctx.lineTo(rx, botY);
+          ctx.strokeStyle = i === 10 ? col.green : "rgba(148, 163, 184, 0.38)";
+          ctx.lineWidth = i === 10 ? 2.0 : 1.0;
+          ctx.stroke();
+        }
+
+        const cxCell = rx + cellW / 2;
+        if (hasApple) {
+          // Crisp vector apple icon (red/green circle + leaf)
+          const rApp = Math.min(6.2, cellW * 0.34);
+          ctx.beginPath();
+          ctx.arc(cxCell, cy + 1.5, rApp, 0, Math.PI * 2);
+          ctx.fillStyle = isCenter ? col.green : "#EF4444";
+          ctx.fill();
+          ctx.strokeStyle = "#FFFFFF";
+          ctx.lineWidth = 1.3;
+          ctx.stroke();
+
+          // Tiny green leaf on top of apple
+          ctx.beginPath();
+          ctx.moveTo(cxCell, cy + 1.5 - rApp);
+          ctx.lineTo(cxCell + 2.5, cy - rApp - 2.5);
+          ctx.strokeStyle = "#10B981";
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+        } else {
+          // Empty sector cross
+          ctx.strokeStyle = isCenter ? col.green : "rgba(148, 163, 184, 0.65)";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(cxCell - 3.2, cy - 3.2); ctx.lineTo(cxCell + 3.2, cy + 3.2);
+          ctx.moveTo(cxCell + 3.2, cy - 3.2); ctx.lineTo(cxCell - 3.2, cy + 3.2);
+          ctx.stroke();
+        }
+
+        // Staggered sector numbers below so 1..20 never crowd even on narrow screens
+        const numY = botY + (i % 2 === 0 ? 13 : 24);
+        ctx.font = isCenter ? "700 9.5px Inter, sans-serif" : "600 9px Inter, sans-serif";
+        ctx.fillStyle = isCenter ? col.green : col.muted;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        ctx.fillText(String(i + 1), cxCell, numY);
+      }
+
+      // Outer border of 20-sector strip
+      ctx.beginPath();
+      ctx.roundRect(sx, topY, N * cellW, cellH, 7);
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      // 4. Upper symmetry arc showing Thanos's move and Hulk's mirror response (i <-> 21 - i)
+      if (state.appleLastArc) {
+        const { from, to, firstMove } = state.appleLastArc;
+        if (firstMove) {
+          const xMid = symX;
+          drawPillBadge(ctx, "1-й ход Халка: центр №10–11", xMid, topY - 22, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center");
+        } else {
+          const x1 = (sectorX(from[0]) + sectorX(from[from.length - 1])) / 2;
+          const x2 = (sectorX(to[0]) + sectorX(to[to.length - 1])) / 2;
+          ctx.beginPath();
+          ctx.moveTo(x1, topY - 4);
+          ctx.quadraticCurveTo(symX, topY - 48, x2, topY - 4);
+          ctx.strokeStyle = col.green;
+          ctx.lineWidth = 2.4;
+          ctx.stroke();
+
+          drawDot(ctx, x1, topY - 4, 4, col.amber);
+          drawDot(ctx, x2, topY - 4, 4, col.green);
+
+          const fStr = from.join(",");
+          const tStr = to.join(",");
+          drawPillBadge(
+            ctx,
+            `Танос: №${fStr} ⟷ Халк: №${tStr}`,
+            symX,
+            topY - 34,
+            col.green,
+            "rgba(236,253,245,0.96)",
+            "rgba(16,185,129,0.35)",
+            "center"
+          );
+        }
+      }
+
+      // 5. Lower wing brackets ("Левый ряд: 9 яблок" and "Правый ряд: 9 яблок")
+      const brY = botY + 33;
+      const drawWingBracket = (cStart, cEnd, label) => {
+        const xL = sx + (cStart - 1) * cellW + 2;
+        const xR = sx + cEnd * cellW - 2;
+        ctx.beginPath();
+        ctx.moveTo(xL, brY);
+        ctx.lineTo(xL, brY + 5);
+        ctx.lineTo(xR, brY + 5);
+        ctx.lineTo(xR, brY);
+        ctx.strokeStyle = "rgba(100, 116, 139, 0.45)";
+        ctx.lineWidth = 1.3;
+        ctx.stroke();
+        ctx.font = "600 10px Inter, sans-serif";
+        ctx.fillStyle = col.muted;
+        ctx.textAlign = "center";
+        ctx.fillText(label, (xL + xR) / 2, brY + 17);
+      };
+      drawWingBracket(1, 9, `Левый ряд (${leftCnt})`);
+      drawWingBracket(12, 20, `Правый ряд (${rightCnt})`);
+      ctx.textAlign = "left";
+    }
+
+    // --- 5.10: LOGIC CARD 3 (Game 1 x N — Unified Strip, Green Playable Cells & Period-4 Brackets) ---
     function drawLogicGame() {
       const c = canvases.cvLogicGame;
       if (!c) return;
@@ -3089,25 +3622,6 @@
       ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
     }
-
-    // --- 5.11: COMBINATORICS CARD 1 (Andre's Reflection Principle & Catalan Numbers) ---
-    const CATALAN_PATHS = [
-      // Preset 0: Bad path #1: R, U, U (hits y=x+1 at K=(1,2), index 3), then R, U, R, R, U -> (4,4)
-      {
-        pts: [[0,0],[1,0],[1,1],[1,2],[2,2],[2,3],[3,3],[4,3],[4,4]],
-        kIdx: 3
-      },
-      // Preset 1: Bad path #2: R, R, U, U, U (hits y=x+1 at K=(2,3), index 5), then R, R, U -> (4,4)
-      {
-        pts: [[0,0],[1,0],[2,0],[2,1],[2,2],[2,3],[3,3],[4,3],[4,4]],
-        kIdx: 5
-      },
-      // Preset 2: Good Dyck path: R, U, R, R, U, U, R, U -> stays <= x everywhere!
-      {
-        pts: [[0,0],[1,0],[1,1],[2,1],[3,1],[3,2],[3,3],[4,3],[4,4]],
-        kIdx: -1
-      }
-    ];
 
     function drawPillBadge(ctx, text, x, y, textColor, bgColor = "rgba(255,255,255,0.92)", borderColor = "rgba(148,163,184,0.35)", align = "center") {
       ctx.save();
@@ -3315,35 +3829,6 @@
       ctx.textAlign = "left";
     }
 
-    function getTrominoesForValidCell(cutR, cutC) {
-      // 16 outer pinwheel 1x3 / 3x1 trominoes covering the 8x8 frame around the central 4x4 square (r=2..5, c=2..5)
-      const outer = [
-        // Top-left 2x6 arm (r=0..1, c=0..5)
-        { r: 0, c: 0, h: 1, w: 3, grp: 0 }, { r: 0, c: 3, h: 1, w: 3, grp: 0 },
-        { r: 1, c: 0, h: 1, w: 3, grp: 0 }, { r: 1, c: 3, h: 1, w: 3, grp: 0 },
-        // Right-top 6x2 arm (r=0..5, c=6..7)
-        { r: 0, c: 6, h: 3, w: 1, grp: 1 }, { r: 0, c: 7, h: 3, w: 1, grp: 1 },
-        { r: 3, c: 6, h: 3, w: 1, grp: 1 }, { r: 3, c: 7, h: 3, w: 1, grp: 1 },
-        // Bottom-right 2x6 arm (r=6..7, c=2..7)
-        { r: 6, c: 2, h: 1, w: 3, grp: 0 }, { r: 6, c: 5, h: 1, w: 3, grp: 0 },
-        { r: 7, c: 2, h: 1, w: 3, grp: 0 }, { r: 7, c: 5, h: 1, w: 3, grp: 0 },
-        // Left-bottom 6x2 arm (r=2..7, c=0..1)
-        { r: 2, c: 0, h: 3, w: 1, grp: 1 }, { r: 2, c: 1, h: 3, w: 1, grp: 1 },
-        { r: 5, c: 0, h: 3, w: 1, grp: 1 }, { r: 5, c: 1, h: 3, w: 1, grp: 1 }
-      ];
-      // 5 inner trominoes tiling the central 4x4 square (r=2..5, c=2..5) minus the corner (cutR, cutC)
-      const rowRestStart = (cutR === 2) ? 3 : 2;
-      const colSpanStart = (cutC === 2) ? 3 : 2;
-      const inner = [
-        { r: cutR, c: colSpanStart, h: 1, w: 3, grp: 2 },
-        { r: rowRestStart, c: 2, h: 3, w: 1, grp: 2 },
-        { r: rowRestStart, c: 3, h: 3, w: 1, grp: 2 },
-        { r: rowRestStart, c: 4, h: 3, w: 1, grp: 2 },
-        { r: rowRestStart, c: 5, h: 3, w: 1, grp: 2 }
-      ];
-      return outer.concat(inner);
-    }
-
     function drawComboGrid() {
       const c = canvases.cvComboGrid;
       if (!c) return;
@@ -3356,138 +3841,133 @@
       const ox = Math.round((w - boardW) / 2) + 6;
       const oy = 42;
 
-      const cutR = state.gridCutR, cutC = state.gridCutC;
-      const validCut = isGridCellValid(cutR, cutC);
-      const mode = state.gridMode;
+      const info = analyzeRookKnightBoard();
+      const kR = info.rooks.length;
+      const kN = info.knights.length;
 
-      // Top status pill badge
-      if (!validCut) {
-        const d1 = (cutR + cutC) % 3;
-        const msg = d1 !== 1
-          ? `Вырезана ${getGridCellName(cutR, cutC)}: цветов ↗ осталось 22:20:21 (не поровну!)`
-          : `Вырезана ${getGridCellName(cutR, cutC)}: цветов ↘ осталось 22:20:21 (не поровну!)`;
-        drawPillBadge(ctx, msg, w * 0.5, 19, col.red, "rgba(255,241,242,0.96)", "rgba(239,68,68,0.35)", "center");
-      } else if (mode === 0) {
-        drawPillBadge(ctx, "Раскраска ↗ (r+c) mod 3: цвет №1 = 22 кл. (остальных по 21)", w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center");
-      } else if (mode === 1) {
-        drawPillBadge(ctx, "Пересечение диагоналей ↗ и ↘: подходят ровно 4 клетки!", w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center");
-      } else {
-        drawPillBadge(ctx, `Вырезана ${getGridCellName(cutR, cutC)}: уложено ${state.gridTiles} из 21 полосок 1×3 ✓`, w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center");
-      }
+      // Build conflict lookup & hovered piece attack lookup
+      const conflictSet = new Set();
+      info.conflicts.forEach(([p1, p2]) => {
+        conflictSet.add(`${p1.r},${p1.c}`);
+        conflictSet.add(`${p2.r},${p2.c}`);
+      });
 
-      // 3-color palette for cells: index 1 is the excess color (22 cells on 8x8 board)
-      const diagFill = [
-        "rgba(241, 245, 249, 0.92)", // remainder 0 (21 cells)
-        "rgba(219, 234, 254, 0.95)", // remainder 1 (22 cells — excess!)
-        "rgba(254, 243, 199, 0.88)"  // remainder 2 (21 cells)
-      ];
-      const diagNumCol = ["#64748B", "#0284C7", "#D97706"];
-
-      // 1. Draw 8x8 cells with 3-color diagonal coloring
-      for (let r = 0; r < 8; r++) {
-        for (let cc = 0; cc < 8; cc++) {
-          const x = ox + cc * cell;
-          const y = oy + r * cell;
-          const isCut = (r === cutR && cc === cutC);
-          const isValid4 = isGridCellValid(r, cc);
-
-          const rem1 = (r + cc) % 3;
-          const rem2 = (r + 7 - cc) % 3;
-          const activeRem = (!validCut && rem1 === 1) ? rem2 : rem1;
-
-          ctx.fillStyle = diagFill[activeRem];
-          if (mode === 1 && validCut) {
-            ctx.fillStyle = isValid4
-              ? "rgba(209, 250, 229, 0.96)"
-              : ((rem1 === 1 || rem2 === 1) ? "rgba(224, 242, 254, 0.55)" : "rgba(248, 250, 252, 0.9)");
-          }
-          ctx.fillRect(x, y, cell, cell);
-
-          ctx.strokeStyle = "rgba(148, 163, 184, 0.45)";
-          ctx.lineWidth = 1;
-          ctx.strokeRect(x, y, cell, cell);
-
-          // Show color number (1, 2, 3) when not covered by trominoes
-          if (!isCut && (mode !== 2 || !validCut || state.gridTiles < 21)) {
-            ctx.font = "600 10px Inter, sans-serif";
-            ctx.fillStyle = (mode === 1 && isValid4) ? "#047857" : diagNumCol[activeRem];
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            const labelNum = activeRem === 1 ? "1" : (activeRem === 0 ? "2" : "3");
-            ctx.fillText(labelNum, x + cell / 2, y + cell / 2);
+      const hov = state.rkHover;
+      const hovPiece = hov ? state.rkPieces.find(p => p.r === hov.r && p.c === hov.c) : null;
+      const hovAttackSet = new Set();
+      if (hovPiece) {
+        for (let rr = 0; rr < 8; rr++) {
+          for (let cc = 0; cc < 8; cc++) {
+            if (rr === hovPiece.r && cc === hovPiece.c) continue;
+            if (hovPiece.type === "R") {
+              if (rr === hovPiece.r || cc === hovPiece.c) hovAttackSet.add(`${rr},${cc}`);
+            } else {
+              const dr = Math.abs(rr - hovPiece.r), dc = Math.abs(cc - hovPiece.c);
+              if ((dr === 1 && dc === 2) || (dr === 2 && dc === 1)) hovAttackSet.add(`${rr},${cc}`);
+            }
           }
         }
       }
 
-      // 2. If in tiling mode (and valid cut cell), draw up to state.gridTiles 1x3 trominoes
-      if (validCut && mode === 2 && state.gridTiles > 0) {
-        const tiles = getTrominoesForValidCell(cutR, cutC);
-        const count = Math.min(tiles.length, state.gridTiles);
-        const grpFills = [
-          "rgba(224, 242, 254, 0.94)", // Horizontal outer pinwheel arms
-          "rgba(209, 250, 229, 0.94)", // Vertical outer pinwheel arms
-          "rgba(254, 243, 199, 0.95)"  // Central 4x4 block around cut cell
-        ];
-        const grpStrokes = ["#0284C7", "#059669", "#D97706"];
+      // 1. Top status pill badge
+      if (info.conflicts.length > 0) {
+        const [a, b] = info.conflicts[0];
+        drawPillBadge(
+          ctx,
+          `Бой: ${getGridCellName(a.r, a.c)} и ${getGridCellName(b.r, b.c)} бьют друг друга! ✗`,
+          w * 0.5, 19, col.red, "rgba(255,241,242,0.96)", "rgba(239,68,68,0.35)", "center"
+        );
+      } else if (kR >= 6) {
+        drawPillBadge(
+          ctx,
+          `При k = ${kR}: свободно лишь ${info.freeRows}×${info.freeCols} = ${info.freeCells} кл. (< ${kR} коней!) ✗`,
+          w * 0.5, 19, col.red, "rgba(255,241,242,0.96)", "rgba(239,68,68,0.35)", "center"
+        );
+      } else if (kR === 5 && kN === 5) {
+        drawPillBadge(
+          ctx,
+          "Пример k = 5: 5 ладей + 5 коней (0 атак, максимум!) ✓",
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          `Ладей: ${kR} | Небитых клеток: ${info.freeRows}×${info.freeCols} = ${info.freeCells} | Коней: ${kN}`,
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
+      }
 
-        for (let i = 0; i < count; i++) {
-          const t = tiles[i];
-          const tx = ox + t.c * cell + 2.2;
-          const ty = oy + t.r * cell + 2.2;
-          const tw = t.w * cell - 4.4;
-          const th = t.h * cell - 4.4;
+      // 2. Draw 8x8 board cells
+      for (let r = 0; r < 8; r++) {
+        for (let cc = 0; cc < 8; cc++) {
+          const x = ox + cc * cell;
+          const y = oy + r * cell;
+          const isDark = (r + cc) % 2 === 1;
+          const attackedByRook = info.rookRows.has(r) || info.rookCols.has(cc);
+          const isHovTarget = hovAttackSet.has(`${r},${cc}`);
 
-          ctx.beginPath();
-          ctx.roundRect(tx, ty, tw, th, 5);
-          ctx.fillStyle = grpFills[t.grp];
-          ctx.fill();
-          ctx.strokeStyle = grpStrokes[t.grp];
-          ctx.lineWidth = 1.8;
-          ctx.stroke();
+          // Base chessboard square or Rook-attacked / Safe highlight
+          if (attackedByRook) {
+            ctx.fillStyle = isDark ? "rgba(241, 245, 249, 0.95)" : "rgba(248, 250, 252, 0.98)";
+          } else {
+            // Safe cell not attacked by any Rook!
+            ctx.fillStyle = "rgba(209, 250, 229, 0.85)";
+          }
+          ctx.fillRect(x, y, cell, cell);
 
-          // Subtle internal dividers & 3 color dots inside each tromino
-          for (let s = 0; s < 3; s++) {
-            const cr = t.r + (t.h === 3 ? s : 0);
-            const cc = t.c + (t.w === 3 ? s : 0);
-            const cxDot = ox + (cc + 0.5) * cell;
-            const cyDot = oy + (cr + 0.5) * cell;
-            const rem = (cr + cc) % 3;
-            const dotCols = ["#64748B", "#0284C7", "#D97706"];
+          if (isHovTarget) {
+            ctx.fillStyle = hovPiece.type === "R" ? "rgba(239, 68, 68, 0.22)" : "rgba(245, 158, 11, 0.30)";
+            ctx.fillRect(x + 1, y + 1, cell - 2, cell - 2);
+          }
+
+          ctx.strokeStyle = attackedByRook ? "rgba(148, 163, 184, 0.42)" : "rgba(16, 185, 129, 0.65)";
+          ctx.lineWidth = attackedByRook ? 1.0 : 1.5;
+          ctx.strokeRect(x, y, cell, cell);
+
+          // Subtle red dot on empty Rook-attacked squares
+          if (attackedByRook && !state.rkPieces.some(p => p.r === r && p.c === cc)) {
             ctx.beginPath();
-            ctx.arc(cxDot, cyDot, 3.0, 0, Math.PI * 2);
-            ctx.fillStyle = dotCols[rem];
+            ctx.arc(x + cell / 2, y + cell / 2, 1.8, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(239, 68, 68, 0.35)";
             ctx.fill();
           }
         }
       }
 
-      // 3. Highlight the 4 valid cells (c6, f6, c3, f3) with dashed green borders when in mode 1 or when an invalid cell is picked
-      if (mode === 1 || !validCut) {
-        [[2, 2], [2, 5], [5, 2], [5, 5]].forEach(([vr, vc]) => {
-          if (vr === cutR && vc === cutC) return;
-          ctx.save();
-          ctx.setLineDash([3, 2]);
-          ctx.strokeStyle = "#10B981";
-          ctx.lineWidth = 2.0;
-          ctx.strokeRect(ox + vc * cell + 1.5, oy + vr * cell + 1.5, cell - 3, cell - 3);
-          ctx.restore();
-        });
-      }
+      // 3. Draw conflict lines if any two pieces attack each other
+      info.conflicts.forEach(([p1, p2]) => {
+        ctx.save();
+        ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = col.red;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(ox + (p1.c + 0.5) * cell, oy + (p1.r + 0.5) * cell);
+        ctx.lineTo(ox + (p2.c + 0.5) * cell, oy + (p2.r + 0.5) * cell);
+        ctx.stroke();
+        ctx.restore();
+      });
 
-      // 4. Draw the Cut-Out Cell (dark slate with crisp cross ✕)
-      const cutX = ox + cutC * cell;
-      const cutY = oy + cutR * cell;
-      ctx.fillStyle = validCut ? "#0F172A" : "#EF4444";
-      ctx.fillRect(cutX + 1.5, cutY + 1.5, cell - 3, cell - 3);
+      // 4. Draw Rooks (♜) and Knights (♞)
+      state.rkPieces.forEach(p => {
+        const cx = ox + (p.c + 0.5) * cell;
+        const cy = oy + (p.r + 0.5) * cell;
+        const hasConflict = conflictSet.has(`${p.r},${p.c}`);
+        const isRook = p.type === "R";
 
-      ctx.strokeStyle = "#FFFFFF";
-      ctx.lineWidth = 2.2;
-      ctx.beginPath();
-      ctx.moveTo(cutX + 7, cutY + 7);
-      ctx.lineTo(cutX + cell - 7, cutY + cell - 7);
-      ctx.moveTo(cutX + cell - 7, cutY + 7);
-      ctx.lineTo(cutX + 7, cutY + cell - 7);
-      ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, cell * 0.40, 0, Math.PI * 2);
+        ctx.fillStyle = hasConflict ? col.red : (isRook ? "#0284C7" : "#059669");
+        ctx.fill();
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+
+        ctx.font = "700 16px sans-serif";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(isRook ? "♜" : "♞", cx, cy + 1);
+      });
 
       // Outer board frame
       ctx.strokeStyle = col.ink;
@@ -3851,24 +4331,27 @@
         }
       });
 
-      // K3,3 drag
+      // K3,3 waypoint P drag (smoothly steers the 9th path D3 -> P -> K1)
       const cvK33 = document.getElementById("cvGraphK33");
       cvK33.addEventListener("pointerdown", e => {
         const rect = cvK33.getBoundingClientRect();
-        const px = (e.clientX - rect.left) / rect.width;
-        const py = (e.clientY - rect.top) / rect.height;
-        state.k33Nodes.forEach((n, idx) => {
-          if (Math.hypot(px - n.x, py - n.y) < 0.08) state.k33DragIdx = idx;
-        });
+        const px = Math.max(0.08, Math.min(0.92, (e.clientX - rect.left) / rect.width));
+        const py = Math.max(0.14, Math.min(0.92, (e.clientY - rect.top) / rect.height));
+        if (state.k33Mode !== 9) {
+          setK33Mode(9, state.k33RoutePreset);
+        }
+        state.k33DraggingP = true;
+        state.k33WayP = { x: px, y: py };
+        cvK33.setPointerCapture(e.pointerId);
       });
       cvK33.addEventListener("pointermove", e => {
-        if (state.k33DragIdx < 0) return;
+        if (!state.k33DraggingP) return;
         const rect = cvK33.getBoundingClientRect();
-        state.k33Nodes[state.k33DragIdx].x = Math.max(0.08, Math.min(0.92, (e.clientX - rect.left) / rect.width));
-        state.k33Nodes[state.k33DragIdx].y = Math.max(0.08, Math.min(0.92, (e.clientY - rect.top) / rect.height));
+        state.k33WayP.x = Math.max(0.08, Math.min(0.92, (e.clientX - rect.left) / rect.width));
+        state.k33WayP.y = Math.max(0.14, Math.min(0.92, (e.clientY - rect.top) / rect.height));
       });
       window.addEventListener("pointerup", () => {
-        state.k33DragIdx = -1;
+        state.k33DraggingP = false;
         state.geomDragKey = null;
         state.auxDragKey = null;
       });
@@ -3936,6 +4419,89 @@
         }
       });
 
+      // Logic Card 2: Hulk & Thanos 20 Apples in a Row (click to take 1 or 2 adjacent apples, Hulk replies symmetrically!)
+      const cvLA = document.getElementById("cvLogicApples");
+      cvLA.addEventListener("pointermove", e => {
+        const rect = cvLA.getBoundingClientRect();
+        const N = 20;
+        const cellW = Math.min(24, (rect.width - 20) / N);
+        const sx = (rect.width - N * cellW) / 2;
+        const idx = Math.floor(((e.clientX - rect.left) - sx) / cellW);
+        state.appleHoverIdx = (idx >= 0 && idx < 20) ? idx : -1;
+      });
+      cvLA.addEventListener("pointerleave", () => {
+        state.appleHoverIdx = -1;
+      });
+      cvLA.addEventListener("pointerdown", e => {
+        if (state.appleLock) return;
+        const rect = cvLA.getBoundingClientRect();
+        const N = 20;
+        const cellW = Math.min(24, (rect.width - 20) / N);
+        const sx = (rect.width - N * cellW) / 2;
+        const h0 = Math.floor(((e.clientX - rect.left) - sx) / cellW);
+        if (h0 < 0 || h0 >= 20) return;
+
+        let takeList = [];
+        if (state.appleTakeCount === 1) {
+          if (state.apples[h0]) takeList = [h0];
+        } else {
+          if (h0 < 19 && state.apples[h0] && state.apples[h0 + 1]) {
+            takeList = [h0, h0 + 1];
+          } else if (h0 > 0 && state.apples[h0 - 1] && state.apples[h0]) {
+            takeList = [h0 - 1, h0];
+          }
+        }
+        if (takeList.length === 0) return;
+
+        const wasFull = state.apples.every(v => v === 1);
+        const wasSymmetricSplit =
+          !state.apples[9] &&
+          !state.apples[10] &&
+          state.apples.every((v, idx) => v === state.apples[19 - idx]);
+
+        takeList.forEach(idx => { state.apples[idx] = 0; });
+
+        // Case 1: Player manually took the two central apples (10 and 11) on the first move as Hulk!
+        if (wasFull && takeList.length === 2 && takeList[0] === 9 && takeList[1] === 10) {
+          state.appleLastArc = { from: [10, 11], to: [10, 11], firstMove: true };
+          document.getElementById("appleStatusBox").textContent =
+            "🟢 1-й ход Халка сделан: взяты центральные яблоки №10 и №11! По бокам два независимых ряда по 9 яблок. Сделайте ход за Таноса!";
+          return;
+        }
+
+        // Case 2: Board was symmetric with center empty -> Player acted as Thanos, so Hulk responds symmetrically!
+        if (wasSymmetricSplit && takeList.every(idx => idx !== 9 && idx !== 10)) {
+          const mirrorList = takeList.map(idx => 19 - idx).sort((a, b) => a - b);
+          state.appleLock = true;
+          const tLabels = takeList.map(i => i + 1).join(" и №");
+          const mLabels = mirrorList.map(i => i + 1).join(" и №");
+          document.getElementById("appleStatusBox").textContent =
+            `Танос взял сектор №${tLabels}... Халк готовит зеркальный ответ (21 − i)!`;
+          setTimeout(() => {
+            mirrorList.forEach(idx => { state.apples[idx] = 0; });
+            state.appleLastArc = {
+              from: takeList.map(i => i + 1),
+              to: mirrorList.map(i => i + 1),
+              firstMove: false
+            };
+            state.appleLock = false;
+            const rem = state.apples.reduce((s, v) => s + v, 0);
+            if (rem === 0) {
+              document.getElementById("appleStatusBox").textContent =
+                `🏆 Танос взял №${tLabels}, а Халк зеркально забрал последние яблоки №${mLabels} (21 − i) и ПОБЕДИЛ!`;
+            } else {
+              document.getElementById("appleStatusBox").textContent =
+                `Танос взял №${tLabels} ⟷ Халк зеркально ответил №${mLabels} (осталось ${rem / 2} + ${rem / 2} яблок). Снова ход Таноса!`;
+            }
+          }, 340);
+        } else {
+          // If player didn't take 10-11 on move 1, remind them of Hulk's winning opening!
+          const rem = state.apples.reduce((s, v) => s + v, 0);
+          document.getElementById("appleStatusBox").textContent =
+            `Взяты секторы №${takeList.map(i => i + 1).join(", №")} (осталось ${rem} ябл.). Совет: нажмите «1-й ход Халка (10–11)» для идеальной симметрии!`;
+        }
+      });
+
       // Logic Game click
       const cvLG = document.getElementById("cvLogicGame");
       cvLG.addEventListener("pointerdown", e => {
@@ -3969,8 +4535,25 @@
         }
       });
 
-      // Combinatorics Card 2: 8x8 Grid click to cut cell
+      // Combinatorics Card 2: 8x8 Chessboard Rooks & Knights hover + click
       const cvGrid = document.getElementById("cvComboGrid");
+      cvGrid.addEventListener("pointermove", e => {
+        const rect = cvGrid.getBoundingClientRect();
+        const cell = Math.min(Math.floor((rect.width - 76) / 8), Math.floor((rect.height - 76) / 8));
+        const boardW = cell * 8;
+        const ox = Math.round((rect.width - boardW) / 2) + 6;
+        const oy = 42;
+        const cc = Math.floor((e.clientX - rect.left - ox) / cell);
+        const rr = Math.floor((e.clientY - rect.top - oy) / cell);
+        if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) {
+          state.rkHover = { r: rr, c: cc };
+        } else {
+          state.rkHover = null;
+        }
+      });
+      cvGrid.addEventListener("pointerleave", () => {
+        state.rkHover = null;
+      });
       cvGrid.addEventListener("pointerdown", e => {
         const rect = cvGrid.getBoundingClientRect();
         const cell = Math.min(Math.floor((rect.width - 76) / 8), Math.floor((rect.height - 76) / 8));
@@ -3980,7 +4563,7 @@
         const cc = Math.floor((e.clientX - rect.left - ox) / cell);
         const rr = Math.floor((e.clientY - rect.top - oy) / cell);
         if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) {
-          selectGridCell(rr, cc);
+          toggleBoardPieceAt(rr, cc);
         }
       });
 
@@ -4076,6 +4659,7 @@
         drawAlgPencil();
       } else if (state.activeTopic === "logic") {
         drawLogicRing();
+        drawLogicApples();
         drawLogicGame();
       } else if (state.activeTopic === "combo") {
         drawComboUrns();
