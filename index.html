@@ -55,7 +55,7 @@
     }
 
     .shk-header-inner {
-      max-width: 1020px;
+      max-width: 1240px;
       margin: 0 auto;
       padding: 14px 24px;
       display: flex;
@@ -114,7 +114,7 @@
 
     /* 2. MAIN SINGLE-PAGE SANDBOX CONTAINER (3.shkolkovo.online/sandbox/61 style) */
     .sandbox-page {
-      max-width: 1020px;
+      max-width: 1240px;
       margin: 0 auto;
       padding: 32px 24px 72px;
     }
@@ -194,12 +194,13 @@
       font-family: inherit;
       font-size: 14px;
       font-weight: 600;
+      line-height: 1.35;
       cursor: pointer;
       box-shadow: var(--pill-shadow);
       transition: all 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
       min-height: 36px;
     }
 
@@ -264,7 +265,7 @@
     /* Two-column layout inside each card */
     .card-grid {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
+      grid-template-columns: 0.94fr 1.06fr;
       gap: 32px;
       align-items: center;
     }
@@ -352,10 +353,9 @@
       font-weight: 600;
       color: var(--shk-blue);
       font-size: 15.5px;
+      line-height: 1.55;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      display: block;
     }
 
     .muted-note {
@@ -445,7 +445,7 @@
 
     .stage-canvas-wrap {
       width: 100%;
-      height: 330px;
+      height: 410px;
       position: relative;
       display: flex;
       align-items: center;
@@ -528,6 +528,8 @@
           <div class="card-heading">Кратчайший путь по поверхности призмы и 3D-развёртка</div>
           <div class="card-pills">
             <button class="shk-pill" id="btnUnfoldToggle" onclick="togglePrismUnfold()">Развернуть в плоскость</button>
+            <button class="shk-pill" onclick="snapSpiderOptimal()">Оптимум ($h = 0{,}5$ ✓)</button>
+            <button class="shk-pill" onclick="resetStereoUnfold()">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -551,9 +553,9 @@
             <div class="slider-panel">
               <div class="slider-header">
                 <span>Высота точки перехода $M$ на ребре $BB_1$</span>
-                <span class="slider-val-badge" id="valSpiderH">h = 0.50 · Длина = 2.24</span>
+                <span class="slider-val-badge" id="valSpiderH">h = 0.25 · Длина = 2.281</span>
               </div>
-              <input type="range" class="shk-range" id="rngSpiderH" min="5" max="95" value="50" />
+              <input type="range" class="shk-range" id="rngSpiderH" min="5" max="95" value="25" />
             </div>
           </div>
           <div class="card-stage-col">
@@ -568,11 +570,14 @@
       <!-- CARD 2: Сечение параллелепипеда плоскостью C1TP и отношение D1N : ND = 3 : 2 -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">Сечение параллелепипеда плоскостью $C_1TP$ ($AP:PD = 1:4$) и отношение $D_1N : ND = 3 : 2$</div>
-          <div class="stepper-ctrl">
-            <button class="step-arrow" id="stTracePrev" onclick="stepStereoTrace(-1)">‹</button>
-            <span class="step-counter" id="stTraceLabel">Шаг 4 из 4</span>
-            <button class="step-arrow next-active" id="stTraceNext" onclick="stepStereoTrace(1)">›</button>
+          <div class="card-heading">Сечение параллелепипеда плоскостью $C_1TP$ ($AP : PD = 1 : 4$) и отношение $D_1N : ND = 3 : 2$</div>
+          <div class="card-pills">
+            <div class="stepper-ctrl">
+              <button class="step-arrow" id="stTracePrev" onclick="stepStereoTrace(-1)" disabled>‹</button>
+              <span class="step-counter" id="stTraceLabel">Шаг 1 из 4</span>
+              <button class="step-arrow next-active" id="stTraceNext" onclick="stepStereoTrace(1)">›</button>
+            </div>
+            <button class="shk-pill" onclick="setStereoTraceStep(0)">Сбросить (Шаг 1)</button>
           </div>
         </div>
         <div class="card-grid">
@@ -581,7 +586,7 @@
               <b>Задача:</b> в параллелепипеде $ABCDA_1B_1C_1D_1$ точка $T$ — середина ребра $BB_1$, точка $P$ лежит на ребре $AD$ так, что $AP : PD = 1 : 4$. <b>(a)</b> Постройте сечение параллелепипеда плоскостью $C_1TP$. <b>(b)</b> Найдите отношение $D_1N : ND$, в котором плоскость делит ребро $DD_1$.
             </p>
             <ul class="algo-list" id="listStereoTrace">
-              <li class="algo-item" onclick="setStereoTraceStep(0)">
+              <li class="algo-item active" onclick="setStereoTraceStep(0)">
                 <span class="algo-num">1.</span>
                 <span><b>Шаг 1 — Прямая $C_1T$ и выносная точка $L$ на продолжении $CB$:</b> в правой грани $(BCC_1B_1)$ проведём прямую $C_1T$ до пересечения с прямой $CB$ в точке $L$. Пусть $B_1T = TB = y$ ($CC_1 = 2y$) и $CB = x$. Из подобия $\triangle CC_1L \sim \triangle BTL$: $\frac{C_1C}{TB} = \frac{CL}{BL} = 2 \implies \frac{x + BL}{BL} = 2 \implies \mathbf{BL = x}$.</span>
               </li>
@@ -593,13 +598,13 @@
                 <span class="algo-num">3.</span>
                 <span><b>Шаг 3 — Прямая $OC_1$, точка $N$ на $DD_1$ и сечение $C_1TMPN$:</b> в задней грани $(DCC_1D_1)$ соединим точку следа $O$ с вершиной $C_1$ — отрезок $OC_1$ пересекает ребро $DD_1$ в искомой точке $N$. Замыкая контур по граням, получаем пятиугольное сечение <b>$C_1TMPN$</b>!</span>
               </li>
-              <li class="algo-item active" onclick="setStereoTraceStep(3)">
+              <li class="algo-item" onclick="setStereoTraceStep(3)">
                 <span class="algo-num">4.</span>
                 <span><b>Шаг 4 — Находим отношение $D_1N : ND = 3 : 2$:</b> в задней грани $\triangle ODN \sim \triangle OCC_1$, где $OD = 4z$, а $OC = OD + DC = 4z + 6z = 10z$. Тогда $\frac{ND}{CC_1} = \frac{OD}{OC} = \frac{4}{10} \implies ND = \frac{4}{10}\cdot 2y = \mathbf{\frac{4y}{5}}$, а $D_1N = 2y - \frac{4y}{5} = \mathbf{\frac{6y}{5}}$. Отсюда <b>$\frac{D_1N}{ND} = \frac{6/5}{4/5} = \frac{3}{2}$</b>!</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="traceFormulaText">Подобие △ODN ~ △OCC₁: ND = 4y/5, D₁N = 6y/5 ⇒ Отношение D₁N : ND = 3 : 2 ✓</span>
+              <span id="traceFormulaText">Шаг 1: C₁T ∩ CB = L в грани (BCC₁B₁). Из △CC₁L ∼ △BTL (TB = B₁T = y) ⇒ BL = CB = x</span>
             </div>
           </div>
           <div class="card-stage-col">
@@ -661,6 +666,7 @@
           <div class="card-heading">Вписывание тетраэдра в параллелепипед: почему $V_{\text{тетр}} = \frac{1}{3} V_{\text{пар}}$?</div>
           <div class="card-pills">
             <button class="shk-pill" id="btnTetraExplode" onclick="toggleTetraExplode()">Отделить 4 угловые пирамиды</button>
+            <button class="shk-pill" onclick="resetTetraExplode()">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -699,9 +705,10 @@
         <div class="card-top-bar">
           <div class="card-heading">Параллелепипед объёма $8$, вписанный в сферу радиуса $\sqrt{3}$: почему это куб $2 \times 2 \times 2$ и $S_{\text{полн}} = 24$?</div>
           <div class="card-pills" id="inscribedPills">
-            <button class="shk-pill active" onclick="setInscribedRatio(1.0)">Куб $2 \times 2 \times 2$ ($V = 8$ ✓)</button>
-            <button class="shk-pill" onclick="setInscribedRatio(1.45)">Деформация ($V < 8$ ✗)</button>
-            <button class="shk-pill" onclick="setInscribedRatio(0.65)">Плоский ($V < 8$ ✗)</button>
+            <button class="shk-pill active" onclick="setInscribedRatio(1.35)">1. Деформация ($V < 8$)</button>
+            <button class="shk-pill" onclick="setInscribedRatio(1.0)">2. Куб $2 \times 2 \times 2$ ($V = 8, S = 24$ ✓)</button>
+            <button class="shk-pill" onclick="setInscribedRatio(0.65)">3. Плоский ($V < 8$)</button>
+            <button class="shk-pill" onclick="setInscribedRatio(1.35)">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -710,11 +717,11 @@
               <b>Задача:</b> в сферу радиуса $R = \sqrt{3}$ вписан прямоугольный параллелепипед, объём которого равен $V = 8$. Найдите площадь полной поверхности параллелепипеда.
             </p>
             <ul class="algo-list" id="listInscribedSteps">
-              <li class="algo-item" onclick="setInscribedRatio(1.45)">
+              <li class="algo-item active" onclick="setInscribedRatio(1.35)">
                 <span class="algo-num">1.</span>
                 <span><b>Главная диагональ параллелепипеда — диаметр сферы $B_1D = 2R$:</b> все прямые двугранные углы опираются на диагональ $B_1D$ как на диаметр описанной сферы с центром $O$. По пространственной теореме Пифагора: <b>$a^2 + b^2 + c^2 = (2R)^2 = (2\sqrt{3})^2 = 12$</b>.</span>
               </li>
-              <li class="algo-item active" onclick="setInscribedRatio(1.0)">
+              <li class="algo-item" onclick="setInscribedRatio(1.0)">
                 <span class="algo-num">2.</span>
                 <span><b>Неравенство о средних (почему возможен только куб $a = b = c = 2$):</b> при фиксированной сумме квадратов $a^2 + b^2 + c^2 = 12$ среднее арифметическое не меньше среднего геометрического: $\frac{a^2 + b^2 + c^2}{3} \ge \sqrt[3]{a^2b^2c^2} \implies 4 \ge (abc)^{2/3} \implies \mathbf{V = abc \le 8}$. Причём равенство $V = 8$ достигается <b>только при $a = b = c = 2$</b>!</span>
               </li>
@@ -724,14 +731,14 @@
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="inscribedFormulaText">Рёбра: a = 2.00, b = 2.00, c = 2.00 | d² = a²+b²+c² = 12 | V = abc = 8.00 (Максимум!) ⇒ S = 24.00 ✓</span>
+              <span id="inscribedFormulaBox">При (a,b,c) ≠ (2,2,2) и a² + b² + c² = 12: объём V < 8 (потяните ползунок к кубу 2×2×2!)</span>
             </div>
             <div class="slider-panel">
               <div class="slider-header">
-                <span>Деформация рёбер $(a, b, c)$ внутри сферы $a^2+b^2+c^2 = 12$</span>
-                <span class="slider-val-badge" id="valInscribedRatio">a = b = c = 2.00 · V = 8.00 ✓</span>
+                <span>Деформация рёбер $(a, b, c)$ внутри сферы $a^2 + b^2 + c^2 = 12$</span>
+                <span class="slider-val-badge" id="valInscribedDims">a=2.50, b=1.37, c=1.98 · V = 6.79 &lt; 8</span>
               </div>
-              <input type="range" class="shk-range" id="rngInscribedRatio" min="50" max="160" value="100" />
+              <input type="range" class="shk-range" id="rngInscribedRatio" min="55" max="145" value="135" />
             </div>
           </div>
           <div class="card-stage-col">
@@ -792,10 +799,14 @@
       <article class="sandbox-card">
         <div class="card-top-bar">
           <div class="card-heading">Выделение остовного дерева из связного графа: разрушение циклов без потери связности</div>
-          <div class="stepper-ctrl">
-            <button class="step-arrow" id="stTreePrev" onclick="stepTreeAlgo(-1)">‹</button>
-            <span class="step-counter" id="stTreeLabel">Шаг 1 из 3</span>
-            <button class="step-arrow next-active" id="stTreeNext" onclick="stepTreeAlgo(1)">›</button>
+          <div class="card-pills">
+            <div class="stepper-ctrl">
+              <button class="step-arrow" id="stTreePrev" onclick="stepTreeAlgo(-1)" disabled>‹</button>
+              <span class="step-counter" id="stTreeLabel">Шаг 1 из 3</span>
+              <button class="step-arrow next-active" id="stTreeNext" onclick="stepTreeAlgo(1)">›</button>
+            </div>
+            <button class="shk-pill" onclick="stripCyclesToTree()">Выделить остов ($E = 6$ ✓)</button>
+            <button class="shk-pill" onclick="resetSpanGraphFull()">Сбросить граф ($E = 10$)</button>
           </div>
         </div>
         <div class="card-grid">
@@ -818,7 +829,7 @@
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="treeStatFormula">Вершин: V = 7 | Рёбер: E = 10 | Независимых циклов: E − V + 1 = 4 (кликните по зелёному ребру!)</span>
+              <span id="treeStatFormula">Сейчас в графе: V = 7, E = 10 рёбер, циклов: 4 (можно удалить ещё 4 ребра)</span>
             </div>
             <div class="muted-note" id="treeHintNote">
               Кликайте прямо по зелёным рёбрам циклов на чертеже справа, чтобы удалять их и видеть обходной путь по оставшейся части цикла!
@@ -838,10 +849,11 @@
         <div class="card-top-bar">
           <div class="card-heading">В городе Озёрске $7$ озёр и $10$ каналов: сколько островов (граней) по формуле Эйлера?</div>
           <div class="card-pills" id="k33Presets">
-            <button class="shk-pill active" onclick="setK33Mode(10)">10 каналов ($F = 5$ ✓)</button>
-            <button class="shk-pill" onclick="setK33Mode(6)">Остов: 6 каналов ($F = 1$)</button>
-            <button class="shk-pill" onclick="setK33Mode(8)">8 каналов ($F = 3$)</button>
+            <button class="shk-pill active" onclick="setK33Mode(6)">1. Остов: 6 каналов ($F = 1$)</button>
+            <button class="shk-pill" onclick="setK33Mode(8)">2. 8 каналов ($F = 3$)</button>
             <button class="shk-pill" onclick="setK33Mode(9)">9 каналов ($F = 4$)</button>
+            <button class="shk-pill" onclick="setK33Mode(10)">3. Все 10 каналов ($F = 5$ ✓)</button>
+            <button class="shk-pill" onclick="setK33Mode(6)">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -850,7 +862,7 @@
               <b>Задача:</b> в городе Озёрске семь озёр, соединённых десятью каналами так, что от любого озера можно доплыть до любого другого. Сколько островов (областей суши) в Озёрске?
             </p>
             <ul class="algo-list" id="listK33Steps">
-              <li class="algo-item" onclick="setK33Mode(6)">
+              <li class="algo-item active" onclick="setK33Mode(6)">
                 <span class="algo-num">1.</span>
                 <span><b>Перевод на язык плоских графов:</b> примем <b>озёра за вершины ($V = 7$)</b>, а соединяющие их непересекающиеся <b>каналы — за рёбра ($E = 10$)</b> связного плоского графа. Пока каналов всего $E = V - 1 = 6$ (остовное дерево без циклов), суша не разделена: грань всего одна ($F = 1$).</span>
               </li>
@@ -858,13 +870,13 @@
                 <span class="algo-num">2.</span>
                 <span><b>Каждый новый канал сверх дерева добавляет $+1$ грань:</b> когда мы прорываем очередной канал, замыкающий цикл ($7$-й, $8$-й, $9$-й, $10$-й), он разрезает одну из областей суши на две части ($\Delta E = +1 \implies \Delta F = +1$), поэтому разность $V - E + F = 2$ остаётся инвариантом!</span>
               </li>
-              <li class="algo-item active" onclick="setK33Mode(10)">
+              <li class="algo-item" onclick="setK33Mode(10)">
                 <span class="algo-num">3.</span>
                 <span><b>Формула Эйлера $V - E + F = 2$ (Ответ: $5$):</b> подставляя $V = 7$ озёр и $E = 10$ каналов в теорему Эйлера для связного плоского графа, получаем: <b>$7 - 10 + F = 2 \implies F = 5$</b>! (На карте это $4$ внутренних острова $F_1..F_4$ и внешняя область $F_5$).</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="k33FormulaBox">Озёр: V = 7 | Каналов: E = 10 ⇒ По формуле Эйлера 7 − 10 + F = 2 ⇒ F = 5 граней (Ответ: 5) ✓</span>
+              <span id="k33FormulaBox">Остовное дерево: В = 7 озёр, Р = 6 каналов ⇒ Г = 2 − 7 + 6 = 1 (кликните по пунктирным каналам №7–10!)</span>
             </div>
           </div>
           <div class="card-stage-col">
@@ -971,12 +983,13 @@
           <div class="card-pills" id="regPills">
             <span class="pill-label">a =</span>
             <button class="shk-pill" onclick="setAlgRegionA(-0.3333)">$-\frac{1}{3}$ (Вершина $A$)</button>
-            <button class="shk-pill" onclick="setAlgRegionA(-0.15)">$a \in (-\frac{1}{3}; 0)$</button>
+            <button class="shk-pill active" onclick="setAlgRegionA(-0.15)">$a \in (-\frac{1}{3}; 0)$</button>
             <button class="shk-pill" onclick="setAlgRegionA(0)">$0$</button>
-            <button class="shk-pill active" onclick="setAlgRegionA(0.5)">$0{,}5 \in (0; 1)$</button>
-            <button class="shk-pill" onclick="setAlgRegionA(1.0)">$1$ (Узел $x=3$)</button>
+            <button class="shk-pill" onclick="setAlgRegionA(0.5)">$0{,}5 \in (0; 1)$</button>
+            <button class="shk-pill" onclick="setAlgRegionA(1.0)">$1$ (Узел $x = 3$)</button>
             <button class="shk-pill" onclick="setAlgRegionA(1.5)">$1{,}5 \in (1; 2)$</button>
             <button class="shk-pill" onclick="setAlgRegionA(2.0)">$2$ (Вершина $B$)</button>
+            <button class="shk-pill" onclick="setAlgRegionA(-0.15)">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -985,11 +998,11 @@
               <b>Задача:</b> найдите все значения параметра $a$, при каждом из которых система неравенств имеет хотя бы одно решение, и укажите решения системы для каждого такого значения $a$.
             </p>
             <ul class="algo-list" id="listRegSteps">
-              <li class="algo-item" onclick="setAlgRegionA(-0.15)">
+              <li class="algo-item active" onclick="setAlgRegionA(-0.15)">
                 <span class="algo-num">1.</span>
                 <span><b>Строим границы в плоскости $(x; a)$ и участок $a \in \left[-\frac{1}{3}; 0\right]$:</b> перепишем систему явно относительно $a$: $a \ge \frac{x^2-2x}{3} = f(x)$ (выше параболы с вершиной $A(1; -\frac{1}{3})$), $a \le 2\sqrt{x} = g(x)$ (ниже корня) и $a \le \frac{5-x}{2} = h(x)$ (ниже прямой). При $a \in \left[-\frac{1}{3}; 0\right]$ горизонталь высекает отрезок между корнями параболы $f(x) = a$: <b>$x \in \left[1 - \sqrt{1+3a};\; 1 + \sqrt{1+3a}\right]$</b>.</span>
               </li>
-              <li class="algo-item active" onclick="setAlgRegionA(0.5)">
+              <li class="algo-item" onclick="setAlgRegionA(0.5)">
                 <span class="algo-num">2.</span>
                 <span><b>Средний ярус $a \in [0; 1]$ (от корня $g(x)$ до параболы $f(x)$):</b> при $a = 0$ левая граница переходит с параболы на ветвь корня $a = 2\sqrt{x} \iff x = \frac{a^2}{4}$, а правая граница остаётся на параболе вплоть до точки их пересечения с прямой $h(3) = f(3) = 1$. Отрезок решений: <b>$x \in \left[\frac{a^2}{4};\; 1 + \sqrt{1+3a}\right]$</b>.</span>
               </li>
@@ -999,14 +1012,14 @@
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="regFormulaText">При a = 0.50 ∈ [0; 1]: x ∈ [a²/4; 1 + √(1 + 3a)] = [0.06; 2.58] ✓</span>
+              <span id="regFormulaText">При a = −0.15 ∈ [−1/3; 0]: x ∈ [1 − √(1 + 3a); 1 + √(1 + 3a)] = [0.26; 1.74] ✓</span>
             </div>
             <div class="slider-panel">
               <div class="slider-header">
                 <span>Уровень секущей $a$ (диапазон решений $a \in [-1/3; 2]$)</span>
-                <span class="slider-val-badge" id="valAlgRegionA">a = 0.50</span>
+                <span class="slider-val-badge" id="valAlgRegionA">a = -0.15</span>
               </div>
-              <input type="range" class="shk-range" id="rngAlgRegionA" min="-55" max="225" value="50" />
+              <input type="range" class="shk-range" id="rngAlgRegionA" min="-55" max="225" value="-15" />
             </div>
           </div>
           <div class="card-stage-col">
@@ -1024,46 +1037,47 @@
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-logic">
       <div class="page-kicker">Задачи к вебинару · Конструктивы, инварианты и игры</div>
-      <h1 class="page-title">№1–2. Оценка + пример на круге и выигрышная стратегия с конца</h1>
+      <h1 class="page-title">№1–3. $36$ детей по кругу (оценка + пример на $24$), Халк и Танос ($20$ яблок) и игра с конца</h1>
 
-      <!-- CARD 1: 13 чисел по кругу -->
+      <!-- CARD 1: 36 детей по кругу в красных и синих кофтах -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">13 чисел по кругу: «Оценка + Пример» и откуда берутся числа $+10$ и $-1$</div>
+          <div class="card-heading">По кругу стоят $36$ детей в красных и синих кофтах: оценка и пример на $24$ девочки в красных кофтах</div>
           <div class="card-pills" id="ringPills">
-            <button class="shk-pill" onclick="setRingMode('weak')">1. Слабая оценка ($\le 10$)</button>
-            <button class="shk-pill active" onclick="setRingMode('exact')">2. Якорь + 3 дуги ($\le 9$)</button>
-            <button class="shk-pill" onclick="setRingMode('fail10')">3. Попытка 10 минусов (Сбой!)</button>
+            <button class="shk-pill active" onclick="setRingMode('forbid3')">1. Запрет 3 Д(кр) подряд</button>
+            <button class="shk-pill" onclick="setRingMode('triples12')">2. Разбиение на 12 троек ($\le 24$)</button>
+            <button class="shk-pill" onclick="setRingMode('opt24')">3. Пример: 24 девочки (Д, Д, М) ✓</button>
+            <button class="shk-pill" onclick="setRingMode('empty')">Очистить круг</button>
           </div>
         </div>
         <div class="card-grid">
           <div class="card-text-col">
             <p>
-              <b>Задача:</b> по кругу записаны 13 чисел, сумма любых 4 подряд положительна. Какое наибольшее количество отрицательных чисел может среди них быть? В задачах типа «Оценка + Пример» решение всегда состоит из двух частей:
+              <b>Задача:</b> по кругу стоят $36$ детей, каждый из них одет в красную или синюю кофту. Известно, что рядом с каждым мальчиком стоит девочка, а рядом с каждой девочкой стоит человек в синей кофте. Найдите наибольшее возможное количество девочек в красных кофтах.
             </p>
             <ul class="algo-list" id="listRingSteps">
-              <li class="algo-item" onclick="setRingMode('weak')">
+              <li class="algo-item active" onclick="setRingMode('forbid3')">
                 <span class="algo-num">1.</span>
-                <span><b>Слабая оценка ($\le 10$ минусов):</b> если просто накрыть круг тремя дугами по 4 числа ($13 = 4+4+4+1$, ячейка №13 осталась вне дуг), то в каждой дуге сумма $>0 \Rightarrow$ хотя бы один «$+$». Получаем лишь $\ge 3$ плюсов ($\le 10$ минусов).</span>
+                <span><b>Почему не может быть $3$ девочек в красных кофтах подряд?</b> Если три девочки в красных кофтах ($\text{Д}_{\text{кр}} - \text{Д}_{\text{кр}} - \text{Д}_{\text{кр}}$) стоят подряд, то у <b>средней из них</b> оба соседа одеты в красные кофты — значит, рядом с ней нет человека в синей кофте (условие нарушено!).</span>
               </li>
-              <li class="algo-item active" onclick="setRingMode('exact')">
+              <li class="algo-item" onclick="setRingMode('triples12')">
                 <span class="algo-num">2.</span>
-                <span><b>Точная оценка ($\le 9$ минусов — приём «Якорь»):</b> сначала зафиксируем одно положительное число как <b>«якорь» (№1)</b>. Оставшиеся 12 чисел делятся без остатка на 3 дуги по 4 числа: (№2–5), (№6–9), (№10–13). В каждой дуге ещё минимум по одному «$+$», итого плюсов $\ge 1 + 3 = 4$, а минусов <b>не более $9$</b>!</span>
+                <span><b>Оценка сверху ($\le 24$) разбиением на $12$ троек:</b> разобьём всех $36$ стоящих по кругу детей на <b>$12$ непересекающихся троек</b> подряд идущих мест ($36 = 12 \times 3$). Так как в каждой тройке не может быть $3$ девочек в красных кофтах, в каждой тройке их <b>не более $2$</b>, а всего по кругу — не больше $2 \cdot 12 = \mathbf{24}$!</span>
               </li>
-              <li class="algo-item" onclick="setRingMode('fail10')">
+              <li class="algo-item" onclick="setRingMode('opt24')">
                 <span class="algo-num">3.</span>
-                <span><b>Зачем нужны числа $+10$ и $-1$? (Пример):</b> чтобы доказать, что 9 минусов возможны, возьмём все 9 отрицательных чисел равными <b>$-1$</b>, а 4 положительных — с запасом, по <b>$+10$</b> (на местах №1, №5, №9, №13). Тогда в любой четвёрке подряд есть хотя бы одно $+10$ и не более трёх $-1$, сумма $\ge 10 - 3 = +7 > 0$. Если же оставить <b>10 чисел $-1$</b> (нажмите сюда!), появится четвёрка из одних $-1$ с суммой $-4 < 0$!</span>
+                <span><b>Пример на $24$ девочки (Ответ: $24$):</b> расставим в каждой из $12$ троек по часовой стрелке двух девочек в красных кофтах и следом за ними мальчика в синей кофте: <b>$(\text{Д}_{\text{кр}}, \text{Д}_{\text{кр}}, \text{М}_{\text{син}})$</b>. Тогда рядом с каждым мальчиком стоят девочки, а рядом с каждой девочкой стоит мальчик в синей кофте!</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="ringFormulaBox">Пример на 9 минусов работает: в любой четвёрке подряд есть хотя бы одно +10, сумма ≥ +7 > 0 ✓</span>
+              <span id="ringFormulaBox">Шаг 1: 3 девочки в красных кофтах подряд невозможны — у средней нет соседа в синей кофте! ✗</span>
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvLogicRing"></canvas>
             </div>
-            <div class="stage-caption">Наводите курсор на ячейки №1–№13 для проверки четвёрок или кликайте по кружкам для смены +10 ↔ −1</div>
+            <div class="stage-caption">Кликайте по местам круга для смены ребёнка (Д в красной ↔ М в синей) или переключайте шаги 1–3!</div>
           </div>
         </div>
       </article>
@@ -1075,8 +1089,8 @@
           <div class="card-pills" id="applePills">
             <button class="shk-pill active" onclick="setAppleTakeMode(1)">Брать по 1 яблоку</button>
             <button class="shk-pill" onclick="setAppleTakeMode(2)">Брать по 2 соседних</button>
-            <button class="shk-pill" onclick="resetApplesGame(true)">Сбросить (Халк взял №10–11)</button>
-            <button class="shk-pill" onclick="resetApplesGame(false)">Начать с 20 яблок</button>
+            <button class="shk-pill" onclick="resetApplesGame(true)">1-й ход Халка (№10–11)</button>
+            <button class="shk-pill" onclick="resetApplesGame(false)">Сбросить (все 20 яблок)</button>
           </div>
         </div>
         <div class="card-grid">
@@ -1085,21 +1099,21 @@
               <b>Задача:</b> на столе нарисован ряд из $20$ секторов, в каждом лежит по яблоку. За ход можно взять либо <b>одно яблоко</b>, либо <b>два яблока из соседних секторов</b>. Начинает Халк, проигрывает тот, кто не может сделать ход. Кто победит при правильной игре?
             </p>
             <ul class="algo-list" id="listAppleSteps">
-              <li class="algo-item active" onclick="resetApplesGame(true)">
+              <li class="algo-item active" onclick="resetApplesGame(false)">
                 <span class="algo-num">1.</span>
-                <span><b>Первый ход Халка — два центральных яблока (№10 и №11):</b> Халк забирает пару центральных яблок №10 и №11, разбивая ряд на <b>два отдельных ряда по $9$ яблок</b>: левый (№1–№9) и правый (№12–№20).</span>
+                <span><b>Первый ход Халка — два центральных яблока (№10 и №11):</b> в начале в ряду лежат все $20$ яблок. Чтобы победить, Халк первым ходом забирает пару центральных яблок <span class="inline-link" onclick="resetApplesGame(true)">№10 и №11</span>, разбивая ряд на <b>два отдельных ряда по $9$ яблок</b>: левый (№1–№9) и правый (№12–№20).</span>
               </li>
-              <li class="algo-item" onclick="setAppleTakeMode(2)">
+              <li class="algo-item" onclick="resetApplesGame(true)">
                 <span class="algo-num">2.</span>
                 <span><b>Симметричный ответ $i \leftrightarrow 21 - i$:</b> так как центр (№10–11) пуст, Танос не может взять два яблока из разных половин. На любой ход Таноса в одной половине (сектор №$i$ или пара №$i, i+1$) Халк берёт <b>симметричные яблоки из другого ряда</b>: №$(21 - i)$!</span>
               </li>
-              <li class="algo-item" onclick="setAppleTakeMode(1)">
+              <li class="algo-item" onclick="setAppleTakeMode(2)">
                 <span class="algo-num">3.</span>
                 <span><b>Инвариант симметрии и победа Халка:</b> после каждого хода Халка обе половины ряда абсолютно симметричны относительно центра. Значит, пока ход есть у Таноса, симметричный ответ гарантированно есть и у Халка. <b>Ответ: побеждает Халк.</b></span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="appleStatusBox">Халк первым ходом забрал центр №10 и №11! Ваш ход за Таноса: кликните по любому яблоку.</span>
+              <span id="appleStatusBox">На столе все 20 яблок! Нажмите «1-й ход Халка (№10–11)» или возьмите яблоки вручную.</span>
             </div>
           </div>
           <div class="card-stage-col">
@@ -1155,9 +1169,10 @@
         <div class="card-top-bar">
           <div class="card-heading">10 белых и 10 чёрных шаров по двум урнам: как получить вероятность $\frac{14}{19} \approx 73{,}7\%$?</div>
           <div class="card-pills" id="urnPills">
-            <button class="shk-pill" onclick="setUrnPreset(5, 5, 0)">Поровну 5Б+5Ч ($50\%$)</button>
-            <button class="shk-pill" onclick="setUrnPreset(4, 0, 1)">Без чёрных $m=0$ ($n=4$)</button>
-            <button class="shk-pill active" onclick="setUrnPreset(1, 0, 2)">Оптимум: 1 белый ($\frac{14}{19} \approx 73{,}7\%$)</button>
+            <button class="shk-pill active" onclick="setUrnPreset(5, 5, 0)">1. Поровну 5Б + 5Ч ($50\%$)</button>
+            <button class="shk-pill" onclick="setUrnPreset(4, 0, 1)">2. Без чёрных $m = 0$ ($n = 4$)</button>
+            <button class="shk-pill" onclick="setUrnPreset(1, 0, 2)">3. Оптимум: 1 белый ($\frac{14}{19} \approx 73{,}7\%$)</button>
+            <button class="shk-pill" onclick="setUrnPreset(5, 5, 0)">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -1166,7 +1181,7 @@
               <b>Задача из ДЗ:</b> имеется $10$ белых и $10$ чёрных шаров. Их раскладывают по двум урнам, затем случайно выбирают одну из урн и вытаскивают из неё один шар. Если он белый — Вы получаете приз. Как разложить шары, чтобы вероятность выигрыша была наибольшей?
             </p>
             <ul class="algo-list" id="listUrnSteps">
-              <li class="algo-item" onclick="setUrnPreset(5, 5, 0)">
+              <li class="algo-item active" onclick="setUrnPreset(5, 5, 0)">
                 <span class="algo-num">1.</span>
                 <span><b>Зафиксируем число шаров $k = m + n \le 10$ в первой урне:</b> пусть в Урне 1 лежит $n$ белых и $m$ чёрных шаров, а в Урне 2 — $(10 - n)$ белых и $(10 - m)$ чёрных. Вероятность вытащить белый шар равна $\frac{1}{2}\left(\frac{n}{k} + \frac{10 - n}{20 - k}\right) = \frac{10k + 2n(10 - k)}{2k(20 - k)}$.</span>
               </li>
@@ -1174,25 +1189,25 @@
                 <span class="algo-num">2.</span>
                 <span><b>Почему в первой урне не должно быть чёрных шаров ($m = 0$)?</b> При фиксированном $k \le 10$ знаменатель положителен и не зависит от $n$, а числитель $10k + 2n(10 - k)$ максимален при наибольшем $n \le k$, то есть при <b>$n = k$ и $m = 0$</b>! В меньшую урну кладутся <i>только белые шары</i>.</span>
               </li>
-              <li class="algo-item active" onclick="setUrnPreset(1, 0, 2)">
+              <li class="algo-item" onclick="setUrnPreset(1, 0, 2)">
                 <span class="algo-num">3.</span>
                 <span><b>Минимизируем $n$ при $m = 0$:</b> вероятность равна $\frac{1}{2}\left(1 + \frac{10 - n}{20 - n}\right)$. Дробь $\frac{10 - n}{20 - n}$ максимальна при минимуме обратной величины $\frac{20 - n}{10 - n} = 1 + \frac{10}{10 - n}$, то есть при <b>минимальном $n = 1$</b>! Кладём в первую урну <b>1 белый шар</b>, а во вторую — остальные 19: $P_{\max} = \frac{1}{2}\left(1 + \frac{9}{19}\right) = \frac{14}{19} \approx 73{,}68\%$.</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="urnFormulaText">Урна 1: 1Б, 0Ч (1/1)  |  Урна 2: 9Б, 10Ч (9/19)  ⇒  P = ½(1 + 9/19) = 14/19 ≈ 73.68% ✓</span>
+              <span id="urnFormulaText">Урна 1: 5Б, 5Ч (5/10)  |  Урна 2: 5Б, 5Ч (5/10)  ⇒  P = ½(0.50 + 0.50) = 50.00%</span>
             </div>
             <div class="slider-panel">
               <div class="slider-header">
                 <span>Белых шаров в первой урне ($n$)</span>
-                <span class="slider-val-badge" id="valUrnN">n = 1 бел. (во второй: 9 бел.)</span>
+                <span class="slider-val-badge" id="valUrnN">n = 5 бел. (во второй: 5 бел.)</span>
               </div>
-              <input type="range" class="shk-range" id="rngUrnN" min="0" max="10" value="1" />
+              <input type="range" class="shk-range" id="rngUrnN" min="0" max="10" value="5" />
               <div class="slider-header" style="margin-top:8px;">
                 <span>Чёрных шаров в первой урне ($m$)</span>
-                <span class="slider-val-badge" id="valUrnM">m = 0 чёрн. (во второй: 10 чёрн.)</span>
+                <span class="slider-val-badge" id="valUrnM">m = 5 чёрн. (во второй: 5 чёрн.)</span>
               </div>
-              <input type="range" class="shk-range" id="rngUrnM" min="0" max="10" value="0" />
+              <input type="range" class="shk-range" id="rngUrnM" min="0" max="10" value="5" />
             </div>
           </div>
           <div class="card-stage-col">
@@ -1209,9 +1224,10 @@
         <div class="card-top-bar">
           <div class="card-heading">Вырезание полосок $1 \times 6$ из доски $8 \times 8$: оценка по площади и пример на $10$ полосок</div>
           <div class="card-pills" id="stripsPills">
+            <button class="shk-pill active" onclick="setStripPreset('empty')">Очистить доску (0 шт.)</button>
             <button class="shk-pill" onclick="setStripPreset('bound11')">1. Оценка ($11 \cdot 6 = 66 > 64$)</button>
-            <button class="shk-pill" onclick="setStripPreset('naive8')">2. Только горизонтальные ($8$ шт.)</button>
-            <button class="shk-pill active" onclick="setStripPreset('opt10')">3. Пример: $8 + 2 = 10$ полосок ✓</button>
+            <button class="shk-pill" onclick="setStripPreset('naive8')">2. Горизонтальные ($8$ шт.)</button>
+            <button class="shk-pill" onclick="setStripPreset('opt10')">3. Пример: $8 + 2 = 10$ полосок ✓</button>
             <button class="shk-pill" onclick="toggleStripOrient()" id="btnStripOrient">Свой ход: Гориз. $1 \times 6$</button>
           </div>
         </div>
@@ -1221,7 +1237,7 @@
               <b>Задача:</b> какое наибольшее количество полосок $1 \times 6$ можно вырезать из доски $8 \times 8$? Полоски могут быть как горизонтальными, так и вертикальными.
             </p>
             <ul class="algo-list" id="listStripSteps">
-              <li class="algo-item" onclick="setStripPreset('bound11')">
+              <li class="algo-item active" onclick="setStripPreset('bound11')">
                 <span class="algo-num">1.</span>
                 <span><b>Оценка сверху ($\le 10$ полосок):</b> допустим, удалось вырезать хотя бы $11$ полосок $1 \times 6$. Тогда общее количество клеточек в них не меньше $11 \cdot 6 = 66$, что больше площади всей доски $8 \times 8 = 64$! Противоречие, значит полосок <b>не более $10$</b>.</span>
               </li>
@@ -1229,13 +1245,13 @@
                 <span class="algo-num">2.</span>
                 <span><b>Как не потерять место:</b> если резать полоски $1 \times 6$ только горизонтально (по одной в каждой из $8$ строк), то слева займётся блок $8 \times 6$, а справа останется вертикальная полоса $8 \times 2$ из $16$ клеток. Повернём распил в этой полосе вертикально!</span>
               </li>
-              <li class="algo-item active" onclick="setStripPreset('opt10')">
+              <li class="algo-item" onclick="setStripPreset('opt10')">
                 <span class="algo-num">3.</span>
                 <span><b>Пример на $10$ полосок (Ответ: $10$):</b> разделим доску $8 \times 8$ на две части: <b>$8 \times 6$</b> (слева) и <b>$8 \times 2$</b> (справа). Первую часть полностью разрежем на <b>$8$ горизонтальных полосок $1 \times 6$</b>, а из второй вырежем прямоугольник $6 \times 2$ и разрежем его на <b>$2$ вертикальные полоски $6 \times 1$</b>! Итого ровно $8 + 2 = 10$ полосок (в углу остаётся квадрат $2 \times 2$ из $4$ клеток).</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="stripFormulaText">Пример на 10 полосок: 8 горизонтальных (блок 8×6) + 2 вертикальные (блок 6×2) = 60 кл., остаток 4 кл. ✓</span>
+              <span id="stripFormulaText">Доска 8 × 8 чиста (0 полосок): кликайте по клеткам, чтобы сами вырезать полоски 1 × 6, или выберите шаг 1–3!</span>
             </div>
           </div>
           <div class="card-stage-col">
@@ -1252,8 +1268,9 @@
         <div class="card-top-bar">
           <div class="card-heading">Раскраска доски $8 \times 8$ в наибольшее число цветов: у каждой клетки $\ge 2$ соседей своего цвета</div>
           <div class="card-pills" id="colorPills">
-            <button class="shk-pill active" onclick="setColorPreset('opt16')">1. Пример: $16$ квадратов $2 \times 2$ ✓</button>
-            <button class="shk-pill" onclick="setColorPreset('fail3L')">2. Оценка $17$ цветов: уголок из 3 кл. ✗</button>
+            <button class="shk-pill active" onclick="setColorPreset('empty')">Очистить доску</button>
+            <button class="shk-pill" onclick="setColorPreset('opt16')">1. Пример: $16$ квадратов $2 \times 2$ ✓</button>
+            <button class="shk-pill" onclick="setColorPreset('fail3L')">2. Уголок из 3 кл. ✗</button>
             <button class="shk-pill" onclick="setColorPreset('fail3I')">3. Полоска $1 \times 3$ из 3 кл. ✗</button>
           </div>
         </div>
@@ -1277,14 +1294,14 @@
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="colorFormulaText">Пример 16 цветов: 16 квадратов 2×2 — у всех 64 клеток ровно по 2 соседа своего цвета ✓</span>
+              <span id="colorFormulaText">Доска чиста: кликайте по клеткам, чтобы закрашивать их и проверять число соседей, или нажмите «1. Пример: 16 квадратов 2×2»!</span>
             </div>
           </div>
           <div class="card-stage-col">
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvComboColoring"></canvas>
             </div>
-            <div class="stage-caption">Наводите курсор на клетки для подсветки одноцветных соседей или кликайте по клеткам, чтобы перекрашивать их в 17-й цвет!</div>
+            <div class="stage-caption">Наводите курсор на клетки для подсветки одноцветных соседей или кликайте по клеткам доски!</div>
           </div>
         </div>
       </article>
@@ -1299,7 +1316,7 @@
             <button class="shk-pill" onclick="autoPlaceVasyaBlackRooks()">Авто-ответ Васи (Дирихле ✓)</button>
             <button class="shk-pill" onclick="presetPetyaRooks('diag')">Пресет: Диагональ</button>
             <button class="shk-pill" onclick="presetPetyaRooks('row')">Пресет: В ряд</button>
-            <button class="shk-pill" onclick="presetPetyaRooks('random')">Случайно</button>
+            <button class="shk-pill" onclick="presetPetyaRooks('empty')">Очистить доску</button>
           </div>
         </div>
         <div class="card-grid">
@@ -1322,7 +1339,7 @@
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="pvRookFormulaText">Белых ладей: 8 | Чёрных ладей: 8 (все по 2 балла!) ⇒ Вася всегда выигрывает по Дирихле (⌈64/9⌉ = 8) ✓</span>
+              <span id="pvRookFormulaText">Доска чиста: кликайте по клеткам, чтобы поставить до 8 белых ладей Пети (♖), затем нажмите «Авто-ответ Васи»!</span>
             </div>
           </div>
           <div class="card-stage-col">
@@ -1339,9 +1356,10 @@
         <div class="card-top-bar">
           <div class="card-heading">$k$ ладей и $k$ коней на доске $8 \times 8$: при каком наибольшем $k$ никто никого не бьёт?</div>
           <div class="card-pills" id="gridPills">
-            <button class="shk-pill" onclick="setRookKnightPreset(6)">Оценка $k = 6$ (Осталось 4 кл. &lt; 6!)</button>
-            <button class="shk-pill" onclick="setRookKnightPreset(50)">Ладьи $k = 5$ (9 свободных кл.)</button>
-            <button class="shk-pill active" onclick="setRookKnightPreset(5)">Пример $k = 5$ (5Л + 5К ✓)</button>
+            <button class="shk-pill active" onclick="setRookKnightPreset(0)">Очистить доску</button>
+            <button class="shk-pill" onclick="setRookKnightPreset(6)">1. Оценка $k = 6$ ($4 < 6$!)</button>
+            <button class="shk-pill" onclick="setRookKnightPreset(50)">2. Ладьи $k = 5$ (9 кл.)</button>
+            <button class="shk-pill" onclick="setRookKnightPreset(5)">3. Пример $k = 5$ (5Л + 5К ✓)</button>
             <button class="shk-pill" onclick="toggleCustomPieceTool()" id="btnCustomTool">Свой ход: Конь ♞</button>
           </div>
         </div>
@@ -1351,7 +1369,7 @@
               <b>Задача:</b> на шахматную доску $8 \times 8$ поставили $k$ ладей и $k$ коней так, что ни одна из фигур не бьёт никакую другую. При каком наибольшем $k$ такое возможно?
             </p>
             <ul class="algo-list" id="listGridSteps">
-              <li class="algo-item" onclick="setRookKnightPreset(6)">
+              <li class="algo-item active" onclick="setRookKnightPreset(6)">
                 <span class="algo-num">1.</span>
                 <span><b>Оценка ($k \le 5$):</b> все $k$ ладей должны стоять на разных горизонталях и разных вертикалях. Вычёркивая $k$ строк и $k$ столбцов, находящихся под боем ладей, получаем ровно <b>$(8 - k)^2$ небитых клеток</b> для коней. При <b>$k \ge 6$</b> остаётся не более $(8 - 6)^2 = 2 \times 2 = \mathbf{4}$ небитых клеток — и $6$ коней на них уже не расставить ($4 < 6$)!</span>
               </li>
@@ -1359,18 +1377,18 @@
                 <span class="algo-num">2.</span>
                 <span><b>Структура при $k = 5$:</b> при $k = 5$ остаётся $(8 - 5)^2 = 3 \times 3 = \mathbf{9}$ клеток, не битых ладьями. Но кони ещё и сами не должны бить ладьи! Поставим $5$ ладей на <b>$b2, c3, e5, f6, g7$</b> — тогда свободными от боя ладей останутся пересечения горизонталей $1, 4, 8$ и вертикалей $a, d, h$.</span>
               </li>
-              <li class="algo-item active" onclick="setRookKnightPreset(5)">
+              <li class="algo-item" onclick="setRookKnightPreset(5)">
                 <span class="algo-num">3.</span>
                 <span><b>Эталонный пример для $k = 5$ (Ответ: $5$):</b> в оставшиеся $9$ зелёных клеток ставим $5$ коней — в четыре угла доски (<b>$a1, a8, h1, h8$</b>) и в центр (<b>$d4$</b>). Ни один конь не бьёт ни одну из $5$ ладей ($b2, c3, e5, f6, g7$) и не бьёт других коней!</span>
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="gridFormulaText">Пример k = 5: 5 ладей (b2, c3, e5, f6, g7) + 5 коней (a1, a8, h1, h8, d4) — 0 конфликтов! Ответ: 5 ✓</span>
+              <span id="gridFormulaText">Доска чиста: кликайте по клеткам, чтобы ставить фигуры, или выберите шаги 1–3!</span>
             </div>
             <div class="slider-panel">
               <div class="slider-header">
                 <span>Число ладей $k$ и остаток $(8 - k)^2$ клеток для коней</span>
-                <span class="slider-val-badge" id="valGridTiles">k = 5 ладей ⇒ 3×3 = 9 кл. (5 коней ✓)</span>
+                <span class="slider-val-badge" id="valGridTiles">Своя расстановка (0Л, 0К)</span>
               </div>
               <input type="range" class="shk-range" id="rngGridTiles" min="1" max="7" value="5" />
             </div>
@@ -1390,7 +1408,7 @@
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-geom">
       <div class="page-kicker">Задачи к вебинару · Дополнительные построения в геометрии</div>
-      <h1 class="page-title">№1–2. Удвоение медианы и метод вспомогательной окружности</h1>
+      <h1 class="page-title">№1–4. Удвоение медианы, метод вспомогательной окружности, углы $40^\circ$ и $70^\circ$ и трисекция стороны треугольника</h1>
 
       <!-- CARD 1: Удвоение медианы -->
       <article class="sandbox-card">
@@ -1398,6 +1416,7 @@
           <div class="card-heading">Удвоение медианы треугольника и поворот на $180^\circ$</div>
           <div class="card-pills">
             <button class="shk-pill" id="btnGeomRotate" onclick="toggleGeomMedian()">Достроить до параллелограмма</button>
+            <button class="shk-pill" onclick="resetGeomMedian()">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -1436,6 +1455,7 @@
             <button class="shk-pill" onclick="setAuxMode('in')">Внутри ($\angle ACD > \angle ABD$)</button>
             <button class="shk-pill active" onclick="setAuxMode('on')">На окружности ($\angle ACD = \angle ABD$)</button>
             <button class="shk-pill" onclick="setAuxMode('out')">Снаружи ($\angle ACD < \angle ABD$)</button>
+            <button class="shk-pill" onclick="snapAuxCircle()">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -1465,6 +1485,99 @@
           </div>
         </div>
       </article>
+
+      <!-- CARD 3: Медиана образует со сторонами углы 40° и 70° -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Медиана образует со сторонами углы $40^\circ$ и $70^\circ$: докажите, что она равна половине одной из них</div>
+          <div class="card-pills" id="geomAnglesPills">
+            <button class="shk-pill active" onclick="setGeomAnglesStep(0)">1. Исходный $\triangle ABC$</button>
+            <button class="shk-pill" onclick="setGeomAnglesStep(1)">2. Удвоить медиану ($ABCB_1$)</button>
+            <button class="shk-pill" onclick="setGeomAnglesStep(2)">3. $\triangle ABB_1$ ($70^\circ$ и $70^\circ$) ✓</button>
+            <button class="shk-pill" onclick="setGeomAnglesStep(0)">Сбросить</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> медиана треугольника образует с его сторонами, выходящими из той же вершины, углы $40^\circ$ и $70^\circ$. Докажите, что эта медиана равна половине одной из них.
+            </p>
+            <ul class="algo-list" id="listGeomAnglesSteps">
+              <li class="algo-item active" onclick="setGeomAnglesStep(0)">
+                <span class="algo-num">1.</span>
+                <span><b>Исходный чертёж:</b> пусть в треугольнике $\triangle ABC$ проведена медиана $BM$ ($AM = MC$), причём $\angle ABM = 70^\circ$ и $\angle CBM = 40^\circ$. Пока эти два угла находятся в разных треугольниках, связь между $BM$ и $BC$ неочевидна.</span>
+              </li>
+              <li class="algo-item" onclick="setGeomAnglesStep(1)">
+                <span class="algo-num">2.</span>
+                <span><b>Удвоение медианы до параллелограмма $ABCB_1$:</b> продолжим медиану $BM$ за середину $M$ на отрезок $MB_1 = BM$. Четырёхугольник $ABCB_1$ — <b>параллелограмм</b>, поэтому $AB_1 = BC$ и $AB_1 \parallel BC$, откуда накрест лежащие углы равны: <b>$\angle BB_1A = \angle CBB_1 = 40^\circ$</b>.</span>
+              </li>
+              <li class="algo-item" onclick="setGeomAnglesStep(2)">
+                <span class="algo-num">3.</span>
+                <span><b>Равнобедренный треугольник $\triangle ABB_1$:</b> в $\triangle ABB_1$ имеем $\angle ABB_1 = 70^\circ$ и $\angle BB_1A = 40^\circ$. По сумме углов треугольника $\angle BAB_1 = 180^\circ - 70^\circ - 40^\circ = \mathbf{70^\circ}$! Значит, $\triangle ABB_1$ равнобедренный ($BB_1 = AB_1 = BC$), а медиана <b>$BM = \frac{1}{2} BB_1 = \frac{1}{2} BC$</b>, ч.т.д.!</span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="geomAnglesFormulaBox">Шаг 1: В △ABC дана медиана BM (AM = MC), ∠ABM = 70°, ∠CBM = 40°. Удвойте медиану!</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Построение удвоенной медианы $BB_1 = 2BM$</span>
+                <span class="slider-val-badge" id="valGeomAnglesT">0% (Исходный △ABC)</span>
+              </div>
+              <input type="range" class="shk-range" id="rngGeomAnglesT" min="0" max="100" value="0" />
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvGeomAngles"></canvas>
+            </div>
+            <div class="stage-caption">Переключайте шаги 1–3 или двигайте ползунок построения параллелограмма ABCB₁</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 4: Точки D и E делят сторону AB на три равные части (CD + CE < AC + BC) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Точки $D$ и $E$ делят сторону $AB$ на три равные части: докажите, что $CD + CE < AC + BC$</div>
+          <div class="card-pills" id="geomTrisectPills">
+            <button class="shk-pill active" onclick="setGeomTrisectStep(0)">1. Исходный $\triangle ABC$</button>
+            <button class="shk-pill" onclick="setGeomTrisectStep(1)">2. Медиана $CD$ в $\triangle CAE$</button>
+            <button class="shk-pill" onclick="setGeomTrisectStep(2)">3. Медиана $CE$ в $\triangle BCD$ + Сумма ✓</button>
+            <button class="shk-pill" onclick="resetGeomTrisect()">Сбросить</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> точки $D$ и $E$ делят сторону $AB$ треугольника $ABC$ на три равные части ($AD = DE = EB$). Докажите, что $CD + CE < AC + BC$.
+            </p>
+            <ul class="algo-list" id="listGeomTrisectSteps">
+              <li class="algo-item active" onclick="setGeomTrisectStep(0)">
+                <span class="algo-num">1.</span>
+                <span><b>Выделяем два треугольника с медианами:</b> так как $AD = DE = EB$, точка $D$ — середина отрезка $AE$, а точка $E$ — середина отрезка $DB$. Значит, $CD$ — медиана в $\triangle CAE$, а $CE$ — медиана в $\triangle BCD$!</span>
+              </li>
+              <li class="algo-item" onclick="setGeomTrisectStep(1)">
+                <span class="algo-num">2.</span>
+                <span><b>Неравенство на медиану для $\triangle CAE$:</b> запишем для треугольника $\triangle CAE$ неравенство на его медиану $CD$ (удвоив $CD$ до параллелограмма $ACEC_1$): <b>$2CD < AC + CE$</b>.</span>
+              </li>
+              <li class="algo-item" onclick="setGeomTrisectStep(2)">
+                <span class="algo-num">3.</span>
+                <span><b>Неравенство для $\triangle BCD$ и сложение:</b> точно такое же неравенство на медиану $CE$ запишем для треугольника $\triangle BCD$: <b>$2CE < BC + CD$</b>. Сложим оба неравенства: $2CD + 2CE < AC + CE + BC + CD \implies \mathbf{CD + CE < AC + BC}$, ч.т.д.!</span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="geomTrisectFormulaBox">CD + CE < AC + BC (подвигайте вершины A, B, C мышкой и переключайте шаги 1–3!)</span>
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvGeomTrisect"></canvas>
+            </div>
+            <div class="stage-caption">Перетаскивайте вершины A, B, C мышкой — неравенства 2CD &lt; AC + CE и 2CE &lt; BC + CD пересчитываются вживую!</div>
+          </div>
+        </div>
+      </article>
     </section>
 
   </main>
@@ -1477,15 +1590,15 @@
 
       // --- TOPIC 1: STEREOMETRY 3D ---
       unfoldT: 0,          // 0 (3D cube) .. 1 (unfolded 90 deg into plane)
-      spiderH: 0.5,        // 0.05 .. 0.95 along edge BB1
+      spiderH: 0.25,       // Starts at 0.25 so student can find optimal h = 0.50
       rot1: { yaw: -0.38, pitch: 0.32 },
-      traceStep: 3,        // Default to Step 4 (full section C1TMPN + 3:2 ratio shown)
-      rot2: { yaw: -0.64, pitch: 0.33 },
+      traceStep: 0,        // Starts at Step 1 of 4!
+      rot2: { yaw: -0.52, pitch: 0.30 },
       sphereH: 0.0,
       rot3: { yaw: -0.5, pitch: 0.35 },
       tetraExplode: 0.0,
       rot4: { yaw: -0.38, pitch: 0.32 },
-      inscribedRatio: 1.0, // 1.0 = Cube 2x2x2 with V=8, S=24 inscribed in sphere R=sqrt(3)
+      inscribedRatio: 1.35, // Starts at Step 1 (deformed parallelepiped V < 8)
       rot5: { yaw: -0.52, pitch: 0.32 },
 
       // --- TOPIC 2: GRAPH THEORY ---
@@ -1504,37 +1617,37 @@
         { id: 7, x: 0.50, y: 0.50, name: "7" }
       ],
       spanEdges: [
-        { u: 1, v: 2, alive: true },
-        { u: 2, v: 3, alive: true },
-        { u: 3, v: 4, alive: true },
-        { u: 4, v: 5, alive: true },
-        { u: 5, v: 6, alive: true },
-        { u: 2, v: 7, alive: true },
-        // 4 cycle-forming chords:
-        { u: 6, v: 1, alive: true },
-        { u: 1, v: 7, alive: true },
-        { u: 3, v: 7, alive: true },
-        { u: 4, v: 7, alive: true }
+        { u: 1, v: 2, active: true },
+        { u: 1, v: 3, active: true },
+        { u: 2, v: 3, active: true },
+        { u: 2, v: 7, active: true },
+        { u: 3, v: 4, active: true },
+        { u: 4, v: 5, active: true },
+        { u: 3, v: 7, active: true },
+        { u: 5, v: 6, active: true },
+        { u: 5, v: 7, active: true },
+        { u: 6, v: 1, active: true }
       ],
-      spanLastRemoved: null, // { u, v, path: [u, ..., v] }
-      // Card 3: Ozersk 7 Lakes & 10 Canals (Euler's Formula V - E + F = 2 => F = 5)
-      k33Mode: 10,
-      lakeExtraCanals: [true, true, true, true], // 4 extra canals beyond the 6-edge spanning tree
+      spanLastRemoved: null,
+      // Card 3: Ozersk 7 Lakes & 10 Canals (Starts at Step 1: 6 spanning-tree canals, F = 1)
+      k33Mode: 6,
+      lakeExtraCanals: [false, false, false, false],
 
       // --- TOPIC 3: ALGEBRA & PARAMETERS ---
       algModA: 3.0,
       algPencilA: 0.2,
-      algRegionA: 0.5,
+      algRegionA: -0.15,   // Starts at Step 1: a in [-1/3; 0]
 
       // --- TOPIC 4: LOGIC & GAMES ---
-      ringMode: "exact",
-      ringVals: [10, -1, -1, -1, 10, -1, -1, -1, 10, -1, -1, -1, 10],
+      // Card 1: 36 children in a circle in red ("GR") or blue ("MB") sweaters
+      ringMode: "forbid3", // "forbid3" (Step 1), "triples12" (Step 2), "opt24" (Step 3), "empty"
+      ringKids: Array.from({ length: 36 }, (_, i) => (i < 3 ? "GR" : (i % 3 === 2 ? "MB" : "GR"))),
       ringHover: -1,
-      // Card 2: Hulk & Thanos 20 Apples symmetry game (0 = empty, 1 = apple present)
-      apples: [1,1,1,1,1,1,1,1,1, 0,0, 1,1,1,1,1,1,1,1,1],
-      appleTakeCount: 1,   // 1: take 1 apple, 2: take 2 adjacent apples
+      // Card 2: Hulk & Thanos 20 Apples symmetry game (Starts with all 20 apples!)
+      apples: [1,1,1,1,1,1,1,1,1, 1,1, 1,1,1,1,1,1,1,1,1],
+      appleTakeCount: 1,
       appleHoverIdx: -1,
-      appleLastArc: { from: [10, 11], to: [10, 11], firstMove: true },
+      appleLastArc: null,
       appleLock: false,
       // Card 3: 1xN Strip Game
       gameN: 17,
@@ -1542,75 +1655,62 @@
       gamePlayerArc: null,
       gameAiArc: null,
 
-      // --- TOPIC 5: COMBINATORICS (Two Urns, 1x6 Strips, 16-Color Board, Petya & Vasya Rooks, k Rooks & k Knights) ---
-      urnN: 1,             // 0..10 white balls in Urn 1
-      urnM: 0,             // 0..10 black balls in Urn 1
+      // --- TOPIC 5: COMBINATORICS ---
+      urnN: 5,             // Starts at Step 1: 5W + 5B (50%)
+      urnM: 5,
 
-      // Card 2: 1x6 strips on 8x8 board
-      stripMode: "opt10",  // "bound11", "naive8", "opt10", "custom"
+      // Card 2: 1x6 strips on 8x8 board (Starts EMPTY!)
+      stripMode: "empty",  // "empty", "bound11", "naive8", "opt10", "custom"
       stripOrient: "H",    // "H" (1x6) or "V" (6x1)
-      strips: [
-        { r: 0, c: 0, dir: "H" }, { r: 1, c: 0, dir: "H" }, { r: 2, c: 0, dir: "H" }, { r: 3, c: 0, dir: "H" },
-        { r: 4, c: 0, dir: "H" }, { r: 5, c: 0, dir: "H" }, { r: 6, c: 0, dir: "H" }, { r: 7, c: 0, dir: "H" },
-        { r: 0, c: 6, dir: "V" }, { r: 0, c: 7, dir: "V" }
-      ],
+      strips: [],
 
-      // Card 3: 16-Coloring of 8x8 board (each cell has >= 2 neighbors of same color)
-      colorMode: "opt16",  // "opt16", "fail3L", "fail3I", "custom"
+      // Card 3: 16-Coloring of 8x8 board (Starts EMPTY / uncolored!)
+      colorMode: "empty",  // "empty", "opt16", "fail3L", "fail3I", "custom"
       colorHover: null,
-      colorGrid: Array.from({ length: 8 }, (_, r) =>
-        Array.from({ length: 8 }, (__, c) => Math.floor(r / 2) * 4 + Math.floor(c / 2))
-      ),
+      colorGrid: Array.from({ length: 8 }, () => new Array(8).fill(-1)),
 
-      // Card 4: Petya & Vasya 8 White + 8 Black Rooks (Pigeonhole Principle ceil(64/9) = 8)
-      pvTool: "W",         // "W" (White Rook for Petya) or "B" (Black Rook for Vasya)
+      // Card 4: Petya & Vasya 8 White + 8 Black Rooks (Starts EMPTY!)
+      pvTool: "W",
       pvHighlightScore: -1,
       pvHover: null,
-      pvWhiteRooks: [
-        { r: 0, c: 0 }, { r: 1, c: 1 }, { r: 2, c: 2 }, { r: 3, c: 3 },
-        { r: 4, c: 4 }, { r: 5, c: 5 }, { r: 6, c: 6 }, { r: 7, c: 7 }
-      ],
-      pvBlackRooks: [
-        { r: 0, c: 1 }, { r: 1, c: 2 }, { r: 2, c: 3 }, { r: 3, c: 4 },
-        { r: 4, c: 5 }, { r: 5, c: 6 }, { r: 6, c: 7 }, { r: 7, c: 0 }
-      ],
+      pvWhiteRooks: [],
+      pvBlackRooks: [],
 
-      // Card 5: k Rooks & k Knights on 8x8
-      rkMode: 5,           // 5: k=5 full solution, 50: k=5 rooks only, 6: k=6 bound, 0: custom
-      rkK: 5,              // 1..7 slider value
-      rkTool: "N",         // "N" (Knight) or "R" (Rook) when clicking board
-      rkHover: null,       // { r, c } hovered cell on 8x8 board
-      rkPieces: [          // Exact k=5 solution from Shkolkovo screenshot!
-        { r: 1, c: 6, type: "R" }, // g7
-        { r: 2, c: 5, type: "R" }, // f6
-        { r: 3, c: 4, type: "R" }, // e5
-        { r: 5, c: 2, type: "R" }, // c3
-        { r: 6, c: 1, type: "R" }, // b2
-        { r: 0, c: 0, type: "N" }, // a8
-        { r: 0, c: 7, type: "N" }, // h8
-        { r: 4, c: 3, type: "N" }, // d4
-        { r: 7, c: 0, type: "N" }, // a1
-        { r: 7, c: 7, type: "N" }  // h1
-      ],
+      // Card 5: k Rooks & k Knights on 8x8 (Starts EMPTY!)
+      rkMode: 0,           // 0: empty/custom, 6: k=6 bound, 50: k=5 rooks, 5: k=5 full solution
+      rkK: 5,
+      rkTool: "N",
+      rkHover: null,
+      rkPieces: [],
 
       // --- TOPIC 6: PLANIMETRY ---
-      geomRot: 0,          // 0 .. 1 (0 to 180 deg)
-      // Positioned higher so M=(0.47, 0.46) and rotated D=(0.50, 0.78) stays well inside canvas!
+      geomRot: 0,
       geomPts: {
         A: { x: 0.18, y: 0.48 },
         B: { x: 0.44, y: 0.14 },
         C: { x: 0.76, y: 0.44 }
       },
       geomDragKey: null,
-      auxArcAng: -0.73,    // radians along circumcircle
-      auxRadialOffset: 0,  // 0 = strictly on circle! <0 inside, >0 outside
+      auxArcAng: -0.73,
+      auxRadialOffset: 0,
       auxPts: {
         A: { x: 0.22, y: 0.76 },
         B: { x: 0.29, y: 0.26 },
         C: { x: 0.68, y: 0.25 },
         D: { x: 0.78, y: 0.76 }
       },
-      auxDragKey: null
+      auxDragKey: null,
+      // Card 3 (Planimetry): Median angles 40 deg and 70 deg (Starts at Step 1, t = 0)
+      geomAnglesStep: 0,
+      geomAnglesT: 0.0,
+      // Card 4 (Planimetry): Trisected side AD = DE = EB, CD + CE < AC + BC (Starts at Step 1)
+      geomTrisectStep: 0,
+      geomTrisectPts: {
+        A: { x: 0.13, y: 0.78 },
+        B: { x: 0.87, y: 0.78 },
+        C: { x: 0.36, y: 0.17 }
+      },
+      geomTrisectDragKey: null
     };
 
     // Smooth value tween helper (updates slider value without recreating DOM!)
@@ -1679,6 +1779,11 @@
       animateValue("unfoldT", 1.0, 550, syncUnfoldUI);
     };
 
+    window.resetStereoUnfold = function() {
+      animateValue("spiderH", 0.25, 360, syncUnfoldUI);
+      animateValue("unfoldT", 0.0, 420, syncUnfoldUI);
+    };
+
     // Card 2: Stereo Trace Stepper (Parallelepiped C1TP section & D1N:ND = 3:2)
     window.setStereoTraceStep = function(idx) {
       state.traceStep = Math.max(0, Math.min(3, idx));
@@ -1737,6 +1842,10 @@
       animateValue("tetraExplode", state.tetraExplode > 0.5 ? 0 : 1, 560, syncTetraUI);
     };
 
+    window.resetTetraExplode = function() {
+      animateValue("tetraExplode", 0, 420, syncTetraUI);
+    };
+
     // Card 5: Parallelepiped of volume 8 inscribed in sphere of radius sqrt(3)
     function getInscribedDims(ratio) {
       const r = Math.max(0.55, Math.min(1.45, ratio));
@@ -1763,6 +1872,18 @@
         fBox.textContent = d.isCube
           ? "B₁D = 2R = 2√3 ⇒ a² + b² + c² = 12, V = abc = 8 ⇒ куб 2 × 2 × 2 ⇒ Sполн = 6 · 2² = 24 ✓"
           : `При (a,b,c) ≠ (2,2,2) и a²+b²+c² = 12: объём V = ${d.V.toFixed(2)} < 8 (S = ${d.S.toFixed(2)} < 24)`;
+      }
+      const btns = document.querySelectorAll("#inscribedPills .shk-pill");
+      if (btns.length >= 3) {
+        btns[0].classList.toggle("active", state.inscribedRatio > 1.05);
+        btns[1].classList.toggle("active", d.isCube);
+        btns[2].classList.toggle("active", state.inscribedRatio < 0.95);
+      }
+      const items = document.querySelectorAll("#listInscribedSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", state.inscribedRatio > 1.05);
+        items[1].classList.toggle("active", d.isCube);
+        items[2].classList.toggle("active", state.inscribedRatio < 0.95);
       }
     }
 
@@ -1805,6 +1926,7 @@
     window.resetKnightsGame = function() {
       state.knights = ["W", null, "B", null, "B", null, "W", null];
       state.selKnight = 0;
+      setKnightMorph(0);
     };
 
     // Card 2 (Graphs): Spanning Tree by breaking cycles (Problem 15)
@@ -1943,11 +2065,11 @@
       const F = E - V + 2;
       const islands = F - 1;
       const btns = document.querySelectorAll("#k33Presets .shk-pill");
-      if (btns.length === 4) {
-        btns[0].classList.toggle("active", E === 10);
-        btns[1].classList.toggle("active", E === 6);
-        btns[2].classList.toggle("active", E === 8);
-        btns[3].classList.toggle("active", E === 9);
+      if (btns.length >= 4) {
+        btns[0].classList.toggle("active", E === 6);
+        btns[1].classList.toggle("active", E === 8);
+        btns[2].classList.toggle("active", E === 9);
+        btns[3].classList.toggle("active", E === 10);
       }
       const items = document.querySelectorAll("#listK33Steps .algo-item");
       if (items.length === 3) {
@@ -2101,43 +2223,86 @@
       animateValue("algRegionA", val, 420, syncAlgRegionUI);
     };
 
-    // --- TOPIC 4: LOGIC & GAMES CONTROLS ---
-    function syncRingFormulaBox() {
-      const posCnt = state.ringVals.filter(v => v > 0).length;
-      const negCnt = 13 - posCnt;
-      let brokenStart = -1;
-      for (let i = 0; i < 13; i++) {
-        const s4 = state.ringVals[i] + state.ringVals[(i+1)%13] + state.ringVals[(i+2)%13] + state.ringVals[(i+3)%13];
-        if (s4 <= 0) { brokenStart = i; break; }
+    // --- TOPIC 4: LOGIC & GAMES CONTROLS (36 Children in Red/Blue Sweaters Around a Circle) ---
+    function buildRing24Kids() {
+      return Array.from({ length: 36 }, (_, i) =>
+        i % 3 === 2 ? { g: "B", c: "B" } : { g: "G", c: "R" }
+      );
+    }
+
+    function analyzeRingKids() {
+      const n = 36;
+      let redGirls = 0;
+      let blueBoys = 0;
+      const badIndices = [];
+      for (let i = 0; i < n; i++) {
+        const cur = state.ringKids[i];
+        const prev = state.ringKids[(i + n - 1) % n];
+        const next = state.ringKids[(i + 1) % n];
+        if (cur.g === "G" && cur.c === "R") redGirls++;
+        if (cur.g === "B" && cur.c === "B") blueBoys++;
+
+        // Rule 1: Next to every boy stands at least one girl
+        const okBoy = cur.g !== "B" || prev.g === "G" || next.g === "G";
+        // Rule 2: Next to every girl stands at least one person in a blue sweater
+        const okGirl = cur.g !== "G" || prev.c === "B" || next.c === "B";
+        if (!okBoy || !okGirl) badIndices.push(i);
       }
+      return { redGirls, blueBoys, badIndices };
+    }
+
+    function syncRingFormulaBox() {
+      const info = analyzeRingKids();
       const box = document.getElementById("ringFormulaBox");
-      if (brokenStart >= 0) {
-        const eIdx = ((brokenStart + 3) % 13) + 1;
-        box.textContent = `Плюсов: ${posCnt}, Минусов: ${negCnt} ⇒ Сбой в четвёрке №${brokenStart + 1}–№${eIdx} (сумма ≤ 0) ✗`;
-      } else if (state.ringMode === "weak") {
-        box.textContent = `Слабая оценка: 3 дуги по 4 числа дают лишь ≥ 3 плюсов (оценка ≤ 10 минусов)`;
+      if (!box) return;
+      if (state.ringMode === "forbid3") {
+        box.textContent =
+          "Шаг 1 (Запрет 3 подряд): у средней из 3 девочек в красных кофтах оба соседа в красном — нет соседа в синей кофте! ✗";
+      } else if (state.ringMode === "triples12") {
+        box.textContent =
+          `Шаг 2 (Разбиение на 12 троек): 36 / 3 = 12 троек, в каждой ≤ 2 Д(кр) ⇒ всего ≤ 12 · 2 = 24 девочек в красных кофтах ✓`;
+      } else if (info.badIndices.length > 0) {
+        box.textContent =
+          `Девочек в красном: ${info.redGirls} | Нарушение условия у ребёнка №${info.badIndices[0] + 1} (нет нужного соседа)! ✗`;
       } else {
-        box.textContent = `Плюсов (+10): ${posCnt}, Минусов (−1): ${negCnt} ⇒ В любой четвёрке сумма ≥ +7 > 0 ✓`;
+        box.textContent =
+          `Девочек в красном: ${info.redGirls}, Мальчиков в синем: ${info.blueBoys} ⇒ Все 36 условий выполнены! Максимум: 24 ✓`;
+      }
+
+      const btns = document.querySelectorAll("#ringPills .shk-pill");
+      if (btns.length >= 4) {
+        btns[0].classList.toggle("active", state.ringMode === "forbid3");
+        btns[1].classList.toggle("active", state.ringMode === "triples12");
+        btns[2].classList.toggle("active", state.ringMode === "opt24");
+        btns[3].classList.toggle("active", state.ringMode === "empty");
+      }
+
+      const items = document.querySelectorAll("#listRingSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", state.ringMode === "forbid3");
+        items[1].classList.toggle("active", state.ringMode === "triples12");
+        items[2].classList.toggle("active", state.ringMode === "opt24");
       }
     }
 
     window.setRingMode = function(m) {
       state.ringMode = m;
-      if (m === "fail10") {
-        state.ringVals = [10, -1, -1, -1, 10, -1, -1, -1, -1, -1, -1, -1, 10];
-      } else {
-        state.ringVals = [10, -1, -1, -1, 10, -1, -1, -1, 10, -1, -1, -1, 10];
+      state.ringKids = buildRing24Kids();
+      if (m === "forbid3") {
+        // Show 3 consecutive red girls at positions 0, 1, 2 (making #2 violate the blue-neighbor rule)
+        state.ringKids[2] = { g: "G", c: "R" };
       }
-      const btns = document.querySelectorAll("#ringPills .shk-pill");
-      btns[0].classList.toggle("active", m === "weak");
-      btns[1].classList.toggle("active", m === "exact");
-      if (btns[2]) btns[2].classList.toggle("active", m === "fail10");
+      syncRingFormulaBox();
+    };
 
-      const items = document.querySelectorAll("#listRingSteps .algo-item");
-      if (items.length === 3) {
-        items[0].classList.toggle("active", m === "weak");
-        items[1].classList.toggle("active", m === "exact");
-        items[2].classList.toggle("active", m === "fail10");
+    window.toggleRingKidAt = function(idx) {
+      if (idx < 0 || idx >= 36) return;
+      state.ringMode = "custom";
+      const cur = state.ringKids[idx];
+      if (cur.g === "G" && cur.c === "R") {
+        state.ringKids[idx] = { g: "B", c: "B" };
+      } else {
+        state.ringKids[idx] = { g: "G", c: "R" };
       }
       syncRingFormulaBox();
     };
@@ -2152,7 +2317,7 @@
       }
     };
 
-    window.resetApplesGame = function(hulkMovedFirst = true) {
+    window.resetApplesGame = function(hulkMovedFirst = false) {
       state.appleLock = false;
       state.apples = new Array(20).fill(1);
       if (hulkMovedFirst) {
@@ -2164,7 +2329,7 @@
       } else {
         state.appleLastArc = null;
         document.getElementById("appleStatusBox").textContent =
-          "На столе все 20 яблок! Сделайте первый ход за Халка (подсказка: берите пару №10 и №11).";
+          "На столе все 20 яблок! Нажмите «Первый ход Халка (№10–11)» или кликните по яблоку.";
       }
     };
 
@@ -2182,7 +2347,7 @@
           : "Полоска 1×17: клетка 1 уже ловушка — компьютер дополняет каждый твой ход до 4!";
     };
 
-    // --- TOPIC 5: COMBINATORICS CONTROLS (Two Urns, Andre Reflection & Circular Gas Shift) ---
+    // --- TOPIC 5: COMBINATORICS CONTROLS (Two Urns, 1x6 Strips, 16-Coloring, Petya & Vasya Rooks, Rooks & Knights) ---
     function gcd(a, b) {
       a = Math.abs(a); b = Math.abs(b);
       while (b) { const t = b; b = a % b; a = t; }
@@ -2206,7 +2371,6 @@
       if (k1 === 0 || k2 === 0) {
         box.textContent = "Ошибка: одна из урн пуста! В каждой урне должен быть хотя бы 1 шар ✗";
       } else {
-        // P = 1/2 * (n/k1 + n2/k2) = (n*k2 + n2*k1) / (2*k1*k2)
         const num = n * k2 + n2 * k1;
         const den = 2 * k1 * k2;
         const g = gcd(num, den);
@@ -2252,7 +2416,10 @@
       const usedCells = cnt * 6;
       const freeCells = 64 - usedCells;
       const box = document.getElementById("stripFormulaText");
-      if (state.stripMode === "bound11") {
+      if (state.stripMode === "empty" && cnt === 0) {
+        box.textContent =
+          "Доска 8×8 чиста (64 клетки). Кликните по доске, чтобы вырезать полоски 1×6, или выберите шаг разбора!";
+      } else if (state.stripMode === "bound11") {
         box.textContent =
           "Оценка по площади: 11 полосок по 6 клеток требуют 11 · 6 = 66 клеток > 64 клеток доски 8×8 (невозможно!) ✗";
       } else if (cnt === 10) {
@@ -2264,17 +2431,18 @@
       }
 
       const btns = document.querySelectorAll("#stripsPills .shk-pill");
-      if (btns.length === 4) {
-        btns[0].classList.toggle("active", state.stripMode === "bound11");
-        btns[1].classList.toggle("active", state.stripMode === "naive8");
-        btns[2].classList.toggle("active", state.stripMode === "opt10");
-        btns[3].textContent = state.stripOrient === "H" ? "Свой ход: Гориз. 1×6" : "Свой ход: Верт. 6×1";
-        btns[3].classList.toggle("active", state.stripMode === "custom");
+      if (btns.length >= 5) {
+        btns[0].classList.toggle("active", state.stripMode === "empty");
+        btns[1].classList.toggle("active", state.stripMode === "bound11");
+        btns[2].classList.toggle("active", state.stripMode === "naive8");
+        btns[3].classList.toggle("active", state.stripMode === "opt10");
+        btns[4].textContent = state.stripOrient === "H" ? "Свой ход: Гориз. 1×6" : "Свой ход: Верт. 6×1";
+        btns[4].classList.toggle("active", state.stripMode === "custom");
       }
 
       const items = document.querySelectorAll("#listStripSteps .algo-item");
       if (items.length === 3) {
-        items[0].classList.toggle("active", state.stripMode === "bound11");
+        items[0].classList.toggle("active", state.stripMode === "bound11" || state.stripMode === "empty");
         items[1].classList.toggle("active", state.stripMode === "naive8");
         items[2].classList.toggle("active", state.stripMode === "opt10");
       }
@@ -2286,7 +2454,9 @@
         { r: 0, c: 0, dir: "H" }, { r: 1, c: 0, dir: "H" }, { r: 2, c: 0, dir: "H" }, { r: 3, c: 0, dir: "H" },
         { r: 4, c: 0, dir: "H" }, { r: 5, c: 0, dir: "H" }, { r: 6, c: 0, dir: "H" }, { r: 7, c: 0, dir: "H" }
       ];
-      if (mode === "naive8") {
+      if (mode === "empty") {
+        state.strips = [];
+      } else if (mode === "naive8") {
         state.strips = horiz8;
       } else {
         state.strips = horiz8.concat([{ r: 0, c: 6, dir: "V" }, { r: 0, c: 7, dir: "V" }]);
@@ -2312,7 +2482,6 @@
     }
 
     window.toggleStripAt = function(r, c) {
-      // Check if cell (r, c) is already covered by an existing strip -> remove it
       const existingIdx = state.strips.findIndex(st =>
         getStripCells(st).some(cell => cell.r === r && cell.c === c)
       );
@@ -2322,7 +2491,6 @@
         syncStripsUI();
         return;
       }
-      // Otherwise try to place a 1x6 strip of orientation state.stripOrient starting at (r, c) (or clamped to board)
       const dir = state.stripOrient;
       const r0 = dir === "V" ? Math.min(2, r) : r;
       const c0 = dir === "H" ? Math.min(2, c) : c;
@@ -2347,6 +2515,7 @@
 
     function countSameColorNeighbors(grid, r, c) {
       const colId = grid[r][c];
+      if (colId < 0) return 0;
       let cnt = 0;
       const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
       for (const [dr, dc] of dirs) {
@@ -2361,14 +2530,26 @@
     function syncColoringUI() {
       const usedColors = new Set();
       let badCells = 0;
+      let uncoloredCells = 0;
       for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
-          usedColors.add(state.colorGrid[r][c]);
-          if (countSameColorNeighbors(state.colorGrid, r, c) < 2) badCells++;
+          const cid = state.colorGrid[r][c];
+          if (cid < 0) {
+            uncoloredCells++;
+          } else {
+            usedColors.add(cid);
+            if (countSameColorNeighbors(state.colorGrid, r, c) < 2) badCells++;
+          }
         }
       }
       const box = document.getElementById("colorFormulaText");
-      if (badCells === 0) {
+      if (uncoloredCells === 64) {
+        box.textContent =
+          "Доска 8×8 не раскрашена. Кликните по клетке, чтобы закрасить квадрат 2×2, или выберите шаг разбора!";
+      } else if (uncoloredCells > 0) {
+        box.textContent =
+          `Закрашено цветов: ${usedColors.size} (осталось ${uncoloredCells} кл.) — кликайте по блокам 2×2 или нажмите «16 цветов (квадраты 2×2)»`;
+      } else if (badCells === 0) {
         box.textContent =
           `Цветов на доске: ${usedColors.size} (квадраты 2×2) — у всех 64 клеток ровно по 2 соседа своего цвета! ✓`;
       } else {
@@ -2377,15 +2558,16 @@
       }
 
       const btns = document.querySelectorAll("#colorPills .shk-pill");
-      if (btns.length === 3) {
-        btns[0].classList.toggle("active", state.colorMode === "opt16");
-        btns[1].classList.toggle("active", state.colorMode === "fail3L");
-        btns[2].classList.toggle("active", state.colorMode === "fail3I");
+      if (btns.length >= 4) {
+        btns[0].classList.toggle("active", state.colorMode === "empty");
+        btns[1].classList.toggle("active", state.colorMode === "opt16");
+        btns[2].classList.toggle("active", state.colorMode === "fail3L");
+        btns[3].classList.toggle("active", state.colorMode === "fail3I");
       }
 
       const items = document.querySelectorAll("#listColorSteps .algo-item");
       if (items.length === 3) {
-        items[0].classList.toggle("active", state.colorMode === "opt16");
+        items[0].classList.toggle("active", state.colorMode === "opt16" || state.colorMode === "empty");
         items[1].classList.toggle("active", state.colorMode === "fail3L");
         items[2].classList.toggle("active", state.colorMode === "fail3I");
       }
@@ -2393,13 +2575,16 @@
 
     window.setColorPreset = function(mode) {
       state.colorMode = mode;
+      if (mode === "empty") {
+        state.colorGrid = Array.from({ length: 8 }, () => new Array(8).fill(-1));
+        syncColoringUI();
+        return;
+      }
       const g = buildBase16ColorGrid();
       if (mode === "fail3L") {
-        // Turn 3 cells in top-left 2x2 into 17th color (id=16, L-tromino), and give (1,1) to neighbor color 1
         g[0][0] = 16; g[0][1] = 16; g[1][0] = 16;
         g[1][1] = 1;
       } else if (mode === "fail3I") {
-        // Turn 3 cells in a row (0,0), (0,1), (0,2) into 17th color (id=16, 1x3 bar)
         g[0][0] = 16; g[0][1] = 16; g[0][2] = 16;
       }
       state.colorGrid = g;
@@ -2409,7 +2594,18 @@
     window.toggleColorCellAt = function(r, c) {
       state.colorMode = "custom";
       const baseColor = Math.floor(r / 2) * 4 + Math.floor(c / 2);
-      state.colorGrid[r][c] = state.colorGrid[r][c] === 16 ? baseColor : 16;
+      if (state.colorGrid[r][c] < 0) {
+        // Fill the entire 2x2 block of this cell with its baseColor
+        const br = Math.floor(r / 2) * 2;
+        const bc = Math.floor(c / 2) * 2;
+        for (let dr = 0; dr < 2; dr++) {
+          for (let dc = 0; dc < 2; dc++) {
+            state.colorGrid[br + dr][bc + dc] = baseColor;
+          }
+        }
+      } else {
+        state.colorGrid[r][c] = state.colorGrid[r][c] === 16 ? baseColor : 16;
+      }
       syncColoringUI();
     };
 
@@ -2428,8 +2624,6 @@
       const buckets = Array.from({ length: 9 }, () => []);
       for (let r = 0; r < 8; r++) {
         for (let c = 0; c < 8; c++) {
-          // A black rook at (r,c) gets 1 point for EACH white rook in the same row or same column
-          // Note: if a white rook stands on (r,c) itself, it is in the same row/col, contributing 1 point!
           const sc = rowCounts[r] + colCounts[c] - (wSet.has(`${r},${c}`) ? 1 : 0);
           const clampedSc = Math.max(0, Math.min(8, sc));
           scores[r][c] = clampedSc;
@@ -2437,7 +2631,6 @@
         }
       }
 
-      // Find best bucket with >= 8 cells (or max bucket if white rooks != 8)
       let bestScore = 0;
       for (let s = 0; s <= 8; s++) {
         if (buckets[s].length > buckets[bestScore].length) bestScore = s;
@@ -2453,7 +2646,10 @@
       const wCnt = state.pvWhiteRooks.length;
       const bCnt = state.pvBlackRooks.length;
       const box = document.getElementById("pvRookFormulaText");
-      if (bCnt === 8 && info.allBlackEqual) {
+      if (wCnt === 0 && bCnt === 0) {
+        box.textContent =
+          "Доска 8×8 пуста: кликайте по клеткам, чтобы расставить белые ладьи Пети, затем нажмите «Авто-ответ Васи»!";
+      } else if (bCnt === 8 && info.allBlackEqual) {
         box.textContent =
           `Белых ладей Пети: ${wCnt} | Чёрных ладей Васи: 8 — у всех по ${info.blackScores[0]} балл(а)! Победа Васи по Дирихле (⌈64/9⌉ = 8) ✓`;
       } else if (bCnt > 0 && !info.allBlackEqual) {
@@ -2485,6 +2681,13 @@
     };
 
     window.presetPetyaRooks = function(kind) {
+      if (kind === "empty") {
+        state.pvWhiteRooks = [];
+        state.pvBlackRooks = [];
+        state.pvHighlightScore = -1;
+        syncPVRooksUI();
+        return;
+      }
       if (kind === "diag") {
         state.pvWhiteRooks = Array.from({ length: 8 }, (_, i) => ({ r: i, c: i }));
       } else if (kind === "row") {
@@ -2510,7 +2713,6 @@
         } else if (state.pvWhiteRooks.length < 8) {
           state.pvWhiteRooks.push({ r, c });
         } else {
-          // Replace oldest white rook so Petya always has at most 8 white rooks
           state.pvWhiteRooks.shift();
           state.pvWhiteRooks.push({ r, c });
         }
@@ -2533,7 +2735,8 @@
     }
 
     function buildRookKnightPresetPieces(mode, kVal) {
-      if (mode === 5 || (mode === 50)) {
+      if (mode === 0) return [];
+      if (mode === 5 || mode === 50) {
         const rooks = [
           { r: 1, c: 6, type: "R" }, // g7
           { r: 2, c: 5, type: "R" }, // f6
@@ -2550,7 +2753,6 @@
           { r: 7, c: 7, type: "N" }  // h1
         ]);
       }
-      // For arbitrary kVal (e.g. k=6 bound): place kVal rooks on diagonal (0..kVal-1)
       const pcs = [];
       for (let i = 0; i < kVal; i++) {
         pcs.push({ r: i, c: i, type: "R" });
@@ -2565,7 +2767,6 @@
       const rookCols = new Set(rooks.map(r => r.c));
       const conflicts = [];
 
-      // Check all pairs for attacks
       for (let i = 0; i < state.rkPieces.length; i++) {
         for (let j = i + 1; j < state.rkPieces.length; j++) {
           const p1 = state.rkPieces[i], p2 = state.rkPieces[j];
@@ -2595,12 +2796,15 @@
       const info = analyzeRookKnightBoard();
       const kR = info.rooks.length;
       const kN = info.knights.length;
-      document.getElementById("rngGridTiles").value = Math.max(1, Math.min(7, kR || state.rkK));
+      document.getElementById("rngGridTiles").value = Math.max(0, Math.min(7, kR));
       document.getElementById("valGridTiles").textContent =
         `Ладей: ${kR} ⇒ небитых клеток: ${info.freeRows}×${info.freeCols} = ${info.freeCells} (Коней: ${kN})`;
 
       const fBox = document.getElementById("gridFormulaText");
-      if (info.conflicts.length > 0) {
+      if (kR === 0 && kN === 0) {
+        fBox.textContent =
+          "Доска 8×8 пуста: кликайте по клеткам, чтобы ставить ладьи и коней, или выберите шаг разбора!";
+      } else if (info.conflicts.length > 0) {
         const [a, b] = info.conflicts[0];
         fBox.textContent =
           `Конфликт боя: фигура на ${getGridCellName(a.r, a.c)} и фигура на ${getGridCellName(b.r, b.c)} бьют друг друга! ✗`;
@@ -2616,17 +2820,18 @@
       }
 
       const btns = document.querySelectorAll("#gridPills .shk-pill");
-      if (btns.length === 4) {
-        btns[0].classList.toggle("active", state.rkMode === 6);
-        btns[1].classList.toggle("active", state.rkMode === 50);
-        btns[2].classList.toggle("active", state.rkMode === 5);
-        btns[3].textContent = state.rkTool === "N" ? "Свой ход: Конь ♞" : "Свой ход: Ладья ♜";
-        btns[3].classList.toggle("active", state.rkMode === 0);
+      if (btns.length >= 5) {
+        btns[0].classList.toggle("active", state.rkMode === 0 && kR === 0 && kN === 0);
+        btns[1].classList.toggle("active", state.rkMode === 6);
+        btns[2].classList.toggle("active", state.rkMode === 50);
+        btns[3].classList.toggle("active", state.rkMode === 5);
+        btns[4].textContent = state.rkTool === "N" ? "Свой ход: Конь ♞" : "Свой ход: Ладья ♜";
+        btns[4].classList.toggle("active", state.rkMode === 0 && (kR > 0 || kN > 0));
       }
 
       const items = document.querySelectorAll("#listGridSteps .algo-item");
       if (items.length === 3) {
-        items[0].classList.toggle("active", state.rkMode === 6);
+        items[0].classList.toggle("active", state.rkMode === 6 || state.rkMode === 0);
         items[1].classList.toggle("active", state.rkMode === 50);
         items[2].classList.toggle("active", state.rkMode === 5);
       }
@@ -2635,7 +2840,10 @@
     document.getElementById("rngGridTiles").addEventListener("input", function() {
       const k = parseInt(this.value, 10);
       state.rkK = k;
-      if (k === 5) {
+      if (k === 0) {
+        state.rkMode = 0;
+        state.rkPieces = [];
+      } else if (k === 5) {
         state.rkMode = 5;
         state.rkPieces = buildRookKnightPresetPieces(5, 5);
       } else {
@@ -2647,7 +2855,7 @@
 
     window.setRookKnightPreset = function(mode) {
       state.rkMode = mode;
-      state.rkK = mode === 6 ? 6 : 5;
+      state.rkK = mode === 6 ? 6 : (mode === 0 ? 0 : 5);
       state.rkPieces = buildRookKnightPresetPieces(mode, state.rkK);
       syncRookKnightUI();
     };
@@ -2688,6 +2896,15 @@
       animateValue("geomRot", state.geomRot > 0.5 ? 0 : 1, 550, syncGeomRotUI);
     };
 
+    window.resetGeomMedian = function() {
+      state.geomPts = {
+        B: { x: 0.25, y: 0.78 },
+        C: { x: 0.78, y: 0.78 },
+        A: { x: 0.36, y: 0.22 }
+      };
+      animateValue("geomRot", 0, 380, syncGeomRotUI);
+    };
+
     function syncAuxPositionFromState() {
       const { A, B, D } = state.auxPts;
       const circ = circumcircle(A, B, D);
@@ -2700,7 +2917,7 @@
 
     document.getElementById("rngAuxArc").addEventListener("input", function() {
       state.auxArcAng = (parseFloat(this.value) * Math.PI) / 180;
-      state.auxRadialOffset = 0; // Strictly on the circle when sliding along the arc!
+      state.auxRadialOffset = 0;
       syncAuxPositionFromState();
       syncAuxModeButtons();
     });
@@ -2727,6 +2944,87 @@
       syncAuxModeButtons();
     };
 
+    // Card 3 (Planimetry): Median Forming 40° and 70° with Sides -> BM = 1/2 BC
+    function syncGeomAnglesUI() {
+      const pct = Math.round(state.geomAnglesT * 100);
+      const rng = document.getElementById("rngGeomAnglesT");
+      const val = document.getElementById("valGeomAnglesT");
+      if (rng) rng.value = pct;
+      if (val) val.textContent = `${pct}%`;
+
+      const step = state.geomAnglesStep;
+      const btns = document.querySelectorAll("#geomAnglesPills .shk-pill");
+      if (btns.length >= 3) {
+        btns[0].classList.toggle("active", step === 0);
+        btns[1].classList.toggle("active", step === 1);
+        btns[2].classList.toggle("active", step === 2);
+      }
+
+      const items = document.querySelectorAll("#listGeomAnglesSteps .algo-item");
+      if (items.length === 3) {
+        items.forEach((el, i) => el.classList.toggle("active", i === step));
+      }
+
+      const box = document.getElementById("geomAnglesFormulaBox");
+      if (box) {
+        if (step === 0) {
+          box.textContent =
+            "Шаг 1: В △ABC медиана BM образует со сторонами AB и BC углы ∠ABM = 70° и ∠MBC = 40°.";
+        } else if (step === 1) {
+          box.textContent =
+            "Шаг 2: Удвоим медиану BM до параллелограмма ABCB₁ (BM = MB₁) ⇒ AB₁ ∥ BC и ∠BB₁A = ∠MBC = 40°.";
+        } else {
+          box.textContent =
+            "Шаг 3: В △ABB₁ угол ∠BAB₁ = 180° − (70° + 40°) = 70° = ∠ABB₁ ⇒ BB₁ = AB₁ = BC ⇒ BM = ½ BC ✓";
+        }
+      }
+    }
+
+    document.getElementById("rngGeomAnglesT").addEventListener("input", function() {
+      state.geomAnglesT = parseFloat(this.value) / 100;
+      if (state.geomAnglesT > 0.5 && state.geomAnglesStep === 0) {
+        state.geomAnglesStep = 1;
+      }
+      syncGeomAnglesUI();
+    });
+
+    window.setGeomAnglesStep = function(step) {
+      state.geomAnglesStep = step;
+      const targetT = step === 0 ? 0.0 : 1.0;
+      animateValue("geomAnglesT", targetT, 480, syncGeomAnglesUI);
+    };
+
+    // Card 4 (Planimetry): Points D, E Trisecting Side AB -> CD + CE < AC + BC
+    function syncGeomTrisectUI() {
+      const step = state.geomTrisectStep;
+      const btns = document.querySelectorAll("#geomTrisectPills .shk-pill");
+      if (btns.length >= 3) {
+        btns[0].classList.toggle("active", step === 0);
+        btns[1].classList.toggle("active", step === 1);
+        btns[2].classList.toggle("active", step === 2);
+      }
+
+      const items = document.querySelectorAll("#listGeomTrisectSteps .algo-item");
+      if (items.length === 3) {
+        items.forEach((el, i) => el.classList.toggle("active", i === step));
+      }
+    }
+
+    window.setGeomTrisectStep = function(step) {
+      state.geomTrisectStep = step;
+      syncGeomTrisectUI();
+    };
+
+    window.resetGeomTrisect = function() {
+      state.geomTrisectStep = 0;
+      state.geomTrisectPts = {
+        A: { x: 0.14, y: 0.78 },
+        B: { x: 0.86, y: 0.78 },
+        C: { x: 0.42, y: 0.18 }
+      };
+      syncGeomTrisectUI();
+    };
+
     // =========================================================================
     // 4. 3D & 2D MATHEMATICAL PROJECTION ENGINE
     // =========================================================================
@@ -2737,7 +3035,7 @@
       "cvAlgMod", "cvAlgPencil", "cvAlgRegion",
       "cvLogicRing", "cvLogicApples", "cvLogicGame",
       "cvComboUrns", "cvComboStrips", "cvComboColoring", "cvComboRooksPV", "cvComboGrid",
-      "cvGeomMedian", "cvGeomCircle"
+      "cvGeomMedian", "cvGeomCircle", "cvGeomAngles", "cvGeomTrisect"
     ];
 
     function resizeAllCanvases() {
@@ -2850,7 +3148,7 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      const sc = Math.min(w, h) * 0.37;
+      const sc = Math.min(w, h) * 0.40;
       // Shift center slightly left as the right face unfolds so the 2-square net stays centered
       const cxView = w - 42 * state.unfoldT;
       const p = pt => project3D(pt, state.rot1, cxView, h, sc);
@@ -2960,36 +3258,37 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      // Scale and center offset so cube [-0.5,0.5]^3 + exterior trace points L(0.5,-1.5,-0.5) and O(-7/6,0.5,-0.5) fit cleanly
-      const sc = Math.min(w, h) * 0.275;
+      // Large scale + compact depth hy=0.35 so the 3D parallelepiped is big and easy to inspect while L and O fit cleanly
+      const sc = Math.min(w, h) * 0.365;
+      const hx = 0.54, hy = 0.35, hz = 0.52;
       const p = pt => project3D(
-        { x: pt.x + 0.16, y: pt.y + 0.26, z: pt.z - 0.04 },
+        { x: pt.x + 0.19, y: pt.y + 0.18, z: pt.z - 0.03 },
         state.rot2,
         w,
         h,
         sc
       );
 
-      // Exact unit cube [-0.5, 0.5]^3 representing parallelepiped ABCDA1B1C1D1
+      // Parallelepiped ABCDA1B1C1D1 with dimensions [-hx,hx] x [-hy,hy] x [-hz,hz]
       const V = {
-        A:  { x: -0.5, y: -0.5, z: -0.5 },
-        B:  { x:  0.5, y: -0.5, z: -0.5 },
-        C:  { x:  0.5, y:  0.5, z: -0.5 },
-        D:  { x: -0.5, y:  0.5, z: -0.5 },
-        A1: { x: -0.5, y: -0.5, z:  0.5 },
-        B1: { x:  0.5, y: -0.5, z:  0.5 },
-        C1: { x:  0.5, y:  0.5, z:  0.5 },
-        D1: { x: -0.5, y:  0.5, z:  0.5 }
+        A:  { x: -hx, y: -hy, z: -hz },
+        B:  { x:  hx, y: -hy, z: -hz },
+        C:  { x:  hx, y:  hy, z: -hz },
+        D:  { x: -hx, y:  hy, z: -hz },
+        A1: { x: -hx, y: -hy, z:  hz },
+        B1: { x:  hx, y: -hy, z:  hz },
+        C1: { x:  hx, y:  hy, z:  hz },
+        D1: { x: -hx, y:  hy, z:  hz }
       };
 
-      // Section & trace points for plane C1TP (T = midpoint of BB1, AP:PD = 1:4)
+      // Exact affine-invariant section & trace points for plane C1TP (T = midpoint of BB1, AP:PD = 1:4)
       const S = {
-        T: { x:  0.5,      y: -0.5, z:  0.0 }, // Midpoint of BB1 (B1T = TB = y)
-        P: { x: -0.5,      y: -0.3, z: -0.5 }, // On AD with AP : PD = 1 : 4 (AP = x/5, PD = 4x/5)
-        L: { x:  0.5,      y: -1.5, z: -0.5 }, // C1T ∩ CB (BL = CB = x)
-        M: { x: -1 / 3,    y: -0.5, z: -0.5 }, // LP ∩ AB (AM = z, MB = 5z)
-        O: { x: -7 / 6,    y:  0.5, z: -0.5 }, // LP ∩ CD (OD = 4z, OC = 10z)
-        N: { x: -0.5,      y:  0.5, z: -0.1 }  // OC1 ∩ DD1 (ND = 4y/5, D1N = 6y/5 => D1N:ND = 3:2)
+        T: { x:  hx,             y: -hy,       z:  0.0 },        // Midpoint of BB1 (B1T = TB = y)
+        P: { x: -hx,             y: -0.6 * hy, z: -hz },         // On AD with AP : PD = 1 : 4 (AP = x/5, PD = 4x/5)
+        L: { x:  hx,             y: -3.0 * hy, z: -hz },         // C1T ∩ CB (BL = CB = x)
+        M: { x: -(2 / 3) * hx,   y: -hy,       z: -hz },         // LP ∩ AB (AM = z, MB = 5z)
+        O: { x: -(7 / 3) * hx,   y:  hy,       z: -hz },         // LP ∩ CD (OD = 4z, OC = 10z)
+        N: { x: -hx,             y:  hy,       z: -0.2 * hz }    // OC1 ∩ DD1 (ND = 4y/5, D1N = 6y/5 => D1N:ND = 3:2)
       };
 
       const pv = {};
@@ -2997,12 +3296,12 @@
       const ps = {};
       Object.keys(S).forEach(k => ps[k] = p(S[k]));
 
-      drawOrthoCubeEdges(ctx, pv, state.rot2, col.ink, col.muted, 1.9, 1.4);
+      drawOrthoCubeEdges(ctx, pv, state.rot2, col.ink, col.muted, 2.2, 1.5);
 
       // Step >= 0: Extension of CB to L and line C1 -> T -> L in face (BCC1B1)
       ctx.setLineDash([5, 4]);
       ctx.strokeStyle = col.blue;
-      ctx.lineWidth = 1.65;
+      ctx.lineWidth = 1.8;
       ctx.beginPath();
       ctx.moveTo(pv.B.x, pv.B.y); ctx.lineTo(ps.L.x, ps.L.y);
       ctx.moveTo(ps.T.x, ps.T.y); ctx.lineTo(ps.L.x, ps.L.y);
@@ -3026,7 +3325,7 @@
 
       // Solid section segments per step
       ctx.strokeStyle = col.blue;
-      ctx.lineWidth = 3.0;
+      ctx.lineWidth = 3.2;
       ctx.beginPath();
       ctx.moveTo(pv.C1.x, pv.C1.y);
       ctx.lineTo(ps.T.x, ps.T.y);
@@ -3049,10 +3348,10 @@
           else ctx.lineTo(pt.x, pt.y);
         });
         ctx.closePath();
-        ctx.fillStyle = "rgba(0, 136, 255, 0.19)";
+        ctx.fillStyle = "rgba(0, 136, 255, 0.20)";
         ctx.fill();
         ctx.strokeStyle = col.blue;
-        ctx.lineWidth = 3.0;
+        ctx.lineWidth = 3.2;
         ctx.stroke();
       }
 
@@ -3061,63 +3360,63 @@
         ctx.beginPath();
         ctx.moveTo(pv.D1.x, pv.D1.y); ctx.lineTo(ps.N.x, ps.N.y);
         ctx.strokeStyle = col.green;
-        ctx.lineWidth = 4.2;
+        ctx.lineWidth = 4.6;
         ctx.stroke();
 
         ctx.beginPath();
         ctx.moveTo(ps.N.x, ps.N.y); ctx.lineTo(pv.D.x, pv.D.y);
         ctx.strokeStyle = col.amber;
-        ctx.lineWidth = 4.2;
+        ctx.lineWidth = 4.6;
         ctx.stroke();
 
         // Ratio labels from the screenshot (6y/5, 4y/5, y, x, 4z, 5z)
-        ctx.font = "700 11px Inter, sans-serif";
+        ctx.font = "700 12px Inter, sans-serif";
         ctx.fillStyle = col.green;
-        ctx.fillText("6y/5", (pv.D1.x + ps.N.x) * 0.5 - 28, (pv.D1.y + ps.N.y) * 0.5 + 3);
+        ctx.fillText("6y/5", (pv.D1.x + ps.N.x) * 0.5 - 32, (pv.D1.y + ps.N.y) * 0.5 + 3);
         ctx.fillStyle = col.amber;
-        ctx.fillText("4y/5", (ps.N.x + pv.D.x) * 0.5 - 28, (ps.N.y + pv.D.y) * 0.5 + 4);
+        ctx.fillText("4y/5", (ps.N.x + pv.D.x) * 0.5 - 32, (ps.N.y + pv.D.y) * 0.5 + 4);
         ctx.fillStyle = col.blue;
-        ctx.fillText("x", (pv.B.x + ps.L.x) * 0.5 + 6, (pv.B.y + ps.L.y) * 0.5 + 4);
-        ctx.fillText("4z", (pv.D.x + ps.O.x) * 0.5 - 6, (pv.D.y + ps.O.y) * 0.5 - 6);
+        ctx.fillText("x", (pv.B.x + ps.L.x) * 0.5 + 7, (pv.B.y + ps.L.y) * 0.5 + 4);
+        ctx.fillText("4z", (pv.D.x + ps.O.x) * 0.5 - 6, (pv.D.y + ps.O.y) * 0.5 - 7);
       }
 
       // Cube vertex labels
-      ctx.font = "600 11.5px Inter, sans-serif";
+      ctx.font = "700 12.5px Inter, sans-serif";
       ctx.fillStyle = col.muted;
-      ctx.fillText("A", pv.A.x - 14, pv.A.y + 13);
-      ctx.fillText("B", pv.B.x + 7, pv.B.y + 3);
-      ctx.fillText("C", pv.C.x + 6, pv.C.y - 4);
-      ctx.fillText("D", pv.D.x - 13, pv.D.y - 5);
-      ctx.fillText("A₁", pv.A1.x - 17, pv.A1.y - 4);
-      ctx.fillText("B₁", pv.B1.x + 7, pv.B1.y - 4);
-      ctx.fillText("D₁", pv.D1.x - 18, pv.D1.y - 5);
+      ctx.fillText("A", pv.A.x - 15, pv.A.y + 14);
+      ctx.fillText("B", pv.B.x + 8, pv.B.y + 4);
+      ctx.fillText("C", pv.C.x + 7, pv.C.y - 4);
+      ctx.fillText("D", pv.D.x - 14, pv.D.y - 5);
+      ctx.fillText("A₁", pv.A1.x - 19, pv.A1.y - 4);
+      ctx.fillText("B₁", pv.B1.x + 8, pv.B1.y - 4);
+      ctx.fillText("D₁", pv.D1.x - 19, pv.D1.y - 5);
 
       // Given points C1, T, P & constructed points L, M, O, N
-      drawDot(ctx, pv.C1.x, pv.C1.y, 6.2, col.blue);
-      drawDot(ctx, ps.T.x, ps.T.y, 6.2, col.blue);
-      drawDot(ctx, ps.P.x, ps.P.y, 6.2, col.blue);
-      drawDot(ctx, ps.L.x, ps.L.y, 5.2, col.ink);
+      drawDot(ctx, pv.C1.x, pv.C1.y, 6.8, col.blue);
+      drawDot(ctx, ps.T.x, ps.T.y, 6.8, col.blue);
+      drawDot(ctx, ps.P.x, ps.P.y, 6.8, col.blue);
+      drawDot(ctx, ps.L.x, ps.L.y, 5.8, col.ink);
 
-      ctx.font = "700 12.5px Inter, sans-serif";
+      ctx.font = "700 13px Inter, sans-serif";
       ctx.fillStyle = col.blue;
-      ctx.fillText("C₁", pv.C1.x + 7, pv.C1.y - 6);
-      ctx.fillText("T", ps.T.x + 8, ps.T.y + 4);
-      ctx.fillText("P", ps.P.x - 15, ps.P.y + 5);
+      ctx.fillText("C₁", pv.C1.x + 8, pv.C1.y - 6);
+      ctx.fillText("T", ps.T.x + 9, ps.T.y + 4);
+      ctx.fillText("P", ps.P.x - 16, ps.P.y + 5);
       ctx.fillStyle = col.ink;
-      ctx.fillText("L", ps.L.x + 8, ps.L.y + 5);
+      ctx.fillText("L", ps.L.x + 9, ps.L.y + 5);
 
       if (state.traceStep >= 1) {
-        drawDot(ctx, ps.M.x, ps.M.y, 5.8, col.blue);
-        drawDot(ctx, ps.O.x, ps.O.y, 5.2, col.ink);
+        drawDot(ctx, ps.M.x, ps.M.y, 6.4, col.blue);
+        drawDot(ctx, ps.O.x, ps.O.y, 5.8, col.ink);
         ctx.fillStyle = col.blue;
-        ctx.fillText("M", ps.M.x - 4, ps.M.y + 16);
+        ctx.fillText("M", ps.M.x - 4, ps.M.y + 17);
         ctx.fillStyle = col.ink;
-        ctx.fillText("O", ps.O.x - 15, ps.O.y + 4);
+        ctx.fillText("O", ps.O.x - 16, ps.O.y + 4);
       }
       if (state.traceStep >= 2) {
-        drawDot(ctx, ps.N.x, ps.N.y, 6.2, state.traceStep === 3 ? col.green : col.blue);
+        drawDot(ctx, ps.N.x, ps.N.y, 6.8, state.traceStep === 3 ? col.green : col.blue);
         ctx.fillStyle = state.traceStep === 3 ? col.green : col.blue;
-        ctx.fillText("N", ps.N.x + 7, ps.N.y + 4);
+        ctx.fillText("N", ps.N.x + 8, ps.N.y + 4);
       }
 
       const stepBadges = [
@@ -3147,7 +3446,7 @@
       ctx.clearRect(0, 0, w, h);
 
       const cx = w * 0.5, cy = h * 0.52;
-      const R = Math.min(w, h) * 0.37;
+      const R = Math.min(w, h) * 0.39;
       const hVal = state.sphereH;
       const rSec = Math.sqrt(Math.max(0, 1 - hVal * hVal));
 
@@ -4136,7 +4435,7 @@
       ctx.textAlign = "left";
     }
 
-    // --- 5.9: LOGIC CARD 1 (13 Numbers on a Circle — Clear Evaluation + Example & Smooth Hover) ---
+    // --- 5.9: LOGIC CARD 1 (36 Children in Red & Blue Sweaters Around a Circle — Bound <= 24 & Example) ---
     function drawLogicRing() {
       const c = canvases.cvLogicRing;
       if (!c) return;
@@ -4144,145 +4443,152 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      const cx = w * 0.5, cy = h * 0.55, R = Math.min(w, h) * 0.29;
+      const N = 36;
+      const cx = w * 0.5, cy = h * 0.55;
+      const R = Math.min(w, h) * 0.35;
+      const info = analyzeRingKids();
+      const badSet = new Set(info.badIndices);
 
-      // Subtle base ring connecting the 13 cells
+      // 1. Subtle base circle connecting all 36 children
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
       ctx.strokeStyle = col.grid;
-      ctx.lineWidth = 1.4;
+      ctx.lineWidth = 1.6;
       ctx.stroke();
 
-      // Outer partition arcs (3 arcs of 4 cells each)
-      const groups = state.ringMode === "weak" ? [[0,3],[4,7],[8,11]] : [[1,4],[5,8],[9,12]];
-      groups.forEach(([s, e]) => {
-        const a1 = (s * 2 * Math.PI) / 13 - Math.PI / 2 - 0.11;
-        const a2 = (e * 2 * Math.PI) / 13 - Math.PI / 2 + 0.11;
-        ctx.beginPath();
-        ctx.arc(cx, cy, R + 22, a1, a2);
-        ctx.strokeStyle = "rgba(0, 136, 255, 0.55)";
-        ctx.lineWidth = 4;
-        ctx.stroke();
-      });
+      // 2. Draw 12 triple-partition arcs (0..2, 3..5, ..., 33..35)
+      if (state.ringMode === "triples12" || state.ringMode === "opt24" || state.ringMode === "empty") {
+        for (let t = 0; t < 12; t++) {
+          const i0 = t * 3;
+          const i2 = t * 3 + 2;
+          const a1 = (i0 * 2 * Math.PI) / N - Math.PI / 2 - 0.045;
+          const a2 = (i2 * 2 * Math.PI) / N - Math.PI / 2 + 0.045;
+          ctx.beginPath();
+          ctx.arc(cx, cy, R + 17, a1, a2);
+          ctx.strokeStyle = state.ringMode === "triples12" ? "rgba(0, 136, 255, 0.75)" : "rgba(16, 185, 129, 0.55)";
+          ctx.lineWidth = 3.5;
+          ctx.stroke();
 
-      // Find if any 4-window violates sum > 0
-      let brokenIdx = -1, brokenSum = 0;
-      for (let i = 0; i < 13; i++) {
-        const s = state.ringVals[i] + state.ringVals[(i+1)%13] + state.ringVals[(i+2)%13] + state.ringVals[(i+3)%13];
-        if (s <= 0) { brokenIdx = i; brokenSum = s; break; }
+          // Small label outside each triple
+          const aMid = ((i0 + 1) * 2 * Math.PI) / N - Math.PI / 2;
+          const lx = cx + (R + 30) * Math.cos(aMid);
+          const ly = cy + (R + 30) * Math.sin(aMid);
+          ctx.font = "700 9.5px Inter, sans-serif";
+          ctx.fillStyle = state.ringMode === "triples12" ? col.blue : col.muted;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(state.ringMode === "triples12" ? "≤2" : `Т${t + 1}`, lx, ly);
+        }
       }
 
-      // Active 4-window to highlight on inner arc: either hovered cell hv..hv+3 or broken window
-      const activeWin = state.ringHover >= 0 ? state.ringHover : brokenIdx;
-      const inWindow = new Set();
-      let activeSum = 0;
-      if (activeWin >= 0) {
-        for (let d = 0; d < 4; d++) {
-          const idx = (activeWin + d) % 13;
-          inWindow.add(idx);
-          activeSum += state.ringVals[idx];
-        }
-        // Use unwrapped angle activeWin -> activeWin + 3 so arc NEVER wraps the wrong way!
-        const wa1 = (activeWin * 2 * Math.PI) / 13 - Math.PI / 2;
-        const wa2 = ((activeWin + 3) * 2 * Math.PI) / 13 - Math.PI / 2;
+      // 3. Highlight forbidden triple (0, 1, 2) on Step 1 ("forbid3") or hovered child's neighborhood
+      const hv = state.ringHover;
+      if (hv >= 0) {
+        const prev = (hv + N - 1) % N;
+        const next = (hv + 1) % N;
+        const a1 = ((hv - 1) * 2 * Math.PI) / N - Math.PI / 2;
+        const a2 = ((hv + 1) * 2 * Math.PI) / N - Math.PI / 2;
         ctx.beginPath();
-        ctx.arc(cx, cy, R - 22, wa1, wa2);
-        ctx.strokeStyle = activeSum > 0 ? col.green : col.red;
+        ctx.arc(cx, cy, R - 18, a1, a2);
+        ctx.strokeStyle = badSet.has(hv) ? col.red : col.green;
+        ctx.lineWidth = 4.0;
+        ctx.stroke();
+      } else if (state.ringMode === "forbid3") {
+        const a1 = (0 * 2 * Math.PI) / N - Math.PI / 2 - 0.04;
+        const a2 = (2 * 2 * Math.PI) / N - Math.PI / 2 + 0.04;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R + 18, a1, a2);
+        ctx.strokeStyle = col.red;
         ctx.lineWidth = 4.5;
         ctx.stroke();
       }
 
-      // Top status pill badge (above the entire circle — never collides with ring cells!)
+      // 4. Top status pill badge
       let topText = "";
       let topCol = col.green;
       let topBg = "rgba(236,253,245,0.96)";
       let topBorder = "rgba(16,185,129,0.35)";
-      if (state.ringHover >= 0) {
-        const i0 = state.ringHover;
-        const terms = [0, 1, 2, 3].map(d => {
-          const v = state.ringVals[(i0 + d) % 13];
-          return v > 0 ? "+10" : "−1";
-        }).join(" ");
-        const endNum = ((i0 + 3) % 13) + 1;
-        topText = `№${i0 + 1}–№${endNum}: (${terms}) = ${activeSum > 0 ? "+" + activeSum : activeSum} ${activeSum > 0 ? "> 0 ✓" : "≤ 0 ✗"}`;
-        if (activeSum <= 0) {
+      if (hv >= 0) {
+        const cur = state.ringKids[hv];
+        const prev = state.ringKids[(hv + N - 1) % N];
+        const next = state.ringKids[(hv + 1) % N];
+        const lbl = k => `${k.g === "G" ? "Д" : "М"}(${k.c === "R" ? "кр" : "син"})`;
+        const ok = !badSet.has(hv);
+        topText = `№${hv + 1} [${lbl(cur)}]: соседи ${lbl(prev)} и ${lbl(next)} ⇒ ${ok ? "ок ✓" : "сбой! ✗"}`;
+        if (!ok) {
           topCol = col.red;
           topBg = "rgba(255,241,242,0.96)";
           topBorder = "rgba(239,68,68,0.35)";
         }
-      } else if (brokenIdx >= 0) {
-        const endNum = ((brokenIdx + 3) % 13) + 1;
-        topText = `Сбой в дуге №${brokenIdx + 1}–№${endNum}: четыре −1 подряд (сумма −4) ✗`;
+      } else if (state.ringMode === "forbid3") {
+        topText = "Шаг 1: 3 Д(кр) подряд (№1–3) ⇒ у №2 нет соседа в синем! ✗";
         topCol = col.red;
         topBg = "rgba(255,241,242,0.96)";
         topBorder = "rgba(239,68,68,0.35)";
-      } else if (state.ringMode === "weak") {
-        topText = "Слабая оценка: 3 дуги по 4 числа (№13 вне дуг)";
+      } else if (state.ringMode === "triples12") {
+        topText = "Шаг 2: 12 троек подряд, в каждой ≤ 2 Д(кр) ⇒ ≤ 24 ✓";
         topCol = col.blue;
         topBg = "rgba(239,246,255,0.96)";
         topBorder = "rgba(0,136,255,0.35)";
+      } else if (info.badIndices.length > 0) {
+        topText = `Нарушение у №${info.badIndices[0] + 1}: кликните, чтобы исправить! ✗`;
+        topCol = col.red;
+        topBg = "rgba(255,241,242,0.96)";
+        topBorder = "rgba(239,68,68,0.35)";
       } else {
-        topText = "Якорь №1 + 3 дуги по 4 числа ⇒ все суммы ≥ +7 ✓";
+        topText = `Пример на 24: 12 троек (Д-кр, Д-кр, М-син) — всё верно! ✓`;
       }
-      drawPillBadge(ctx, topText, cx, 20, topCol, topBg, topBorder, "center");
+      drawPillBadge(ctx, topText, cx, 19, topCol, topBg, topBorder, "center");
 
-      // Compact center summary inside the ring (short lines that fit well within inner radius R - 30)
-      const posCnt = state.ringVals.filter(v => v > 0).length;
-      const negCnt = 13 - posCnt;
+      // 5. Center summary inside the circle
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
+      ctx.font = "700 13px Inter, sans-serif";
+      ctx.fillStyle = "#EF4444";
+      ctx.fillText(`Девочек в красном (Д): ${info.redGirls}`, cx, cy - 20);
+
+      ctx.fillStyle = col.blue;
+      ctx.fillText(`Мальчиков в синем (М): ${info.blueBoys}`, cx, cy);
 
       ctx.font = "700 12px Inter, sans-serif";
-      ctx.fillStyle = col.blue;
-      ctx.fillText(`Плюсов (+10): ${posCnt}`, cx, cy - 16);
-
-      ctx.fillStyle = negCnt > 9 ? col.red : col.ink;
-      ctx.fillText(`Минусов (−1): ${negCnt}`, cx, cy + 2);
-
-      ctx.font = "700 11.5px Inter, sans-serif";
-      if (activeWin >= 0) {
-        ctx.fillStyle = activeSum > 0 ? col.green : col.red;
-        ctx.fillText(`Сумма 4-ки: ${activeSum > 0 ? "+" + activeSum : activeSum}`, cx, cy + 20);
+      if (info.badIndices.length > 0) {
+        ctx.fillStyle = col.red;
+        ctx.fillText(`Ошибок соседства: ${info.badIndices.length} (у №${info.badIndices[0] + 1}) ✗`, cx, cy + 22);
       } else {
         ctx.fillStyle = col.green;
-        ctx.fillText("Все суммы ≥ +7 ✓", cx, cy + 20);
+        ctx.fillText("Все 36 условий соседства выполнены ✓", cx, cy + 22);
       }
 
-      // Draw the 13 number circles and outer cell labels №1..№13
-      for (let i = 0; i < 13; i++) {
-        const ang = (i * 2 * Math.PI) / 13 - Math.PI / 2;
-        const nx = cx + R * Math.cos(ang), ny = cy + R * Math.sin(ang);
-        const v = state.ringVals[i];
-        const isAnchor = (i === 0 && state.ringMode !== "weak");
-        const isHighlighted = inWindow.has(i);
+      // 6. Draw all 36 children nodes around the circle
+      const rNode = Math.max(9.5, Math.min(12.0, (2 * Math.PI * R) / (N * 2.45)));
+      for (let i = 0; i < N; i++) {
+        const ang = (i * 2 * Math.PI) / N - Math.PI / 2;
+        const nx = cx + R * Math.cos(ang);
+        const ny = cy + R * Math.sin(ang);
+        const kid = state.ringKids[i];
+        const isRed = kid.c === "R";
+        const isBad = badSet.has(i);
+        const isHov = hv === i || (hv >= 0 && (i === (hv + 1) % N || i === (hv + N - 1) % N));
 
-        if (isHighlighted) {
+        if (isBad || isHov) {
           ctx.beginPath();
-          ctx.arc(nx, ny, 20.5, 0, Math.PI * 2);
-          ctx.strokeStyle = activeSum > 0 ? col.green : col.red;
+          ctx.arc(nx, ny, rNode + 4.2, 0, Math.PI * 2);
+          ctx.strokeStyle = isBad ? col.red : col.green;
           ctx.lineWidth = 2.4;
           ctx.stroke();
         }
 
         ctx.beginPath();
-        ctx.arc(nx, ny, 16, 0, Math.PI * 2);
-        ctx.fillStyle = v > 0 ? (isAnchor ? col.green : col.blue) : col.white;
+        ctx.arc(nx, ny, rNode, 0, Math.PI * 2);
+        ctx.fillStyle = isRed ? "#EF4444" : "#0088FF";
         ctx.fill();
-        ctx.strokeStyle = v > 0 ? (isAnchor ? col.green : col.blue) : (isHighlighted && activeSum <= 0 ? col.red : col.ink);
-        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.lineWidth = 1.6;
         ctx.stroke();
 
-        // Value inside circle (+10 or −1)
-        ctx.font = "700 11px Inter, sans-serif";
-        ctx.fillStyle = v > 0 ? "#FFFFFF" : (isHighlighted && activeSum <= 0 ? col.red : col.ink);
-        ctx.fillText(v > 0 ? "+10" : "−1", nx, ny + 0.5);
-
-        // Outer index label №1..№13
-        const lx = cx + (R + 36) * Math.cos(ang);
-        const ly = cy + (R + 36) * Math.sin(ang);
-        ctx.font = isAnchor ? "700 11px Inter, sans-serif" : "600 10.5px Inter, sans-serif";
-        ctx.fillStyle = isAnchor ? col.green : col.muted;
-        ctx.fillText(isAnchor ? "№1·Якорь" : `№${i + 1}`, lx, ly);
+        ctx.font = "700 10px Inter, sans-serif";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillText(kid.g === "G" ? "Д" : "М", nx, ny + 0.5);
       }
 
       ctx.textAlign = "left";
@@ -5183,18 +5489,37 @@
 
       const usedColors = new Set();
       let badCells = 0;
+      let uncoloredCells = 0;
       const degGrid = Array.from({ length: 8 }, () => new Array(8).fill(0));
       for (let r = 0; r < 8; r++) {
         for (let cc = 0; cc < 8; cc++) {
-          usedColors.add(state.colorGrid[r][cc]);
-          const d = countSameColorNeighbors(state.colorGrid, r, cc);
-          degGrid[r][cc] = d;
-          if (d < 2) badCells++;
+          const cid = state.colorGrid[r][cc];
+          if (cid < 0) {
+            uncoloredCells++;
+            degGrid[r][cc] = 0;
+          } else {
+            usedColors.add(cid);
+            const d = countSameColorNeighbors(state.colorGrid, r, cc);
+            degGrid[r][cc] = d;
+            if (d < 2) badCells++;
+          }
         }
       }
 
       // 1. Top status pill badge
-      if (badCells === 0) {
+      if (uncoloredCells === 64) {
+        drawPillBadge(
+          ctx,
+          "Доска 8×8 чиста · Кликните по клетке, чтобы закрасить квадрат 2×2!",
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
+      } else if (uncoloredCells > 0) {
+        drawPillBadge(
+          ctx,
+          `Закрашено цветов: ${usedColors.size} (свободно ${uncoloredCells} кл.) · Кликайте по блокам 2×2`,
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
+      } else if (badCells === 0) {
         drawPillBadge(
           ctx,
           `Цветов: ${usedColors.size} (16 квадратов 2×2) · У каждой клетки ≥ 2 соседей ✓`,
@@ -5218,7 +5543,9 @@
           const cid = state.colorGrid[r][cc];
           const deg = degGrid[r][cc];
 
-          ctx.fillStyle = PALETTE_17[cid % PALETTE_17.length];
+          ctx.fillStyle = cid < 0
+            ? ((r + cc) % 2 === 1 ? "rgba(241, 245, 249, 0.9)" : "#FFFFFF")
+            : PALETTE_17[cid % PALETTE_17.length];
           ctx.fillRect(x, y, cell, cell);
 
           // Subtle inner grid line
@@ -5226,23 +5553,24 @@
           ctx.lineWidth = 1;
           ctx.strokeRect(x, y, cell, cell);
 
-          // Highlight if deg < 2 (violates problem condition!)
-          if (deg < 2) {
-            ctx.strokeStyle = col.red;
-            ctx.lineWidth = 2.4;
-            ctx.strokeRect(x + 1.5, y + 1.5, cell - 3, cell - 3);
-          } else if (hov && hov.r === r && hov.c === cc) {
-            ctx.strokeStyle = col.green;
-            ctx.lineWidth = 2.4;
-            ctx.strokeRect(x + 1.5, y + 1.5, cell - 3, cell - 3);
-          }
+          if (cid >= 0) {
+            if (deg < 2) {
+              ctx.strokeStyle = col.red;
+              ctx.lineWidth = 2.4;
+              ctx.strokeRect(x + 1.5, y + 1.5, cell - 3, cell - 3);
+            } else if (hov && hov.r === r && hov.c === cc) {
+              ctx.strokeStyle = col.green;
+              ctx.lineWidth = 2.4;
+              ctx.strokeRect(x + 1.5, y + 1.5, cell - 3, cell - 3);
+            }
 
-          // Number of same-color neighbors inside cell
-          ctx.font = deg < 2 ? "700 11.5px Inter, sans-serif" : "600 11px Inter, sans-serif";
-          ctx.fillStyle = deg < 2 ? col.red : "#1E293B";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(deg < 2 ? `${deg}✗` : String(deg), x + cell / 2, y + cell / 2 + 0.5);
+            // Number of same-color neighbors inside cell
+            ctx.font = deg < 2 ? "700 11.5px Inter, sans-serif" : "600 11px Inter, sans-serif";
+            ctx.fillStyle = deg < 2 ? col.red : "#1E293B";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(deg < 2 ? `${deg}✗` : String(deg), x + cell / 2, y + cell / 2 + 0.5);
+          }
         }
       }
 
@@ -5607,6 +5935,407 @@
       });
     }
 
+    // --- 5.14: PLANIMETRY CARD 3 (Median Forming 40° & 70° with Sides => BM = 1/2 BC) ---
+    function drawAngleArc(ctx, V, P1, P2, radius, strokeCol, fillCol, labelText, labelOffset = 14) {
+      let a1 = Math.atan2(P1.y - V.y, P1.x - V.x);
+      let a2 = Math.atan2(P2.y - V.y, P2.x - V.x);
+      let diff = a2 - a1;
+      while (diff <= -Math.PI) diff += Math.PI * 2;
+      while (diff > Math.PI) diff -= Math.PI * 2;
+      const start = diff >= 0 ? a1 : a2;
+      const end = diff >= 0 ? a2 : a1;
+
+      ctx.beginPath();
+      ctx.moveTo(V.x, V.y);
+      ctx.arc(V.x, V.y, radius, start, end);
+      ctx.closePath();
+      if (fillCol) {
+        ctx.fillStyle = fillCol;
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(V.x, V.y, radius, start, end);
+      ctx.strokeStyle = strokeCol;
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      if (labelText) {
+        const mid = a1 + diff * 0.5;
+        const lx = V.x + (radius + labelOffset) * Math.cos(mid);
+        const ly = V.y + (radius + labelOffset) * Math.sin(mid);
+        ctx.font = "700 11.5px Inter, sans-serif";
+        ctx.fillStyle = strokeCol;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(labelText, lx, ly);
+      }
+    }
+
+    function drawTickMark(ctx, P1, P2, count, color) {
+      const mx = (P1.x + P2.x) * 0.5;
+      const my = (P1.y + P2.y) * 0.5;
+      const dx = P2.x - P1.x, dy = P2.y - P1.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const ux = dx / len, uy = dy / len;
+      const nx = -uy, ny = ux;
+      const tickHalf = 5.5;
+      const sep = 4.2;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.0;
+      for (let i = 0; i < count; i++) {
+        const offset = (i - (count - 1) * 0.5) * sep;
+        const cx = mx + ux * offset;
+        const cy = my + uy * offset;
+        ctx.beginPath();
+        ctx.moveTo(cx - nx * tickHalf, cy - ny * tickHalf);
+        ctx.lineTo(cx + nx * tickHalf, cy + ny * tickHalf);
+        ctx.stroke();
+      }
+    }
+
+    function drawGeomAngles() {
+      const c = canvases.cvGeomAngles;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      // Exact geometry: BB1 has length L, ∠ABB1 = 70°, ∠BB1A = 40°, ∠BAB1 = 70° => AB1 = BB1 = BC = L, AB = 2L cos 70°
+      const L = Math.min(w, h) * 0.62;
+      const B = { x: w * 0.36, y: h * 0.14 };
+      const thetaBM = (80 * Math.PI) / 180; // Ray BM goes down-right at 80°
+      const B1_full = {
+        x: B.x + L * Math.cos(thetaBM),
+        y: B.y + L * Math.sin(thetaBM)
+      };
+      const M = {
+        x: (B.x + B1_full.x) * 0.5,
+        y: (B.y + B1_full.y) * 0.5
+      };
+
+      // Ray BA is at thetaBM + 70° (clockwise on screen so A is to the left of BM)
+      const lenAB = 2 * L * Math.cos((70 * Math.PI) / 180);
+      const thetaBA = thetaBM + (70 * Math.PI) / 180;
+      const A = {
+        x: B.x + lenAB * Math.cos(thetaBA),
+        y: B.y + lenAB * Math.sin(thetaBA)
+      };
+
+      // Ray BC is at thetaBM - 40° (counter-clockwise on screen so C is to the right of BM)
+      const thetaBC = thetaBM - (40 * Math.PI) / 180;
+      const C = {
+        x: B.x + L * Math.cos(thetaBC),
+        y: B.y + L * Math.sin(thetaBC)
+      };
+
+      const t = state.geomAnglesT;
+      const step = state.geomAnglesStep;
+      const B1_cur = {
+        x: M.x + (B1_full.x - M.x) * t,
+        y: M.y + (B1_full.y - M.y) * t
+      };
+
+      // 1. Top status pill badge
+      if (step === 0 && t < 0.1) {
+        drawPillBadge(
+          ctx,
+          "Шаг 1: Медиана BM делит AC пополам (AM = MC), ∠ABM = 70°, ∠MBC = 40°",
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
+      } else if (step <= 1 && t < 0.95) {
+        drawPillBadge(
+          ctx,
+          "Удваиваем медиану BM за точку M на длину MB₁ = BM...",
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
+      } else if (step === 1) {
+        drawPillBadge(
+          ctx,
+          "Шаг 2: Параллелограмм ABCB₁ ⇒ AB₁ = BC и ∠BB₁A = ∠MBC = 40° (накрест лежащие)",
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          "Шаг 3: В △ABB₁ углы 70° и 70° ⇒ BB₁ = AB₁ = BC ⇒ BM = ½ BC ✓",
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      }
+
+      // 2. If t > 0.02, draw extended triangle / parallelogram ABCB1
+      if (t > 0.02) {
+        ctx.beginPath();
+        ctx.moveTo(A.x, A.y);
+        ctx.lineTo(B.x, B.y);
+        ctx.lineTo(B1_cur.x, B1_cur.y);
+        ctx.closePath();
+        ctx.fillStyle = step === 2 ? "rgba(16, 185, 129, 0.14)" : "rgba(0, 136, 255, 0.10)";
+        ctx.fill();
+
+        ctx.save();
+        ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = col.blue;
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        ctx.moveTo(A.x, A.y); ctx.lineTo(B1_cur.x, B1_cur.y);
+        ctx.moveTo(C.x, C.y); ctx.lineTo(B1_cur.x, B1_cur.y);
+        ctx.stroke();
+        ctx.restore();
+
+        // Extended segment M -> B1
+        ctx.beginPath();
+        ctx.moveTo(M.x, M.y);
+        ctx.lineTo(B1_cur.x, B1_cur.y);
+        ctx.strokeStyle = step === 2 ? col.green : col.blue;
+        ctx.lineWidth = 3.0;
+        ctx.stroke();
+      }
+
+      // 3. Draw angle arcs
+      drawAngleArc(ctx, B, A, M, 28, "#D97706", "rgba(245, 158, 11, 0.16)", "70°", 13);
+      drawAngleArc(ctx, B, M, C, 34, col.blue, "rgba(0, 136, 255, 0.15)", "40°", 13);
+
+      if (t > 0.85) {
+        drawAngleArc(ctx, B1_full, B, A, 32, col.blue, "rgba(0, 136, 255, 0.15)", "40°", 13);
+      }
+      if (step === 2 && t > 0.85) {
+        drawAngleArc(ctx, A, B, B1_full, 28, col.green, "rgba(16, 185, 129, 0.18)", "70°", 14);
+      }
+
+      // 4. Base triangle ABC
+      ctx.beginPath();
+      ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.lineTo(C.x, C.y); ctx.closePath();
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 2.2;
+      ctx.stroke();
+
+      // Highlight equal sides on Step 3 (BB1 = AB1 = BC)
+      if (step === 2 && t > 0.85) {
+        ctx.beginPath();
+        ctx.moveTo(B.x, B.y); ctx.lineTo(C.x, C.y);
+        ctx.moveTo(A.x, A.y); ctx.lineTo(B1_full.x, B1_full.y);
+        ctx.strokeStyle = col.green;
+        ctx.lineWidth = 3.4;
+        ctx.stroke();
+      }
+
+      // Median BM
+      ctx.beginPath();
+      ctx.moveTo(B.x, B.y); ctx.lineTo(M.x, M.y);
+      ctx.strokeStyle = step === 2 ? col.green : col.blue;
+      ctx.lineWidth = 3.2;
+      ctx.stroke();
+
+      // Tick marks: AM = MC (1 tick each), BM = MB1 (2 ticks each)
+      drawTickMark(ctx, A, M, 1, col.ink);
+      drawTickMark(ctx, M, C, 1, col.ink);
+      drawTickMark(ctx, B, M, 2, step === 2 ? col.green : col.blue);
+      if (t > 0.85) {
+        drawTickMark(ctx, M, B1_full, 2, step === 2 ? col.green : col.blue);
+      }
+
+      // 5. Vertices & Labels
+      drawDot(ctx, A.x, A.y, 6.2, col.ink);
+      drawDot(ctx, B.x, B.y, 6.2, col.ink);
+      drawDot(ctx, C.x, C.y, 6.2, col.ink);
+      drawDot(ctx, M.x, M.y, 6.0, col.blue);
+
+      ctx.font = "700 13.5px Inter, sans-serif";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = col.ink;
+      ctx.fillText("A", A.x - 18, A.y + 6);
+      ctx.fillText("B", B.x - 6, B.y - 10);
+      ctx.fillText("C", C.x + 10, C.y + 4);
+      ctx.fillStyle = col.blue;
+      ctx.fillText("M", M.x + 10, M.y - 5);
+
+      if (t > 0.05) {
+        drawDot(ctx, B1_cur.x, B1_cur.y, 6.5, step === 2 ? col.green : col.blue);
+        ctx.fillStyle = step === 2 ? col.green : col.blue;
+        ctx.fillText("B₁", B1_cur.x + 10, B1_cur.y + 6);
+      }
+    }
+
+    // --- 5.15: PLANIMETRY CARD 4 (Points D, E Trisecting AB => CD + CE < AC + BC) ---
+    function drawGeomTrisect() {
+      const c = canvases.cvGeomTrisect;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      const A = { x: state.geomTrisectPts.A.x * w, y: state.geomTrisectPts.A.y * h };
+      const B = { x: state.geomTrisectPts.B.x * w, y: state.geomTrisectPts.B.y * h };
+      const C = { x: state.geomTrisectPts.C.x * w, y: state.geomTrisectPts.C.y * h };
+
+      // Points D and E trisecting AB (AD = DE = EB)
+      const D = { x: (2 * A.x + B.x) / 3, y: (2 * A.y + B.y) / 3 };
+      const E = { x: (A.x + 2 * B.x) / 3, y: (A.y + 2 * B.y) / 3 };
+
+      // Reflected points for median doubling:
+      // In △CAE, D is midpoint of AE => C1 = A + E - C (2*D - C)
+      const C1 = { x: 2 * D.x - C.x, y: 2 * D.y - C.y };
+      // In △BCD, E is midpoint of BD => C2 = D + B - C (2*E - C)
+      const C2 = { x: 2 * E.x - C.x, y: 2 * E.y - C.y };
+
+      const step = state.geomTrisectStep;
+
+      // Measure normalized lengths (relative to AB = 3.00 units)
+      const lenAB = Math.hypot(B.x - A.x, B.y - A.y) || 1;
+      const unit = lenAB / 3;
+      const lenCD = Math.hypot(D.x - C.x, D.y - C.y) / unit;
+      const lenCE = Math.hypot(E.x - C.x, E.y - C.y) / unit;
+      const lenAC = Math.hypot(A.x - C.x, A.y - C.y) / unit;
+      const lenBC = Math.hypot(B.x - C.x, B.y - C.y) / unit;
+      const sumIn = lenCD + lenCE;
+      const sumOut = lenAC + lenBC;
+
+      const fBox = document.getElementById("geomTrisectFormulaBox");
+      if (fBox) {
+        if (step === 0) {
+          fBox.textContent =
+            `Шаг 1 (медиана CD в △CAE): 2·CD = ${(2 * lenCD).toFixed(2)} < AC + CE = ${(lenAC + lenCE).toFixed(2)} ✓`;
+        } else if (step === 1) {
+          fBox.textContent =
+            `Шаг 2 (медиана CE в △BCD): 2·CE = ${(2 * lenCE).toFixed(2)} < BC + CD = ${(lenBC + lenCD).toFixed(2)} ✓`;
+        } else {
+          fBox.textContent =
+            `Шаг 3 (Сумма): CD + CE = ${sumIn.toFixed(2)} < AC + BC = ${sumOut.toFixed(2)} (разность: ${(sumOut - sumIn).toFixed(2)} > 0) ✓`;
+        }
+      }
+
+      // 1. Top status pill badge
+      if (step === 0) {
+        drawPillBadge(
+          ctx,
+          "Шаг 1: В △CAE отрезок CD — медиана (AD = DE) ⇒ 2·CD < AC + CE ✓",
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
+      } else if (step === 1) {
+        drawPillBadge(
+          ctx,
+          "Шаг 2: В △BCD отрезок CE — медиана (DE = EB) ⇒ 2·CE < BC + CD ✓",
+          w * 0.5, 19, "#D97706", "rgba(255,251,235,0.96)", "rgba(245,158,11,0.35)", "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          `Шаг 3: Складываем неравенства ⇒ CD + CE (${sumIn.toFixed(2)}) < AC + BC (${sumOut.toFixed(2)}) ✓`,
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      }
+
+      // 2. Highlight active sub-triangle (△CAE on Step 0, △BCD on Step 1, full △ABC on Step 2)
+      if (step === 0) {
+        ctx.beginPath();
+        ctx.moveTo(C.x, C.y); ctx.lineTo(A.x, A.y); ctx.lineTo(E.x, E.y); ctx.closePath();
+        ctx.fillStyle = "rgba(0, 136, 255, 0.11)";
+        ctx.fill();
+
+        // Show parallelogram completion to C1 if C1 fits on canvas
+        if (C1.y < h - 8 && C1.x > 8 && C1.x < w - 8) {
+          ctx.save();
+          ctx.setLineDash([4, 4]);
+          ctx.strokeStyle = col.blue;
+          ctx.lineWidth = 1.7;
+          ctx.beginPath();
+          ctx.moveTo(D.x, D.y); ctx.lineTo(C1.x, C1.y);
+          ctx.moveTo(A.x, A.y); ctx.lineTo(C1.x, C1.y);
+          ctx.moveTo(E.x, E.y); ctx.lineTo(C1.x, C1.y);
+          ctx.stroke();
+          ctx.restore();
+          drawDot(ctx, C1.x, C1.y, 4.8, col.blue);
+          ctx.font = "700 11.5px Inter, sans-serif";
+          ctx.fillStyle = col.blue;
+          ctx.fillText("C₁", C1.x + 7, C1.y + 4);
+        }
+      } else if (step === 1) {
+        ctx.beginPath();
+        ctx.moveTo(C.x, C.y); ctx.lineTo(D.x, D.y); ctx.lineTo(B.x, B.y); ctx.closePath();
+        ctx.fillStyle = "rgba(245, 158, 11, 0.13)";
+        ctx.fill();
+
+        if (C2.y < h - 8 && C2.x > 8 && C2.x < w - 8) {
+          ctx.save();
+          ctx.setLineDash([4, 4]);
+          ctx.strokeStyle = "#D97706";
+          ctx.lineWidth = 1.7;
+          ctx.beginPath();
+          ctx.moveTo(E.x, E.y); ctx.lineTo(C2.x, C2.y);
+          ctx.moveTo(D.x, D.y); ctx.lineTo(C2.x, C2.y);
+          ctx.moveTo(B.x, B.y); ctx.lineTo(C2.x, C2.y);
+          ctx.stroke();
+          ctx.restore();
+          drawDot(ctx, C2.x, C2.y, 4.8, "#D97706");
+          ctx.font = "700 11.5px Inter, sans-serif";
+          ctx.fillStyle = "#D97706";
+          ctx.fillText("C₂", C2.x + 7, C2.y + 4);
+        }
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.lineTo(C.x, C.y); ctx.closePath();
+        ctx.fillStyle = "rgba(16, 185, 129, 0.09)";
+        ctx.fill();
+      }
+
+      // 3. Outer triangle ABC
+      ctx.beginPath();
+      ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.lineTo(C.x, C.y); ctx.closePath();
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 2.2;
+      ctx.stroke();
+
+      // Highlight outer sides AC and BC in green on Step 2
+      if (step === 2) {
+        ctx.beginPath();
+        ctx.moveTo(A.x, A.y); ctx.lineTo(C.x, C.y);
+        ctx.lineTo(B.x, B.y);
+        ctx.strokeStyle = col.green;
+        ctx.lineWidth = 3.4;
+        ctx.stroke();
+      }
+
+      // 4. Inner segments CD and CE
+      ctx.beginPath();
+      ctx.moveTo(C.x, C.y); ctx.lineTo(D.x, D.y);
+      ctx.strokeStyle = step === 0 ? col.blue : (step === 2 ? col.blue : "rgba(0, 136, 255, 0.65)");
+      ctx.lineWidth = step === 0 || step === 2 ? 3.2 : 2.2;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(C.x, C.y); ctx.lineTo(E.x, E.y);
+      ctx.strokeStyle = step === 1 ? "#D97706" : (step === 2 ? col.blue : "rgba(217, 119, 6, 0.7)");
+      ctx.lineWidth = step === 1 || step === 2 ? 3.2 : 2.2;
+      ctx.stroke();
+
+      // 5. Equal-length tick marks on AD = DE = EB
+      drawTickMark(ctx, A, D, 1, col.ink);
+      drawTickMark(ctx, D, E, 1, col.ink);
+      drawTickMark(ctx, E, B, 1, col.ink);
+
+      // 6. Vertices & Labels
+      drawDot(ctx, A.x, A.y, 6.5, col.ink);
+      drawDot(ctx, B.x, B.y, 6.5, col.ink);
+      drawDot(ctx, C.x, C.y, 7.0, col.green);
+      drawDot(ctx, D.x, D.y, 6.0, col.blue);
+      drawDot(ctx, E.x, E.y, 6.0, "#D97706");
+
+      ctx.font = "700 13.5px Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = col.ink;
+      ctx.fillText("A", A.x - 14, A.y + 6);
+      ctx.fillText("B", B.x + 14, B.y + 6);
+      ctx.fillStyle = col.green;
+      ctx.fillText("C", C.x, C.y - 11);
+      ctx.fillStyle = col.blue;
+      ctx.fillText("D", D.x, D.y + 19);
+      ctx.fillStyle = "#D97706";
+      ctx.fillText("E", E.x, E.y + 19);
+      ctx.textAlign = "left";
+    }
+
     // =========================================================================
     // 6. CANVAS INTERACTIVE POINTER HANDLERS (3D ROTATION & 2D DRAGGING)
     // =========================================================================
@@ -5707,6 +6436,7 @@
       window.addEventListener("pointerup", () => {
         state.geomDragKey = null;
         state.auxDragKey = null;
+        state.geomTrisectDragKey = null;
       });
 
       // Algebra Mod line drag
@@ -5768,15 +6498,16 @@
       });
       window.addEventListener("pointerup", () => { dragReg = false; });
 
-      // Logic Ring click/hover (smooth tracking + clean leave reset)
+      // Logic Ring click/hover (36 children in red/blue sweaters around a circle)
       const cvLR = document.getElementById("cvLogicRing");
       cvLR.addEventListener("pointermove", e => {
         const rect = cvLR.getBoundingClientRect();
-        const cx = rect.width * 0.5, cy = rect.height * 0.55, R = Math.min(rect.width, rect.height) * 0.29;
+        const N = 36;
+        const cx = rect.width * 0.5, cy = rect.height * 0.55, R = Math.min(rect.width, rect.height) * 0.35;
         let found = -1;
-        for (let i = 0; i < 13; i++) {
-          const ang = (i * 2 * Math.PI) / 13 - Math.PI / 2;
-          if (Math.hypot((e.clientX - rect.left) - (cx + R * Math.cos(ang)), (e.clientY - rect.top) - (cy + R * Math.sin(ang))) < 26) {
+        for (let i = 0; i < N; i++) {
+          const ang = (i * 2 * Math.PI) / N - Math.PI / 2;
+          if (Math.hypot((e.clientX - rect.left) - (cx + R * Math.cos(ang)), (e.clientY - rect.top) - (cy + R * Math.sin(ang))) < 16) {
             found = i;
             break;
           }
@@ -5788,12 +6519,13 @@
       });
       cvLR.addEventListener("pointerdown", e => {
         const rect = cvLR.getBoundingClientRect();
-        const cx = rect.width * 0.5, cy = rect.height * 0.55, R = Math.min(rect.width, rect.height) * 0.29;
-        for (let i = 0; i < 13; i++) {
-          const ang = (i * 2 * Math.PI) / 13 - Math.PI / 2;
-          if (Math.hypot((e.clientX - rect.left) - (cx + R * Math.cos(ang)), (e.clientY - rect.top) - (cy + R * Math.sin(ang))) < 26) {
-            state.ringVals[i] = state.ringVals[i] > 0 ? -1 : 10;
-            syncRingFormulaBox();
+        const N = 36;
+        const cx = rect.width * 0.5, cy = rect.height * 0.55, R = Math.min(rect.width, rect.height) * 0.35;
+        for (let i = 0; i < N; i++) {
+          const ang = (i * 2 * Math.PI) / N - Math.PI / 2;
+          if (Math.hypot((e.clientX - rect.left) - (cx + R * Math.cos(ang)), (e.clientY - rect.top) - (cy + R * Math.sin(ang))) < 16) {
+            toggleRingKidAt(i);
+            break;
           }
         }
       });
@@ -6085,6 +6817,26 @@
         syncAuxPositionFromState();
         syncAuxModeButtons();
       });
+
+      // Planimetry Card 4: Trisected Side AB (drag vertices C, A, B)
+      const cvGT = document.getElementById("cvGeomTrisect");
+      cvGT.addEventListener("pointerdown", e => {
+        const rect = cvGT.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        ["C", "A", "B"].forEach(k => {
+          if (Math.hypot(x - state.geomTrisectPts[k].x, y - state.geomTrisectPts[k].y) < 0.09) {
+            state.geomTrisectDragKey = k;
+          }
+        });
+      });
+      cvGT.addEventListener("pointermove", e => {
+        if (!state.geomTrisectDragKey) return;
+        const rect = cvGT.getBoundingClientRect();
+        const nx = Math.max(0.10, Math.min(0.90, (e.clientX - rect.left) / rect.width));
+        const ny = Math.max(0.12, Math.min(0.86, (e.clientY - rect.top) / rect.height));
+        state.geomTrisectPts[state.geomTrisectDragKey] = { x: nx, y: ny };
+      });
     }
 
     // =========================================================================
@@ -6118,6 +6870,8 @@
       } else if (state.activeTopic === "geom") {
         drawGeomMedian();
         drawGeomCircle();
+        drawGeomAngles();
+        drawGeomTrisect();
       }
       requestAnimationFrame(renderAll);
     }
