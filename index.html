@@ -941,10 +941,63 @@
     <!-- TOPIC 5: КОМБИНАТОРИКА                                              -->
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-combo">
-      <div class="page-kicker">Задачи к вебинару · Неочевидные биекции и инварианты</div>
-      <h1 class="page-title">№1–2. Принцип зеркального отражения Андре и задача о бензоколонках</h1>
+      <div class="page-kicker">Задачи к вебинару · Вероятность, биекции и экстремальный принцип</div>
+      <h1 class="page-title">№1–3. Задача о двух урнах ($10$ белых и $10$ чёрных шаров), отражение Андре и бензоколонки</h1>
 
-      <!-- CARD 1: Принцип отражения Андре и числа Каталана -->
+      <!-- CARD 1: 10 белых и 10 чёрных шаров по двум урнам -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">10 белых и 10 чёрных шаров по двум урнам: как получить вероятность $\frac{14}{19} \approx 73{,}7\%$?</div>
+          <div class="card-pills" id="urnPills">
+            <button class="shk-pill" onclick="setUrnPreset(5, 5, 0)">Поровну 5Б+5Ч ($50\%$)</button>
+            <button class="shk-pill" onclick="setUrnPreset(4, 0, 1)">Без чёрных $m=0$ ($n=4$)</button>
+            <button class="shk-pill active" onclick="setUrnPreset(1, 0, 2)">Оптимум: 1 белый ($\frac{14}{19} \approx 73{,}7\%$)</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача из ДЗ:</b> имеется $10$ белых и $10$ чёрных шаров. Их раскладывают по двум урнам, затем случайно выбирают одну из урн и вытаскивают из неё один шар. Если он белый — Вы получаете приз. Как разложить шары, чтобы вероятность выигрыша была наибольшей?
+            </p>
+            <div class="algo-list" id="listUrnSteps">
+              <div class="algo-item" onclick="setUrnPreset(5, 5, 0)">
+                <b>1. Зафиксируем число шаров $k = m + n \le 10$ в первой урне:</b> пусть в Урне 1 лежит $n$ белых и $m$ чёрных шаров, а в Урне 2 — $(10 - n)$ белых и $(10 - m)$ чёрных. Вероятность вытащить белый шар равна:
+                $$\frac{1}{2}\left(\frac{n}{k} + \frac{10 - n}{20 - k}\right) = \frac{10k + 2n(10 - k)}{2k(20 - k)}$$
+              </div>
+              <div class="algo-item" onclick="setUrnPreset(4, 0, 1)">
+                <b>2. Почему в первой урне не должно быть чёрных шаров ($m = 0$)?</b> При фиксированном $k \le 10$ знаменатель положителен и не зависит от $n$, а числитель $10k + 2n(10 - k)$ максимален при наибольшем $n \le k$, то есть при <b>$n = k$ и $m = 0$</b>! В меньшую урну кладутся <i>только белые шары</i>.
+              </div>
+              <div class="algo-item active" onclick="setUrnPreset(1, 0, 2)">
+                <b>3. Минимизируем $n$ при $m = 0$:</b> вероятность равна $\frac{1}{2}\left(1 + \frac{10 - n}{20 - n}\right)$. Второе слагаемое максимально при минимуме обратной величины $\frac{20 - n}{10 - n} = 1 + \frac{10}{10 - n}$, то есть при <b>минимальном $n = 1$</b>! Кладём в первую урну <b>1 белый шар</b>, а во вторую — остальные 19 шаров:
+                $$P_{\max} = \frac{1}{2}\left(1 + \frac{9}{19}\right) = \frac{14}{19} \approx 73{,}68\%$$
+              </div>
+            </div>
+            <div class="white-formula-box">
+              <span id="urnFormulaText">Урна 1: 1Б, 0Ч (1/1)  |  Урна 2: 9Б, 10Ч (9/19)  ⇒  P = ½(1 + 9/19) = 14/19 ≈ 73.68% ✓</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Белых шаров в первой урне ($n$)</span>
+                <span class="slider-val-badge" id="valUrnN">n = 1 бел. (во второй: 9 бел.)</span>
+              </div>
+              <input type="range" class="shk-range" id="rngUrnN" min="0" max="10" value="1" />
+              <div class="slider-header" style="margin-top:8px;">
+                <span>Чёрных шаров в первой урне ($m$)</span>
+                <span class="slider-val-badge" id="valUrnM">m = 0 чёрн. (во второй: 10 чёрн.)</span>
+              </div>
+              <input type="range" class="shk-range" id="rngUrnM" min="0" max="10" value="0" />
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvComboUrns"></canvas>
+            </div>
+            <div class="stage-caption">Двигайте ползунки n и m — сравнивайте текущую вероятность с максимумом 14/19 ≈ 73.68%</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 2: Принцип отражения Андре и числа Каталана -->
       <article class="sandbox-card">
         <div class="card-top-bar">
           <div class="card-heading">Принцип отражения Андре (Зеркало $y = x + 1$) и числа Каталана</div>
@@ -1165,7 +1218,9 @@
       gamePos: 1,
       gameAiArc: null,
 
-      // --- TOPIC 5: COMBINATORICS (Andre Reflection & Circular Gas Shift) ---
+      // --- TOPIC 5: COMBINATORICS (Two Urns, Andre Reflection & Circular Gas Shift) ---
+      urnN: 1,             // 0..10 white balls in Urn 1
+      urnM: 0,             // 0..10 black balls in Urn 1
       catalanPreset: 0,    // 0: bad path 1, 1: bad path 2, 2: good Dyck path
       catalanRef: 0,       // 0 .. 1 (reflection of tail across y = x + 1)
       gasStartIdx: 4,      // 0..5 (4 = station #5, the global minimum!)
@@ -1466,7 +1521,70 @@
           : "Полоска 1×17: клетка 1 уже ловушка — компьютер дополняет каждый твой ход до 4!";
     };
 
-    // --- TOPIC 5: COMBINATORICS CONTROLS (Andre Reflection & Circular Gas Shift) ---
+    // --- TOPIC 5: COMBINATORICS CONTROLS (Two Urns, Andre Reflection & Circular Gas Shift) ---
+    function gcd(a, b) {
+      a = Math.abs(a); b = Math.abs(b);
+      while (b) { const t = b; b = a % b; a = t; }
+      return a || 1;
+    }
+
+    function syncUrnUI() {
+      const n = state.urnN;
+      const m = state.urnM;
+      const n2 = 10 - n;
+      const m2 = 10 - m;
+      const k1 = n + m;
+      const k2 = n2 + m2;
+
+      document.getElementById("rngUrnN").value = n;
+      document.getElementById("rngUrnM").value = m;
+      document.getElementById("valUrnN").textContent = `n = ${n} бел. (во второй: ${n2} бел.)`;
+      document.getElementById("valUrnM").textContent = `m = ${m} чёрн. (во второй: ${m2} чёрн.)`;
+
+      const box = document.getElementById("urnFormulaText");
+      if (k1 === 0 || k2 === 0) {
+        box.textContent = "Ошибка: одна из урн пуста! В каждой урне должен быть хотя бы 1 шар ✗";
+      } else {
+        // P = 1/2 * (n/k1 + n2/k2) = (n*k2 + n2*k1) / (2*k1*k2)
+        const num = n * k2 + n2 * k1;
+        const den = 2 * k1 * k2;
+        const g = gcd(num, den);
+        const fNum = num / g, fDen = den / g;
+        const pct = ((num / den) * 100).toFixed(2);
+        const isMax = (n === 1 && m === 0) || (n === 9 && m === 10);
+        box.textContent =
+          `Урна 1: ${n}Б,${m}Ч (${n}/${k1}) | Урна 2: ${n2}Б,${m2}Ч (${n2}/${k2}) ⇒ P = ${fNum}/${fDen} ≈ ${pct}%` +
+          (isMax ? " (Максимум! ✓)" : "");
+      }
+
+      const btns = document.querySelectorAll("#urnPills .shk-pill");
+      if (btns.length === 3) {
+        btns[0].classList.toggle("active", n === 5 && m === 5);
+        btns[1].classList.toggle("active", n === 4 && m === 0);
+        btns[2].classList.toggle("active", (n === 1 && m === 0) || (n === 9 && m === 10));
+      }
+    }
+
+    document.getElementById("rngUrnN").addEventListener("input", function() {
+      state.urnN = parseInt(this.value, 10);
+      syncUrnUI();
+    });
+
+    document.getElementById("rngUrnM").addEventListener("input", function() {
+      state.urnM = parseInt(this.value, 10);
+      syncUrnUI();
+    });
+
+    window.setUrnPreset = function(n, m, stepIdx) {
+      state.urnN = n;
+      state.urnM = m;
+      syncUrnUI();
+      const items = document.querySelectorAll("#listUrnSteps .algo-item");
+      if (items.length === 3 && stepIdx !== undefined) {
+        items.forEach((el, i) => el.classList.toggle("active", i === stepIdx));
+      }
+    };
+
     function syncCatalanUI() {
       const pct = Math.round(state.catalanRef * 100);
       document.getElementById("rngCatalanRef").value = pct;
@@ -1594,7 +1712,7 @@
       "cvGraphKnights", "cvGraphTrees", "cvGraphK33",
       "cvAlgMod", "cvAlgPencil",
       "cvLogicRing", "cvLogicGame",
-      "cvComboCatalan", "cvComboGas",
+      "cvComboUrns", "cvComboCatalan", "cvComboGas",
       "cvGeomMedian", "cvGeomCircle"
     ];
 
@@ -2620,6 +2738,181 @@
       ctx.restore();
     }
 
+    // --- 5.11a: COMBINATORICS CARD 1 (10 White & 10 Black Balls in Two Urns) ---
+    function drawComboUrns() {
+      const c = canvases.cvComboUrns;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      const n = state.urnN, m = state.urnM;
+      const n2 = 10 - n, m2 = 10 - m;
+      const k1 = n + m, k2 = n2 + m2;
+      const valid = k1 > 0 && k2 > 0;
+      const pVal = valid ? 0.5 * (n / k1 + n2 / k2) : 0;
+      const isMax = valid && ((n === 1 && m === 0) || (n === 9 && m === 10));
+
+      // Top summary pill badge
+      if (!valid) {
+        drawPillBadge(
+          ctx,
+          "Ошибка: урна не может быть пустой! В каждой урне должен быть ≥ 1 шар ✗",
+          w * 0.5,
+          20,
+          col.red,
+          "rgba(255,241,242,0.96)",
+          "rgba(239,68,68,0.35)",
+          "center"
+        );
+      } else {
+        const num = n * k2 + n2 * k1;
+        const den = 2 * k1 * k2;
+        const g = gcd(num, den);
+        const fNum = num / g, fDen = den / g;
+        const pct = (pVal * 100).toFixed(2);
+        drawPillBadge(
+          ctx,
+          `P = ½ · (${n}/${k1} + ${n2}/${k2}) = ${fNum}/${fDen} ≈ ${pct}%` + (isMax ? " (Абсолютный максимум! ✓)" : ""),
+          w * 0.5,
+          20,
+          isMax ? col.green : col.blue,
+          isMax ? "rgba(236,253,245,0.96)" : "rgba(239,246,255,0.96)",
+          isMax ? "rgba(16,185,129,0.35)" : "rgba(0,136,255,0.35)",
+          "center"
+        );
+      }
+
+      const yTop = 84, yBot = h - 48;
+      const uw = 122;
+      const ux1 = w * 0.21, ux2 = w * 0.52;
+
+      function drawSingleUrn(ux, titleIdx, wBalls, bBalls) {
+        const tot = wBalls + bBalls;
+        const x0 = ux - uw / 2;
+        const hUrn = yBot - yTop;
+
+        // Pill badge above urn
+        const pUrn = tot > 0 ? Math.round((wBalls / tot) * 100) : 0;
+        drawPillBadge(
+          ctx,
+          tot > 0 ? `Урна ${titleIdx}: ${wBalls}/${tot} (${pUrn}%)` : `Урна ${titleIdx}: Пусто!`,
+          ux,
+          60,
+          tot === 0 ? col.red : (wBalls === tot ? col.green : col.blue),
+          "rgba(255,255,255,0.95)",
+          "rgba(148,163,184,0.35)",
+          "center"
+        );
+
+        // Glass container with open top rim
+        ctx.beginPath();
+        ctx.roundRect(x0, yTop, uw, hUrn, [4, 4, 16, 16]);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.72)";
+        ctx.fill();
+        ctx.strokeStyle = tot === 0 ? col.red : "rgba(100, 116, 139, 0.45)";
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+
+        // Draw balls stacked in rows of 5 from bottom up
+        const cols = 5;
+        const spX = 21.5, spY = 21.5;
+        const startX = ux - ((cols - 1) * spX) / 2;
+        const startY = yBot - 16;
+
+        for (let idx = 0; idx < tot; idx++) {
+          const isWhite = idx < wBalls;
+          const row = Math.floor(idx / cols);
+          const colIdx = idx % cols;
+          const bx = startX + colIdx * spX;
+          const by = startY - row * spY;
+
+          ctx.beginPath();
+          ctx.arc(bx, by, 8.2, 0, Math.PI * 2);
+          ctx.fillStyle = isWhite ? "#FFFFFF" : "#1E293B";
+          ctx.fill();
+          ctx.strokeStyle = isWhite ? col.blue : "#0F172A";
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+
+          // Subtle specular highlight on black balls
+          if (!isWhite) {
+            ctx.beginPath();
+            ctx.arc(bx - 2.4, by - 2.4, 2.0, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,255,255,0.45)";
+            ctx.fill();
+          }
+        }
+
+        // Bottom caption below urn
+        ctx.font = "700 11.5px Inter, sans-serif";
+        ctx.fillStyle = col.ink;
+        ctx.textAlign = "center";
+        ctx.fillText(`Белых: ${wBalls} · Чёрн: ${bBalls}`, ux, h - 18);
+      }
+
+      drawSingleUrn(ux1, 1, n, m);
+      drawSingleUrn(ux2, 2, n2, m2);
+
+      // Right-hand Probability Bar Meter
+      const mx = w * 0.82;
+      const mw = 34;
+      const mh = yBot - yTop;
+
+      drawPillBadge(ctx, "Шанс P", mx, 60, col.ink, "rgba(255,255,255,0.95)", "rgba(148,163,184,0.35)", "center");
+
+      // Meter track
+      ctx.beginPath();
+      ctx.roundRect(mx - mw / 2, yTop, mw, mh, 9);
+      ctx.fillStyle = "rgba(255,255,255,0.78)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(148,163,184,0.4)";
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+
+      // Filled probability level
+      if (valid && pVal > 0) {
+        const fillH = Math.max(8, pVal * mh);
+        ctx.beginPath();
+        ctx.roundRect(mx - mw / 2 + 2, yBot - fillH, mw - 4, fillH, 7);
+        ctx.fillStyle = isMax ? col.green : (pVal > 0.501 ? col.blue : col.amber);
+        ctx.fill();
+      }
+
+      // 50% baseline dashed line
+      const y50 = yBot - 0.5 * mh;
+      ctx.setLineDash([4, 3]);
+      ctx.strokeStyle = col.muted;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(mx - mw / 2 - 6, y50);
+      ctx.lineTo(mx + mw / 2 + 6, y50);
+      ctx.stroke();
+
+      // 14/19 (~73.7%) theoretical max dashed line
+      const yMax = yBot - (14 / 19) * mh;
+      ctx.strokeStyle = col.green;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(mx - mw / 2 - 6, yMax);
+      ctx.lineTo(mx + mw / 2 + 6, yMax);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.font = "700 11px Inter, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillStyle = col.muted;
+      ctx.fillText("50%", mx + mw / 2 + 8, y50 + 4);
+      ctx.fillStyle = col.green;
+      ctx.fillText("14/19", mx + mw / 2 + 8, yMax + 4);
+
+      ctx.font = "700 12px Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillStyle = isMax ? col.green : col.blue;
+      ctx.fillText(valid ? `${(pVal * 100).toFixed(1)}%` : "—", mx, h - 18);
+      ctx.textAlign = "left";
+    }
+
     function drawComboCatalan() {
       const c = canvases.cvComboCatalan;
       if (!c) return;
@@ -3298,6 +3591,7 @@
         drawLogicRing();
         drawLogicGame();
       } else if (state.activeTopic === "combo") {
+        drawComboUrns();
         drawComboCatalan();
         drawComboGas();
       } else if (state.activeTopic === "geom") {
