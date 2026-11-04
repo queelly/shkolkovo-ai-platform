@@ -830,8 +830,8 @@
     <!-- TOPIC 3: АЛГЕБРА И ПАРАМЕТРЫ (ВСЕ КАРТОЧКИ НА ОДНОЙ СТРАНИЦЕ!)      -->
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-algebra">
-      <div class="page-kicker">Задачи к вебинару · Графический метод в параметрах</div>
-      <h1 class="page-title">№1–3. Вложенные модули, пучок прямых и окружность</h1>
+      <div class="page-kicker">Задачи к вебинару · Графический метод и плоскость (x; a) в параметрах</div>
+      <h1 class="page-title">№1–3. Вложенные модули, пучок прямых и метод областей в плоскости $(x; a)$</h1>
 
       <!-- CARD 1: Вложенные модули ||x - 1| - 3| = a -->
       <article class="sandbox-card">
@@ -909,6 +909,60 @@
               <canvas class="sandbox-canvas" id="cvAlgPencil"></canvas>
             </div>
             <div class="stage-caption">Вращайте прямую мышкой вокруг точки $P(5; 1)$ прямо на чертеже</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 3: Система неравенств в плоскости (x; a) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Метод областей в плоскости $(x; a)$: система неравенств $\begin{cases} 3a + 2x \ge x^2, \\ a \le 2\sqrt{x}, \\ 2a + x \le 5 \end{cases}$</div>
+          <div class="card-pills" id="regPills">
+            <span class="pill-label">a =</span>
+            <button class="shk-pill" onclick="setAlgRegionA(-0.3333)">$-\frac{1}{3}$ (Вершина $A$)</button>
+            <button class="shk-pill" onclick="setAlgRegionA(-0.15)">$a \in (-\frac{1}{3}; 0)$</button>
+            <button class="shk-pill" onclick="setAlgRegionA(0)">$0$</button>
+            <button class="shk-pill active" onclick="setAlgRegionA(0.5)">$0{,}5 \in (0; 1)$</button>
+            <button class="shk-pill" onclick="setAlgRegionA(1.0)">$1$ (Узел $x=3$)</button>
+            <button class="shk-pill" onclick="setAlgRegionA(1.5)">$1{,}5 \in (1; 2)$</button>
+            <button class="shk-pill" onclick="setAlgRegionA(2.0)">$2$ (Вершина $B$)</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> найдите все значения параметра $a$, при каждом из которых система неравенств имеет хотя бы одно решение, и укажите решения системы для каждого такого значения $a$.
+            </p>
+            <ul class="algo-list" id="listRegSteps">
+              <li class="algo-item" onclick="setAlgRegionA(-0.15)">
+                <span class="algo-num">1.</span>
+                <span><b>Строим границы в плоскости $(x; a)$ и участок $a \in \left[-\frac{1}{3}; 0\right]$:</b> перепишем систему явно относительно $a$: $a \ge \frac{x^2-2x}{3} = f(x)$ (выше параболы с вершиной $A(1; -\frac{1}{3})$), $a \le 2\sqrt{x} = g(x)$ (ниже корня) и $a \le \frac{5-x}{2} = h(x)$ (ниже прямой). При $a \in \left[-\frac{1}{3}; 0\right]$ горизонталь высекает отрезок между корнями параболы $f(x) = a$: <b>$x \in \left[1 - \sqrt{1+3a};\; 1 + \sqrt{1+3a}\right]$</b>.</span>
+              </li>
+              <li class="algo-item active" onclick="setAlgRegionA(0.5)">
+                <span class="algo-num">2.</span>
+                <span><b>Средний ярус $a \in [0; 1]$ (от корня $g(x)$ до параболы $f(x)$):</b> при $a = 0$ левая граница переходит с параболы на ветвь корня $a = 2\sqrt{x} \iff x = \frac{a^2}{4}$, а правая граница остаётся на параболе вплоть до точки их пересечения с прямой $h(3) = f(3) = 1$. Отрезок решений: <b>$x \in \left[\frac{a^2}{4};\; 1 + \sqrt{1+3a}\right]$</b>.</span>
+              </li>
+              <li class="algo-item" onclick="setAlgRegionA(1.5)">
+                <span class="algo-num">3.</span>
+                <span><b>Верхний ярус $a \in [1; 2]$ (от корня $g(x)$ до прямой $h(x)$):</b> выше уровня $a^* = 1$ правая граница задаётся прямой $a = \frac{5-x}{2} \iff x = 5 - 2a$, которая смыкается с корнем $2\sqrt{x} = \frac{5-x}{2}$ в верхней вершине $B(1; 2)$. Отрезок решений: <b>$x \in \left[\frac{a^2}{4};\; 5 - 2a\right]$</b>.</span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="regFormulaText">При a = 0.50 ∈ [0; 1]: x ∈ [a²/4; 1 + √(1 + 3a)] = [0.06; 2.58] ✓</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Уровень секущей $a$ (диапазон решений $a \in [-1/3; 2]$)</span>
+                <span class="slider-val-badge" id="valAlgRegionA">a = 0.50</span>
+              </div>
+              <input type="range" class="shk-range" id="rngAlgRegionA" min="-55" max="225" value="50" />
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvAlgRegion"></canvas>
+            </div>
+            <div class="stage-caption">Тяните горизонтальную секущую $a = \text{const}$ мышкой вверх-вниз — зелёный отрезок показывает все решения $x$!</div>
           </div>
         </div>
       </article>
@@ -1042,8 +1096,8 @@
     <!-- TOPIC 5: КОМБИНАТОРИКА                                              -->
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-combo">
-      <div class="page-kicker">Задачи к вебинару · Вероятность, фигуры на клетчатой доске и экстремальный принцип</div>
-      <h1 class="page-title">№1–3. Задача о двух урнах ($10$ белых и $10$ чёрных шаров), $k$ ладей и $k$ коней на доске $8 \times 8$ и бензоколонки</h1>
+      <div class="page-kicker">Задачи к вебинару · Оценка + пример на клетчатых досках, принцип Дирихле и вероятность</div>
+      <h1 class="page-title">№1–5. Две урны, полоски $1 \times 6$, раскраска в $16$ цветов, белые и чёрные ладьи Пети и Васи, $k$ ладей и $k$ коней</h1>
 
       <!-- CARD 1: 10 белых и 10 чёрных шаров по двум урнам -->
       <article class="sandbox-card">
@@ -1099,7 +1153,137 @@
         </div>
       </article>
 
-      <!-- CARD 2: k ладей и k коней на доске 8x8 (Оценка (8-k)^2 и пример k=5) -->
+      <!-- CARD 2: Полоски 1x6 на доске 8x8 (Оценка по площади <= 10 + Пример на 10) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Вырезание полосок $1 \times 6$ из доски $8 \times 8$: оценка по площади и пример на $10$ полосок</div>
+          <div class="card-pills" id="stripsPills">
+            <button class="shk-pill" onclick="setStripPreset('bound11')">1. Оценка ($11 \cdot 6 = 66 > 64$)</button>
+            <button class="shk-pill" onclick="setStripPreset('naive8')">2. Только горизонтальные ($8$ шт.)</button>
+            <button class="shk-pill active" onclick="setStripPreset('opt10')">3. Пример: $8 + 2 = 10$ полосок ✓</button>
+            <button class="shk-pill" onclick="toggleStripOrient()" id="btnStripOrient">Свой ход: Гориз. $1 \times 6$</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> какое наибольшее количество полосок $1 \times 6$ можно вырезать из доски $8 \times 8$? Полоски могут быть как горизонтальными, так и вертикальными.
+            </p>
+            <ul class="algo-list" id="listStripSteps">
+              <li class="algo-item" onclick="setStripPreset('bound11')">
+                <span class="algo-num">1.</span>
+                <span><b>Оценка сверху ($\le 10$ полосок):</b> допустим, удалось вырезать хотя бы $11$ полосок $1 \times 6$. Тогда общее количество клеточек в них не меньше $11 \cdot 6 = 66$, что больше площади всей доски $8 \times 8 = 64$! Противоречие, значит полосок <b>не более $10$</b>.</span>
+              </li>
+              <li class="algo-item" onclick="setStripPreset('naive8')">
+                <span class="algo-num">2.</span>
+                <span><b>Как не потерять место:</b> если резать полоски $1 \times 6$ только горизонтально (по одной в каждой из $8$ строк), то слева займётся блок $8 \times 6$, а справа останется вертикальная полоса $8 \times 2$ из $16$ клеток. Повернём распил в этой полосе вертикально!</span>
+              </li>
+              <li class="algo-item active" onclick="setStripPreset('opt10')">
+                <span class="algo-num">3.</span>
+                <span><b>Пример на $10$ полосок (Ответ: $10$):</b> разделим доску $8 \times 8$ на две части: <b>$8 \times 6$</b> (слева) и <b>$8 \times 2$</b> (справа). Первую часть полностью разрежем на <b>$8$ горизонтальных полосок $1 \times 6$</b>, а из второй вырежем прямоугольник $6 \times 2$ и разрежем его на <b>$2$ вертикальные полоски $6 \times 1$</b>! Итого ровно $8 + 2 = 10$ полосок (в углу остаётся квадрат $2 \times 2$ из $4$ клеток).</span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="stripFormulaText">Пример на 10 полосок: 8 горизонтальных (блок 8×6) + 2 вертикальные (блок 6×2) = 60 кл., остаток 4 кл. ✓</span>
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvComboStrips"></canvas>
+            </div>
+            <div class="stage-caption">Кликайте по доске 8×8, чтобы вырезать или убирать полоски 1×6 (переключайте ориентацию кнопкой сверху)</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 3: Раскраска доски 8x8 в 16 цветов (У каждой клетки >= 2 соседей своего цвета) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Раскраска доски $8 \times 8$ в наибольшее число цветов: у каждой клетки $\ge 2$ соседей своего цвета</div>
+          <div class="card-pills" id="colorPills">
+            <button class="shk-pill active" onclick="setColorPreset('opt16')">1. Пример: $16$ квадратов $2 \times 2$ ✓</button>
+            <button class="shk-pill" onclick="setColorPreset('fail3L')">2. Оценка $17$ цветов: уголок из 3 кл. ✗</button>
+            <button class="shk-pill" onclick="setColorPreset('fail3I')">3. Полоска $1 \times 3$ из 3 кл. ✗</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> в какое наибольшее число цветов можно раскрасить доску $8 \times 8$ так, чтобы каждая клетка граничила по стороне хотя бы с двумя клетками своего цвета?
+            </p>
+            <ul class="algo-list" id="listColorSteps">
+              <li class="algo-item active" onclick="setColorPreset('opt16')">
+                <span class="algo-num">1.</span>
+                <span><b>Пример на $16$ цветов:</b> разделим доску $8 \times 8$ на <b>$16$ квадратиков $2 \times 2$</b> и каждый из них закрасим в свой цвет (№1–№16). Внутри каждого квадрата $2 \times 2$ любая клетка имеет ровно <b>два соседа по стороне</b> того же цвета!</span>
+              </li>
+              <li class="algo-item" onclick="setColorPreset('fail3L')">
+                <span class="algo-num">2.</span>
+                <span><b>Оценка ($\le 16$ цветов) по принципу Дирихле:</b> пусть цветов $\ge 17$. Так как $64 = 16 \cdot 4 < 17 \cdot 4$, по принципу Дирихле найдётся цвет, в который окрашено <b>не более $3$ клеток</b>. Поскольку у каждой клетки должно быть $\ge 2$ соседей своего цвета, клеток этого цвета не может быть $1$ или $2$ — значит, их <b>ровно $3$</b>.</span>
+              </li>
+              <li class="algo-item" onclick="setColorPreset('fail3I')">
+                <span class="algo-num">3.</span>
+                <span><b>Почему $3$ клетки не могут иметь по $2$ соседа?</b> Если клеток одного цвета ровно $3$, то каждая из трёх должна граничить по стороне с двумя остальными (образовывать цикл длины $3$). Но на квадратной решётке $3$ клетки образуют либо уголок, либо полоску $1 \times 3$ — у крайних клеток всегда <b>только $1$ сосед</b> ($< 2$)! Противоречие. <b>Ответ: $16$.</b></span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="colorFormulaText">Пример 16 цветов: 16 квадратов 2×2 — у всех 64 клеток ровно по 2 соседа своего цвета ✓</span>
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvComboColoring"></canvas>
+            </div>
+            <div class="stage-caption">Наводите курсор на клетки для подсветки одноцветных соседей или кликайте по клеткам, чтобы перекрашивать их в 17-й цвет!</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 4: Петя и Вася расставляют 8 белых и 8 чёрных ладей (Принцип Дирихле 64 / 9 -> 8) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Петя и Вася: $8$ белых и $8$ чёрных ладей с одинаковым числом баллов ($\lceil 64/9 \rceil = 8$)</div>
+          <div class="card-pills" id="pvRookPills">
+            <button class="shk-pill active" onclick="setPVRookTool('W')">Ход Пети: Белая ладья ♖</button>
+            <button class="shk-pill" onclick="setPVRookTool('B')">Ход Васи: Чёрная ладья ♜</button>
+            <button class="shk-pill" onclick="autoPlaceVasyaBlackRooks()">Авто-ответ Васи (Дирихле ✓)</button>
+            <button class="shk-pill" onclick="presetPetyaRooks('diag')">Пресет: Диагональ</button>
+            <button class="shk-pill" onclick="presetPetyaRooks('row')">Пресет: В ряд</button>
+            <button class="shk-pill" onclick="presetPetyaRooks('random')">Случайно</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> сначала Петя расставляет на доске $8 \times 8$ восемь <b>белых ладей</b>, затем Вася — восемь <b>чёрных ладей</b> (ладьи одного цвета не могут стоять в одной клетке, а разных — могут). Чёрная ладья получает по $1$ баллу за каждую белую ладью в своей строке или своём столбце. Сможет ли Вася всегда добиться того, чтобы у всех $8$ чёрных ладей было <b>поровну баллов</b>?
+            </p>
+            <ul class="algo-list" id="listPVRookSteps">
+              <li class="algo-item active" onclick="setPVRookTool('W')">
+                <span class="algo-num">1.</span>
+                <span><b>Считаем баллы каждой из $64$ клеток (от $0$ до $8$):</b> так как на доске ровно $8$ белых ладей Пети, любая клетка доски простреливается по строке и столбцу не более чем восемью из них. Значит, балл любой клетки — целое число из <b>$9$ возможных вариантов: $0, 1, 2, 3, 4, 5, 6, 7, 8$</b>.</span>
+              </li>
+              <li class="algo-item" onclick="autoPlaceVasyaBlackRooks()">
+                <span class="algo-num">2.</span>
+                <span><b>Принцип Дирихле ($\lceil 64 / 9 \rceil = 8$):</b> разложим $64$ клетки доски по $9$ «корзинам» в зависимости от их балла ($0..8$). Так как $64 = 9 \cdot 7 + 1 > 63$, хотя бы в одной корзине гарантированно окажется <b>не менее $8$ клеток с абсолютно одинаковым баллом</b>!</span>
+              </li>
+              <li class="algo-item" onclick="setPVRookTool('B')">
+                <span class="algo-num">3.</span>
+                <span><b>Победный ход Васи (Ответ: Да, сможет):</b> поскольку чёрным ладьям разрешено стоять на одних клетках с белыми, Вася просто выбирает $8$ клеток из этой самой многочисленной корзины и ставит на них свои $8$ чёрных ладей!</span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="pvRookFormulaText">Белых ладей: 8 | Чёрных ладей: 8 (все по 2 балла!) ⇒ Вася всегда выигрывает по Дирихле (⌈64/9⌉ = 8) ✓</span>
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvComboRooksPV"></canvas>
+            </div>
+            <div class="stage-caption">Кликайте по клеткам доски, чтобы сами ставить белые (♖) и чёрные (♜) ладьи, или кликайте по столбцам гистограммы справа!</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 5: k ладей и k коней на доске 8x8 (Оценка (8-k)^2 и пример k=5) -->
       <article class="sandbox-card">
         <div class="card-top-bar">
           <div class="card-heading">$k$ ладей и $k$ коней на доске $8 \times 8$: при каком наибольшем $k$ никто никого не бьёт?</div>
@@ -1145,44 +1329,6 @@
               <canvas class="sandbox-canvas" id="cvComboGrid"></canvas>
             </div>
             <div class="stage-caption">Наводите курсор на ладьи и коней для проверки полей боя или кликайте по клеткам доски 8×8</div>
-          </div>
-        </div>
-      </article>
-
-      <!-- CARD 2: Задача о бензоколонках на кольцевой трассе (Принцип минимума) -->
-      <article class="sandbox-card">
-        <div class="card-top-bar">
-          <div class="card-heading">Бензоколонки на кольцевом шоссе: старт из точки глобального минимума</div>
-          <div class="card-pills" id="gasPills">
-            <span class="pill-label">Старт:</span>
-            <button class="shk-pill" onclick="setGasStart(0)">№1</button>
-            <button class="shk-pill" onclick="setGasStart(1)">№2</button>
-            <button class="shk-pill" onclick="setGasStart(2)">№3</button>
-            <button class="shk-pill" onclick="setGasStart(3)">№4</button>
-            <button class="shk-pill active" onclick="setGasStart(4)">№5 (Минимум!)</button>
-            <button class="shk-pill" onclick="setGasStart(5)">№6</button>
-          </div>
-        </div>
-        <div class="card-grid">
-          <div class="card-text-col">
-            <p>
-              На круговой трассе стоят 6 бензоколонок. Суммарного бензина во всех колонках ровно хватает на один круг (изменения запаса на участках: $+2, -3, +1, -2, +4, -2$, сумма равна $0$). Докажите, что с некоторой колонки можно проехать весь круг, не заглохнув!
-            </p>
-            <p>
-              Мысленно проедем круг из <span class="inline-link" onclick="setGasStart(0)">произвольной колонки №1 (с разрешением уходить в «долг»)</span> и построим график остатка топлива. Самая нижняя точка графика достигается перед колонкой №5 (уровень $-2$).
-            </p>
-            <p>
-              Если же <span class="inline-link active" onclick="setGasStart(4)">перенести старт ровно в точку абсолютного минимума (колонка №5)</span>, то эта нижняя точка станет новым нулём отсчёта, и весь остальной график окажется строго $\ge 0$!
-            </p>
-            <div class="white-formula-box">
-              <span id="gasStatusText">Старт с колонки №5 (точки минимума): остаток в баке ≥ 0 на всём круге! ✓</span>
-            </div>
-          </div>
-          <div class="card-stage-col">
-            <div class="stage-canvas-wrap">
-              <canvas class="sandbox-canvas" id="cvComboGas"></canvas>
-            </div>
-            <div class="stage-caption">Кликайте по точкам графика или кнопкам №1–№6, чтобы менять стартовую бензоколонку</div>
           </div>
         </div>
       </article>
@@ -1315,6 +1461,7 @@
       // --- TOPIC 3: ALGEBRA & PARAMETERS ---
       algModA: 3.0,
       algPencilA: 0.2,
+      algRegionA: 0.5,
 
       // --- TOPIC 4: LOGIC & GAMES ---
       ringMode: "exact",
@@ -1332,9 +1479,40 @@
       gamePlayerArc: null,
       gameAiArc: null,
 
-      // --- TOPIC 5: COMBINATORICS (Two Urns, k Rooks & k Knights on 8x8, Circular Gas Shift) ---
+      // --- TOPIC 5: COMBINATORICS (Two Urns, 1x6 Strips, 16-Color Board, Petya & Vasya Rooks, k Rooks & k Knights) ---
       urnN: 1,             // 0..10 white balls in Urn 1
       urnM: 0,             // 0..10 black balls in Urn 1
+
+      // Card 2: 1x6 strips on 8x8 board
+      stripMode: "opt10",  // "bound11", "naive8", "opt10", "custom"
+      stripOrient: "H",    // "H" (1x6) or "V" (6x1)
+      strips: [
+        { r: 0, c: 0, dir: "H" }, { r: 1, c: 0, dir: "H" }, { r: 2, c: 0, dir: "H" }, { r: 3, c: 0, dir: "H" },
+        { r: 4, c: 0, dir: "H" }, { r: 5, c: 0, dir: "H" }, { r: 6, c: 0, dir: "H" }, { r: 7, c: 0, dir: "H" },
+        { r: 0, c: 6, dir: "V" }, { r: 0, c: 7, dir: "V" }
+      ],
+
+      // Card 3: 16-Coloring of 8x8 board (each cell has >= 2 neighbors of same color)
+      colorMode: "opt16",  // "opt16", "fail3L", "fail3I", "custom"
+      colorHover: null,
+      colorGrid: Array.from({ length: 8 }, (_, r) =>
+        Array.from({ length: 8 }, (__, c) => Math.floor(r / 2) * 4 + Math.floor(c / 2))
+      ),
+
+      // Card 4: Petya & Vasya 8 White + 8 Black Rooks (Pigeonhole Principle ceil(64/9) = 8)
+      pvTool: "W",         // "W" (White Rook for Petya) or "B" (Black Rook for Vasya)
+      pvHighlightScore: -1,
+      pvHover: null,
+      pvWhiteRooks: [
+        { r: 0, c: 0 }, { r: 1, c: 1 }, { r: 2, c: 2 }, { r: 3, c: 3 },
+        { r: 4, c: 4 }, { r: 5, c: 5 }, { r: 6, c: 6 }, { r: 7, c: 7 }
+      ],
+      pvBlackRooks: [
+        { r: 0, c: 1 }, { r: 1, c: 2 }, { r: 2, c: 3 }, { r: 3, c: 4 },
+        { r: 4, c: 5 }, { r: 5, c: 6 }, { r: 6, c: 7 }, { r: 7, c: 0 }
+      ],
+
+      // Card 5: k Rooks & k Knights on 8x8
       rkMode: 5,           // 5: k=5 full solution, 50: k=5 rooks only, 6: k=6 bound, 0: custom
       rkK: 5,              // 1..7 slider value
       rkTool: "N",         // "N" (Knight) or "R" (Rook) when clicking board
@@ -1351,8 +1529,6 @@
         { r: 7, c: 0, type: "N" }, // a1
         { r: 7, c: 7, type: "N" }  // h1
       ],
-      gasStartIdx: 4,      // 0..5 (4 = station #5, the global minimum!)
-      gasDeltas: [2, -3, 1, -2, 4, -2],
 
       // --- TOPIC 6: PLANIMETRY ---
       geomRot: 0,          // 0 .. 1 (0 to 180 deg)
@@ -1641,6 +1817,81 @@
       animateValue("algPencilA", val, 420, syncAlgPencilUI);
     };
 
+    // Card 3 (Algebra): Inequality System in (x; a) Plane
+    function getAlgRegionInterval(a) {
+      if (a < -1 / 3 - 1e-4 || a > 2 + 1e-4) return null;
+      const aClamped = Math.max(-1 / 3, Math.min(2, a));
+      let xL = 0, xR = 0, regime = 1, symStr = "";
+      if (aClamped <= 0) {
+        const d = Math.sqrt(Math.max(0, 1 + 3 * aClamped));
+        xL = 1 - d;
+        xR = 1 + d;
+        regime = 1;
+        symStr = "[1 − √(1 + 3a); 1 + √(1 + 3a)]";
+      } else if (aClamped <= 1) {
+        xL = (aClamped * aClamped) / 4;
+        xR = 1 + Math.sqrt(Math.max(0, 1 + 3 * aClamped));
+        regime = 2;
+        symStr = "[a²/4; 1 + √(1 + 3a)]";
+      } else {
+        xL = (aClamped * aClamped) / 4;
+        xR = 5 - 2 * aClamped;
+        regime = 3;
+        symStr = "[a²/4; 5 − 2a]";
+      }
+      return { xL, xR, regime, symStr, aClamped };
+    }
+
+    function syncAlgRegionUI() {
+      const a = state.algRegionA;
+      document.getElementById("rngAlgRegionA").value = Math.round(a * 100);
+      document.getElementById("valAlgRegionA").textContent =
+        Math.abs(a + 1 / 3) < 0.01 ? "a = −1/3 (≈ −0.33)" : `a = ${a.toFixed(2)}`;
+
+      const info = getAlgRegionInterval(a);
+      const box = document.getElementById("regFormulaText");
+      if (!info) {
+        box.textContent = `При a = ${a.toFixed(2)} ∉ [−1/3; 2]: горизонталь не пересекает область (решений нет, x ∈ ∅) ✗`;
+      } else if (Math.abs(a + 1 / 3) < 0.012) {
+        box.textContent = `При a = −1/3 (вершина параболы A): единственное решение x = 1 ✓`;
+      } else if (Math.abs(a - 2) < 0.012) {
+        box.textContent = `При a = 2 (вершина пересечения B): единственное решение x = 1 ✓`;
+      } else {
+        const regLabel = info.regime === 1 ? "[−1/3; 0]" : (info.regime === 2 ? "[0; 1]" : "[1; 2]");
+        box.textContent =
+          `При a = ${a.toFixed(2)} ∈ ${regLabel}: x ∈ ${info.symStr} = [${info.xL.toFixed(2)}; ${info.xR.toFixed(2)}] ✓`;
+      }
+
+      const items = document.querySelectorAll("#listRegSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", a >= -0.35 && a <= 0.001);
+        items[1].classList.toggle("active", a > 0.001 && a <= 1.001);
+        items[2].classList.toggle("active", a > 1.001 && a <= 2.05);
+      }
+
+      const btns = document.querySelectorAll("#regPills .shk-pill");
+      const targets = [-0.3333, -0.15, 0, 0.5, 1.0, 1.5, 2.0];
+      btns.forEach((b, idx) => {
+        if (idx < targets.length) {
+          b.classList.toggle("active", Math.abs(a - targets[idx]) < 0.025);
+        }
+      });
+    }
+
+    document.getElementById("rngAlgRegionA").addEventListener("input", function() {
+      let v = parseFloat(this.value) / 100;
+      if (Math.abs(v + 0.33) < 0.025) v = -1 / 3;
+      if (Math.abs(v) < 0.02) v = 0;
+      if (Math.abs(v - 1) < 0.02) v = 1;
+      if (Math.abs(v - 2) < 0.02) v = 2;
+      state.algRegionA = v;
+      syncAlgRegionUI();
+    });
+
+    window.setAlgRegionA = function(val) {
+      animateValue("algRegionA", val, 420, syncAlgRegionUI);
+    };
+
     // --- TOPIC 4: LOGIC & GAMES CONTROLS ---
     function syncRingFormulaBox() {
       const posCnt = state.ringVals.filter(v => v > 0).length;
@@ -1786,6 +2037,288 @@
       }
     };
 
+    // --- Card 2 (Combinatorics): 1x6 Strips on 8x8 Board (Area Bound <= 10 + 8+2=10 Example) ---
+    function syncStripsUI() {
+      const cnt = state.strips.length;
+      const usedCells = cnt * 6;
+      const freeCells = 64 - usedCells;
+      const box = document.getElementById("stripFormulaText");
+      if (state.stripMode === "bound11") {
+        box.textContent =
+          "Оценка по площади: 11 полосок по 6 клеток требуют 11 · 6 = 66 клеток > 64 клеток доски 8×8 (невозможно!) ✗";
+      } else if (cnt === 10) {
+        box.textContent =
+          "Пример на 10 полосок: 8 горизонтальных (блок 8×6) + 2 вертикальные (блок 6×2) = 60 кл., остаток 4 кл. (квадрат 2×2) ✓";
+      } else {
+        box.textContent =
+          `Вырезано полосок 1×6: ${cnt} шт. (${usedCells} из 64 клеток, свободно ${freeCells} кл.)`;
+      }
+
+      const btns = document.querySelectorAll("#stripsPills .shk-pill");
+      if (btns.length === 4) {
+        btns[0].classList.toggle("active", state.stripMode === "bound11");
+        btns[1].classList.toggle("active", state.stripMode === "naive8");
+        btns[2].classList.toggle("active", state.stripMode === "opt10");
+        btns[3].textContent = state.stripOrient === "H" ? "Свой ход: Гориз. 1×6" : "Свой ход: Верт. 6×1";
+        btns[3].classList.toggle("active", state.stripMode === "custom");
+      }
+
+      const items = document.querySelectorAll("#listStripSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", state.stripMode === "bound11");
+        items[1].classList.toggle("active", state.stripMode === "naive8");
+        items[2].classList.toggle("active", state.stripMode === "opt10");
+      }
+    }
+
+    window.setStripPreset = function(mode) {
+      state.stripMode = mode;
+      const horiz8 = [
+        { r: 0, c: 0, dir: "H" }, { r: 1, c: 0, dir: "H" }, { r: 2, c: 0, dir: "H" }, { r: 3, c: 0, dir: "H" },
+        { r: 4, c: 0, dir: "H" }, { r: 5, c: 0, dir: "H" }, { r: 6, c: 0, dir: "H" }, { r: 7, c: 0, dir: "H" }
+      ];
+      if (mode === "naive8") {
+        state.strips = horiz8;
+      } else {
+        state.strips = horiz8.concat([{ r: 0, c: 6, dir: "V" }, { r: 0, c: 7, dir: "V" }]);
+      }
+      syncStripsUI();
+    };
+
+    window.toggleStripOrient = function() {
+      state.stripMode = "custom";
+      state.stripOrient = state.stripOrient === "H" ? "V" : "H";
+      syncStripsUI();
+    };
+
+    function getStripCells(st) {
+      const cells = [];
+      for (let k = 0; k < 6; k++) {
+        cells.push({
+          r: st.dir === "H" ? st.r : st.r + k,
+          c: st.dir === "H" ? st.c + k : st.c
+        });
+      }
+      return cells;
+    }
+
+    window.toggleStripAt = function(r, c) {
+      // Check if cell (r, c) is already covered by an existing strip -> remove it
+      const existingIdx = state.strips.findIndex(st =>
+        getStripCells(st).some(cell => cell.r === r && cell.c === c)
+      );
+      state.stripMode = "custom";
+      if (existingIdx >= 0) {
+        state.strips.splice(existingIdx, 1);
+        syncStripsUI();
+        return;
+      }
+      // Otherwise try to place a 1x6 strip of orientation state.stripOrient starting at (r, c) (or clamped to board)
+      const dir = state.stripOrient;
+      const r0 = dir === "V" ? Math.min(2, r) : r;
+      const c0 = dir === "H" ? Math.min(2, c) : c;
+      const cand = { r: r0, c: c0, dir };
+      const candCells = getStripCells(cand);
+      const occupied = new Set();
+      state.strips.forEach(st => {
+        getStripCells(st).forEach(cl => occupied.add(`${cl.r},${cl.c}`));
+      });
+      if (candCells.every(cl => !occupied.has(`${cl.r},${cl.c}`))) {
+        state.strips.push(cand);
+      }
+      syncStripsUI();
+    };
+
+    // --- Card 3 (Combinatorics): 16-Coloring of 8x8 Board (Each cell has >= 2 neighbors of same color) ---
+    function buildBase16ColorGrid() {
+      return Array.from({ length: 8 }, (_, r) =>
+        Array.from({ length: 8 }, (__, c) => Math.floor(r / 2) * 4 + Math.floor(c / 2))
+      );
+    }
+
+    function countSameColorNeighbors(grid, r, c) {
+      const colId = grid[r][c];
+      let cnt = 0;
+      const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+      for (const [dr, dc] of dirs) {
+        const nr = r + dr, nc = c + dc;
+        if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8 && grid[nr][nc] === colId) {
+          cnt++;
+        }
+      }
+      return cnt;
+    }
+
+    function syncColoringUI() {
+      const usedColors = new Set();
+      let badCells = 0;
+      for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+          usedColors.add(state.colorGrid[r][c]);
+          if (countSameColorNeighbors(state.colorGrid, r, c) < 2) badCells++;
+        }
+      }
+      const box = document.getElementById("colorFormulaText");
+      if (badCells === 0) {
+        box.textContent =
+          `Цветов на доске: ${usedColors.size} (квадраты 2×2) — у всех 64 клеток ровно по 2 соседа своего цвета! ✓`;
+      } else {
+        box.textContent =
+          `Цветов: ${usedColors.size} ⇒ Нарушение! Найдено ${badCells} кл., у которых меньше 2 соседей своего цвета (треугольник из 3 кл. невозможен!) ✗`;
+      }
+
+      const btns = document.querySelectorAll("#colorPills .shk-pill");
+      if (btns.length === 3) {
+        btns[0].classList.toggle("active", state.colorMode === "opt16");
+        btns[1].classList.toggle("active", state.colorMode === "fail3L");
+        btns[2].classList.toggle("active", state.colorMode === "fail3I");
+      }
+
+      const items = document.querySelectorAll("#listColorSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", state.colorMode === "opt16");
+        items[1].classList.toggle("active", state.colorMode === "fail3L");
+        items[2].classList.toggle("active", state.colorMode === "fail3I");
+      }
+    }
+
+    window.setColorPreset = function(mode) {
+      state.colorMode = mode;
+      const g = buildBase16ColorGrid();
+      if (mode === "fail3L") {
+        // Turn 3 cells in top-left 2x2 into 17th color (id=16, L-tromino), and give (1,1) to neighbor color 1
+        g[0][0] = 16; g[0][1] = 16; g[1][0] = 16;
+        g[1][1] = 1;
+      } else if (mode === "fail3I") {
+        // Turn 3 cells in a row (0,0), (0,1), (0,2) into 17th color (id=16, 1x3 bar)
+        g[0][0] = 16; g[0][1] = 16; g[0][2] = 16;
+      }
+      state.colorGrid = g;
+      syncColoringUI();
+    };
+
+    window.toggleColorCellAt = function(r, c) {
+      state.colorMode = "custom";
+      const baseColor = Math.floor(r / 2) * 4 + Math.floor(c / 2);
+      state.colorGrid[r][c] = state.colorGrid[r][c] === 16 ? baseColor : 16;
+      syncColoringUI();
+    };
+
+    // --- Card 4 (Combinatorics): Petya & Vasya 8 White + 8 Black Rooks (Dirichlet ceil(64/9) = 8) ---
+    function analyzePVRooksBoard() {
+      const wSet = new Set(state.pvWhiteRooks.map(p => `${p.r},${p.c}`));
+      const bSet = new Set(state.pvBlackRooks.map(p => `${p.r},${p.c}`));
+      const rowCounts = new Array(8).fill(0);
+      const colCounts = new Array(8).fill(0);
+      state.pvWhiteRooks.forEach(p => {
+        rowCounts[p.r]++;
+        colCounts[p.c]++;
+      });
+
+      const scores = Array.from({ length: 8 }, () => new Array(8).fill(0));
+      const buckets = Array.from({ length: 9 }, () => []);
+      for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+          // A black rook at (r,c) gets 1 point for EACH white rook in the same row or same column
+          // Note: if a white rook stands on (r,c) itself, it is in the same row/col, contributing 1 point!
+          const sc = rowCounts[r] + colCounts[c] - (wSet.has(`${r},${c}`) ? 1 : 0);
+          const clampedSc = Math.max(0, Math.min(8, sc));
+          scores[r][c] = clampedSc;
+          buckets[clampedSc].push({ r, c });
+        }
+      }
+
+      // Find best bucket with >= 8 cells (or max bucket if white rooks != 8)
+      let bestScore = 0;
+      for (let s = 0; s <= 8; s++) {
+        if (buckets[s].length > buckets[bestScore].length) bestScore = s;
+      }
+
+      const blackScores = state.pvBlackRooks.map(p => scores[p.r][p.c]);
+      const allBlackEqual = blackScores.length > 0 && blackScores.every(v => v === blackScores[0]);
+      return { wSet, bSet, scores, buckets, bestScore, blackScores, allBlackEqual };
+    }
+
+    function syncPVRooksUI() {
+      const info = analyzePVRooksBoard();
+      const wCnt = state.pvWhiteRooks.length;
+      const bCnt = state.pvBlackRooks.length;
+      const box = document.getElementById("pvRookFormulaText");
+      if (bCnt === 8 && info.allBlackEqual) {
+        box.textContent =
+          `Белых ладей Пети: ${wCnt} | Чёрных ладей Васи: 8 — у всех по ${info.blackScores[0]} балл(а)! Победа Васи по Дирихле (⌈64/9⌉ = 8) ✓`;
+      } else if (bCnt > 0 && !info.allBlackEqual) {
+        box.textContent =
+          `Разные баллы у чёрных ладей (${Array.from(new Set(info.blackScores)).join(", ")})! Нажмите «Авто-ответ Васи», чтобы выбрать корзину с ≥ 8 клетками.`;
+      } else {
+        box.textContent =
+          `Белых ладей: ${wCnt} | Чёрных: ${bCnt} | Корзина «${info.bestScore} балл.» содержит ${info.buckets[info.bestScore].length} клеток (≥ 8 по Дирихле!) ✓`;
+      }
+
+      const btns = document.querySelectorAll("#pvRookPills .shk-pill");
+      if (btns.length >= 2) {
+        btns[0].classList.toggle("active", state.pvTool === "W");
+        btns[1].classList.toggle("active", state.pvTool === "B");
+      }
+    }
+
+    window.setPVRookTool = function(tool) {
+      state.pvTool = tool;
+      syncPVRooksUI();
+    };
+
+    window.autoPlaceVasyaBlackRooks = function() {
+      const info = analyzePVRooksBoard();
+      const targetBucket = info.buckets[info.bestScore];
+      state.pvBlackRooks = targetBucket.slice(0, 8).map(cell => ({ r: cell.r, c: cell.c }));
+      state.pvHighlightScore = info.bestScore;
+      syncPVRooksUI();
+    };
+
+    window.presetPetyaRooks = function(kind) {
+      if (kind === "diag") {
+        state.pvWhiteRooks = Array.from({ length: 8 }, (_, i) => ({ r: i, c: i }));
+      } else if (kind === "row") {
+        state.pvWhiteRooks = Array.from({ length: 8 }, (_, i) => ({ r: 0, c: i }));
+      } else {
+        const all = [];
+        for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) all.push({ r, c });
+        for (let i = all.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const tmp = all[i]; all[i] = all[j]; all[j] = tmp;
+        }
+        state.pvWhiteRooks = all.slice(0, 8);
+      }
+      autoPlaceVasyaBlackRooks();
+    };
+
+    window.togglePVRookAt = function(r, c) {
+      state.pvHighlightScore = -1;
+      if (state.pvTool === "W") {
+        const idx = state.pvWhiteRooks.findIndex(p => p.r === r && p.c === c);
+        if (idx >= 0) {
+          state.pvWhiteRooks.splice(idx, 1);
+        } else if (state.pvWhiteRooks.length < 8) {
+          state.pvWhiteRooks.push({ r, c });
+        } else {
+          // Replace oldest white rook so Petya always has at most 8 white rooks
+          state.pvWhiteRooks.shift();
+          state.pvWhiteRooks.push({ r, c });
+        }
+      } else {
+        const idx = state.pvBlackRooks.findIndex(p => p.r === r && p.c === c);
+        if (idx >= 0) {
+          state.pvBlackRooks.splice(idx, 1);
+        } else if (state.pvBlackRooks.length < 8) {
+          state.pvBlackRooks.push({ r, c });
+        } else {
+          state.pvBlackRooks.shift();
+          state.pvBlackRooks.push({ r, c });
+        }
+      }
+      syncPVRooksUI();
+    };
+
     function getGridCellName(r, c) {
       return "abcdefgh"[c] + String(8 - r);
     }
@@ -1927,27 +2460,6 @@
       syncRookKnightUI();
     };
 
-    window.setGasStart = function(idx) {
-      state.gasStartIdx = idx;
-      const btns = document.querySelectorAll("#gasPills .shk-pill");
-      btns.forEach((b, i) => b.classList.toggle("active", i === idx));
-      // Compute minimum fuel along the route starting at idx
-      let cur = 0, minVal = 0, minStation = idx + 1;
-      for (let step = 0; step < 6; step++) {
-        cur += state.gasDeltas[(idx + step) % 6];
-        if (cur < minVal) {
-          minVal = cur;
-          minStation = ((idx + step + 1) % 6) + 1;
-        }
-      }
-      const box = document.getElementById("gasStatusText");
-      if (minVal >= 0) {
-        box.textContent = `Старт с колонки №${idx + 1} (точки минимума): остаток в баке ≥ 0 на всём круге! ✓`;
-      } else {
-        box.textContent = `Старт с колонки №${idx + 1}: не хватит топлива (провал до ${minVal} перед колонкой №${minStation})`;
-      }
-    };
-
     // --- TOPIC 6: PLANIMETRY CONTROLS ---
     function syncGeomRotUI() {
       const deg = Math.round(state.geomRot * 180);
@@ -2013,9 +2525,9 @@
     const CANVAS_IDS = [
       "cvStereoUnfold", "cvStereoTrace", "cvStereoSphere", "cvStereoTetra",
       "cvGraphKnights", "cvGraphTrees", "cvGraphK33",
-      "cvAlgMod", "cvAlgPencil",
+      "cvAlgMod", "cvAlgPencil", "cvAlgRegion",
       "cvLogicRing", "cvLogicApples", "cvLogicGame",
-      "cvComboUrns", "cvComboGrid", "cvComboGas",
+      "cvComboUrns", "cvComboStrips", "cvComboColoring", "cvComboRooksPV", "cvComboGrid",
       "cvGeomMedian", "cvGeomCircle"
     ];
 
@@ -3089,6 +3601,213 @@
       ctx.fillText("P(5; 1)", toX(5) - 18, toY(1) - 12);
     }
 
+    // --- 5.8b: ALGEBRA CARD 3 (Inequality System in (x; a) Plane) ---
+    function drawAlgRegion() {
+      const c = canvases.cvAlgRegion;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      // Coordinate system (x; a): x in [-0.7, 3.6], a in [-0.6, 2.3]
+      const ox = w * 0.21;
+      const oy = h * 0.74;
+      const scX = (w * 0.72) / 3.6;
+      const scY = (h * 0.58) / 2.25;
+      const toX = x => ox + x * scX;
+      const toY = a => oy - a * scY;
+
+      const f = x => (x * x - 2 * x) / 3;
+      const g = x => 2 * Math.sqrt(Math.max(0, x));
+      const hLine = x => (5 - x) / 2;
+
+      // 1. Subtle coordinate grid
+      ctx.strokeStyle = col.grid;
+      ctx.lineWidth = 1;
+      for (let gx = 0; gx <= 3.5; gx += 0.5) {
+        ctx.beginPath();
+        ctx.moveTo(toX(gx), 36);
+        ctx.lineTo(toX(gx), h - 18);
+        ctx.stroke();
+      }
+      [-1 / 3, 0, 0.5, 1, 1.5, 2].forEach(ga => {
+        ctx.beginPath();
+        ctx.moveTo(16, toY(ga));
+        ctx.lineTo(w - 16, toY(ga));
+        ctx.stroke();
+      });
+
+      // 2. Shaded feasible region: a >= f(x), a <= g(x), a <= h(x)
+      ctx.beginPath();
+      const N_STEP = 60;
+      // Bottom boundary: parabola f(x) from x = 0 to x = 3
+      for (let i = 0; i <= N_STEP; i++) {
+        const x = (3 * i) / N_STEP;
+        const px = toX(x), py = toY(f(x));
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      // Top-right boundary: line h(x) from x = 3 back to x = 1
+      ctx.lineTo(toX(1), toY(2));
+      // Top-left boundary: root g(x) from x = 1 back to x = 0
+      for (let i = N_STEP; i >= 0; i--) {
+        const x = i / N_STEP;
+        ctx.lineTo(toX(x), toY(g(x)));
+      }
+      ctx.closePath();
+      ctx.fillStyle = "rgba(16, 185, 129, 0.16)";
+      ctx.fill();
+
+      // 3. Axes Ox and Oa
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(16, oy); ctx.lineTo(w - 16, oy);
+      ctx.moveTo(ox, h - 16); ctx.lineTo(ox, 34);
+      ctx.stroke();
+
+      ctx.font = "700 11px Inter, sans-serif";
+      ctx.fillStyle = col.muted;
+      ctx.textAlign = "center";
+      [1, 2, 3].forEach(xv => {
+        ctx.fillText(String(xv), toX(xv), oy + 14);
+      });
+      ctx.fillText("x", w - 22, oy - 6);
+      ctx.textAlign = "right";
+      ctx.fillText("−1/3", ox - 5, toY(-1 / 3) + 4);
+      ctx.fillText("1", ox - 6, toY(1) + 4);
+      ctx.fillText("2", ox - 6, toY(2) + 4);
+      ctx.fillText("a", ox - 6, 42);
+
+      // 4. Plot the 3 curves: f(x) parabola, g(x) sqrt, h(x) line
+      // 4a. Parabola f(x) = (x^2 - 2x)/3 in Purple
+      ctx.beginPath();
+      for (let x = -0.55; x <= 3.55; x += 0.05) {
+        const px = toX(x), py = toY(f(x));
+        if (x === -0.55) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = "#9333EA";
+      ctx.lineWidth = 2.3;
+      ctx.stroke();
+
+      // 4b. Sqrt curve g(x) = 2*sqrt(x) in Magenta
+      ctx.beginPath();
+      for (let i = 0; i <= 60; i++) {
+        const x = (1.35 * i) / 60;
+        const px = toX(x), py = toY(g(x));
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = "#DB2777";
+      ctx.lineWidth = 2.3;
+      ctx.stroke();
+
+      // 4c. Line h(x) = (5 - x)/2 in Teal/Blue
+      ctx.beginPath();
+      ctx.moveTo(toX(0.4), toY(hLine(0.4)));
+      ctx.lineTo(toX(3.55), toY(hLine(3.55)));
+      ctx.strokeStyle = "#0284C7";
+      ctx.lineWidth = 2.3;
+      ctx.stroke();
+
+      // Curve labels inside safe positions
+      ctx.font = "700 11px Inter, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#9333EA";
+      ctx.fillText("f(x)=(x²−2x)/3", toX(2.15), toY(-0.28));
+      ctx.fillStyle = "#DB2777";
+      ctx.fillText("g(x)=2√x", toX(0.14), toY(1.25));
+      ctx.fillStyle = "#0284C7";
+      ctx.fillText("h(x)=(5−x)/2", toX(1.85), toY(1.72));
+
+      // Key corner points A(1, -1/3), O(0, 0), C(3, 1), B(1, 2)
+      drawDot(ctx, toX(1), toY(-1 / 3), 5.5, "#9333EA");
+      ctx.fillStyle = "#9333EA";
+      ctx.fillText("A(1; −1/3)", toX(1) + 7, toY(-1 / 3) + 12);
+
+      drawDot(ctx, toX(1), toY(2), 5.5, "#0284C7");
+      ctx.fillStyle = "#0284C7";
+      ctx.fillText("B(1; 2)", toX(1) + 7, toY(2) - 6);
+
+      drawDot(ctx, toX(3), toY(1), 5.5, col.ink);
+      ctx.fillStyle = col.ink;
+      ctx.fillText("(3; 1)", toX(3) + 6, toY(1) + 4);
+
+      // 5. Horizontal scan line a = const and highlighted solution interval [xL, xR]
+      const a = state.algRegionA;
+      const pyA = toY(a);
+      const info = getAlgRegionInterval(a);
+
+      ctx.save();
+      ctx.setLineDash([5, 4]);
+      ctx.strokeStyle = info ? col.green : col.red;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(16, pyA);
+      ctx.lineTo(w - 16, pyA);
+      ctx.stroke();
+      ctx.restore();
+
+      if (info) {
+        const pxL = toX(info.xL);
+        const pxR = toX(info.xR);
+
+        // Dashed vertical projections down/up to Ox axis
+        ctx.save();
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = "rgba(16, 185, 129, 0.65)";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(pxL, pyA); ctx.lineTo(pxL, oy);
+        ctx.moveTo(pxR, pyA); ctx.lineTo(pxR, oy);
+        ctx.stroke();
+        ctx.restore();
+
+        // Thick green segment [xL, xR] on the horizontal line a
+        ctx.beginPath();
+        ctx.moveTo(pxL, pyA);
+        ctx.lineTo(pxR, pyA);
+        ctx.strokeStyle = col.green;
+        ctx.lineWidth = 5.0;
+        ctx.stroke();
+
+        // Thick green projection bar on Ox axis
+        ctx.beginPath();
+        ctx.moveTo(pxL, oy);
+        ctx.lineTo(pxR, oy);
+        ctx.strokeStyle = col.green;
+        ctx.lineWidth = 4.0;
+        ctx.stroke();
+
+        drawDot(ctx, pxL, pyA, 6.2, col.green);
+        drawDot(ctx, pxR, pyA, 6.2, col.green);
+
+        drawPillBadge(
+          ctx,
+          `a = ${a.toFixed(2)}: x ∈ ${info.symStr} = [${info.xL.toFixed(2)}; ${info.xR.toFixed(2)}] ✓`,
+          w * 0.5,
+          19,
+          col.green,
+          "rgba(236,253,245,0.96)",
+          "rgba(16,185,129,0.35)",
+          "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          `При a = ${a.toFixed(2)} ∉ [−1/3; 2]: решений нет (x ∈ ∅) ✗`,
+          w * 0.5,
+          19,
+          col.red,
+          "rgba(255,241,242,0.96)",
+          "rgba(239,68,68,0.35)",
+          "center"
+        );
+      }
+      ctx.textAlign = "left";
+    }
+
     // --- 5.9: LOGIC CARD 1 (13 Numbers on a Circle — Clear Evaluation + Example & Smooth Hover) ---
     function drawLogicRing() {
       const c = canvases.cvLogicRing;
@@ -3991,120 +4710,420 @@
       ctx.textBaseline = "alphabetic";
     }
 
-    // --- 5.11b: COMBINATORICS CARD 2 (Gas Stations on a Circular Track) ---
-    function drawComboGas() {
-      const c = canvases.cvComboGas;
+      // --- 5.11b: COMBINATORICS CARD 2 (1x6 Strips on 8x8 Board: Area Bound <= 10 + 10 Example) ---
+    function drawComboStrips() {
+      const c = canvases.cvComboStrips;
       if (!c) return;
       const { ctx, w, h } = c;
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      // Cumulative fuel levels from station #1: baseS = [0, 2, -1, 0, -2, 2, 0] (always in [-2, +2])
-      const baseS = [0];
-      for (let i = 0; i < 6; i++) baseS.push(baseS[i] + state.gasDeltas[i]);
-      const shiftVal = baseS[state.gasStartIdx]; // new zero reference level!
+      const cell = Math.min(Math.floor((w - 76) / 8), Math.floor((h - 78) / 8));
+      const boardW = cell * 8;
+      const ox = Math.round((w - boardW) / 2);
+      const oy = 42;
 
-      // Fixed vertical plot bounds so the curve NEVER touches the top badge or bottom station labels!
-      const padL = 52, padR = 32;
-      const plotTop = 64, plotBottom = h - 72;
-      const axisY = h - 34;
-      const centerY = (plotTop + plotBottom) / 2;
-      const unitY = (plotBottom - plotTop) / 4; // maps [-2, +2] strictly into [plotTop, plotBottom]
-      const stepX = (w - padL - padR) / 6;
+      const cnt = state.strips.length;
+      const usedCells = cnt * 6;
+      const freeCells = 64 - usedCells;
 
-      const toX = idx => padL + idx * stepX;
-      const toY = sVal => centerY - sVal * unitY;
-      const cyZero = toY(shiftVal);
-
-      // Shaded danger zone below new zero line (clipped above axisY)
-      if (cyZero < axisY) {
-        ctx.fillStyle = "rgba(239, 68, 68, 0.07)";
-        ctx.fillRect(padL, cyZero, w - padL - padR, axisY - cyZero);
-      }
-
-      // Bottom horizontal station axis separator
-      ctx.strokeStyle = col.grid;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(padL - 12, axisY);
-      ctx.lineTo(w - padR + 12, axisY);
-      ctx.stroke();
-
-      // New zero horizontal line (dashed blue/green)
-      const isOptimal = (state.gasStartIdx === 4);
-      const zeroCol = isOptimal ? col.green : col.blue;
-      ctx.setLineDash([6, 4]);
-      ctx.strokeStyle = zeroCol;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(padL - 10, cyZero);
-      ctx.lineTo(w - padR + 10, cyZero);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Left-margin "0" tick on the dashed line + top header pill badge (never overlaps points!)
-      drawPillBadge(
-        ctx,
-        "0",
-        padL - 14,
-        cyZero,
-        zeroCol,
-        isOptimal ? "rgba(236,253,245,0.96)" : "rgba(239,246,255,0.96)",
-        isOptimal ? "rgba(16,185,129,0.4)" : "rgba(0,136,255,0.4)",
-        "right"
-      );
-      drawPillBadge(
-        ctx,
-        `Уровень 0 · Старт с колонки №${state.gasStartIdx + 1}`,
-        padL,
-        22,
-        zeroCol,
-        isOptimal ? "rgba(236,253,245,0.96)" : "rgba(239,246,255,0.96)",
-        isOptimal ? "rgba(16,185,129,0.35)" : "rgba(0,136,255,0.35)",
-        "left"
-      );
-
-      // Fuel polyline
-      ctx.beginPath();
-      for (let i = 0; i <= 6; i++) {
-        const px = toX(i), py = toY(baseS[i]);
-        if (i === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.strokeStyle = isOptimal ? col.blue : col.ink;
-      ctx.lineWidth = 2.8;
-      ctx.stroke();
-
-      // Points at stations 1..6 (and 1 again at end)
-      for (let i = 0; i <= 6; i++) {
-        const px = toX(i), py = toY(baseS[i]);
-        const relFuel = baseS[i] - shiftVal;
-        const stIdx = i % 6;
-        const isStart = (stIdx === state.gasStartIdx);
-        const dotColor = relFuel < 0 ? col.red : (isStart ? col.green : col.blue);
-        drawDot(ctx, px, py, isStart ? 7.5 : 5.5, dotColor);
-
-        // Place value badge ABOVE local peaks (i=0,1,3,5,6) and BELOW local valleys (i=2,4)
-        const isValley = (i === 2 || i === 4);
-        const labelY = isValley ? py + 19 : py - 17;
-        const labelStr = relFuel > 0 ? `+${relFuel}` : String(relFuel);
+      // 1. Top status pill badge
+      if (state.stripMode === "bound11") {
         drawPillBadge(
           ctx,
-          labelStr,
-          px,
-          labelY,
-          relFuel < 0 ? col.red : (isStart ? col.green : col.ink),
-          "rgba(255,255,255,0.94)",
-          relFuel < 0 ? "rgba(239,68,68,0.3)" : "rgba(148,163,184,0.3)",
-          "center"
+          "Оценка: 11 × 6 = 66 клеток > 64 клеток доски 8×8! ✗",
+          w * 0.5, 19, col.red, "rgba(255,241,242,0.96)", "rgba(239,68,68,0.35)", "center"
         );
-
-        // Station number in dedicated bottom band below axisY
-        ctx.font = "700 12px Inter, sans-serif";
-        ctx.fillStyle = isStart ? col.green : (relFuel < 0 ? col.red : col.ink);
-        ctx.textAlign = "center";
-        ctx.fillText(`№${stIdx + 1}`, px, h - 12);
+      } else if (cnt === 10) {
+        drawPillBadge(
+          ctx,
+          "Пример: 8 гориз. + 2 верт. = 10 полосок (ост. 4 кл.) ✓",
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          `Полосок 1×6: ${cnt} шт. (${usedCells} кл. занято, ${freeCells} кл. свободно)`,
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
       }
+
+      // 2. Base 8x8 grid (uncovered cells shown in warm amber/red if < 6 cells left)
+      for (let r = 0; r < 8; r++) {
+        for (let cc = 0; cc < 8; cc++) {
+          const x = ox + cc * cell;
+          const y = oy + r * cell;
+          ctx.fillStyle = state.stripMode === "bound11"
+            ? "rgba(254, 226, 226, 0.72)"
+            : "rgba(254, 243, 199, 0.72)";
+          ctx.fillRect(x, y, cell, cell);
+          ctx.strokeStyle = "rgba(148, 163, 184, 0.45)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(x, y, cell, cell);
+
+          // Small dot in uncovered cells
+          ctx.beginPath();
+          ctx.arc(x + cell / 2, y + cell / 2, 2.2, 0, Math.PI * 2);
+          ctx.fillStyle = state.stripMode === "bound11" ? col.red : col.amber;
+          ctx.fill();
+        }
+      }
+
+      // 3. Draw placed 1x6 strips
+      state.strips.forEach((st, idx) => {
+        const x = ox + st.c * cell + 2;
+        const y = oy + st.r * cell + 2;
+        const sw = (st.dir === "H" ? 6 : 1) * cell - 4;
+        const sh = (st.dir === "V" ? 6 : 1) * cell - 4;
+        const isHoriz = st.dir === "H";
+
+        ctx.beginPath();
+        ctx.roundRect(x, y, sw, sh, 6);
+        ctx.fillStyle = isHoriz
+          ? (idx % 2 === 0 ? "rgba(2, 132, 199, 0.86)" : "rgba(14, 165, 233, 0.82)")
+          : (idx % 2 === 0 ? "rgba(5, 150, 105, 0.88)" : "rgba(16, 185, 129, 0.84)");
+        ctx.fill();
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+
+        // Internal cell tick marks inside strip
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.32)";
+        ctx.lineWidth = 1;
+        for (let k = 1; k < 6; k++) {
+          ctx.beginPath();
+          if (isHoriz) {
+            ctx.moveTo(ox + (st.c + k) * cell, y + 2);
+            ctx.lineTo(ox + (st.c + k) * cell, y + sh - 2);
+          } else {
+            ctx.moveTo(x + 2, oy + (st.r + k) * cell);
+            ctx.lineTo(x + sw - 2, oy + (st.r + k) * cell);
+          }
+          ctx.stroke();
+        }
+
+        // Strip label #1..#10
+        ctx.font = "700 11.5px Inter, sans-serif";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(`№${idx + 1}`, x + sw / 2, y + sh / 2 + 0.5);
+      });
+
+      // Outer 8x8 board frame
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 2.0;
+      ctx.strokeRect(ox, oy, boardW, boardW);
+
+      // Bottom summary caption below board
+      ctx.font = "700 11.5px Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "alphabetic";
+      if (state.stripMode === "bound11") {
+        ctx.fillStyle = col.red;
+        ctx.fillText("В углу осталось 2×2 = 4 кл. (< 6 кл. для 11-й полоски!)", w * 0.5, oy + boardW + 19);
+      } else if (cnt === 10) {
+        ctx.fillStyle = col.green;
+        ctx.fillText("Блок 8×6 (№1–8) + блок 6×2 (№9–10) = 10 полосок ✓", w * 0.5, oy + boardW + 19);
+      } else {
+        ctx.fillStyle = col.muted;
+        ctx.fillText(`Кликните по доске, чтобы добавить/убрать полоску (${state.stripOrient === "H" ? "Гориз. 1×6" : "Верт. 6×1"})`, w * 0.5, oy + boardW + 19);
+      }
+      ctx.textAlign = "left";
+    }
+
+    // --- 5.11c: COMBINATORICS CARD 3 (16-Coloring of 8x8 Board: >= 2 Same-Color Neighbors) ---
+    const PALETTE_17 = [
+      "#DBEAFE", "#FCE7F3", "#D1FAE5", "#FEF3C7",
+      "#E0E7FF", "#FFEDD5", "#CCFBF1", "#F3E8FF",
+      "#E0F2FE", "#FAE8FF", "#DCFCE7", "#FEF9C3",
+      "#DDD6FE", "#FED7AA", "#CFFAFE", "#F1F5F9",
+      "#FECDD3" // 17th color (index 16) — bright coral highlight!
+    ];
+
+    function drawComboColoring() {
+      const c = canvases.cvComboColoring;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      const cell = Math.min(Math.floor((w - 76) / 8), Math.floor((h - 78) / 8));
+      const boardW = cell * 8;
+      const ox = Math.round((w - boardW) / 2);
+      const oy = 42;
+
+      const usedColors = new Set();
+      let badCells = 0;
+      const degGrid = Array.from({ length: 8 }, () => new Array(8).fill(0));
+      for (let r = 0; r < 8; r++) {
+        for (let cc = 0; cc < 8; cc++) {
+          usedColors.add(state.colorGrid[r][cc]);
+          const d = countSameColorNeighbors(state.colorGrid, r, cc);
+          degGrid[r][cc] = d;
+          if (d < 2) badCells++;
+        }
+      }
+
+      // 1. Top status pill badge
+      if (badCells === 0) {
+        drawPillBadge(
+          ctx,
+          `Цветов: ${usedColors.size} (16 квадратов 2×2) · У каждой клетки ≥ 2 соседей ✓`,
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          `Цветов: ${usedColors.size} · Сбой в ${badCells} кл.: у крайних клеток < 2 соседей! ✗`,
+          w * 0.5, 19, col.red, "rgba(255,241,242,0.96)", "rgba(239,68,68,0.35)", "center"
+        );
+      }
+
+      const hov = state.colorHover;
+
+      // 2. Draw cells and neighbor counts
+      for (let r = 0; r < 8; r++) {
+        for (let cc = 0; cc < 8; cc++) {
+          const x = ox + cc * cell;
+          const y = oy + r * cell;
+          const cid = state.colorGrid[r][cc];
+          const deg = degGrid[r][cc];
+
+          ctx.fillStyle = PALETTE_17[cid % PALETTE_17.length];
+          ctx.fillRect(x, y, cell, cell);
+
+          // Subtle inner grid line
+          ctx.strokeStyle = "rgba(100, 116, 139, 0.22)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(x, y, cell, cell);
+
+          // Highlight if deg < 2 (violates problem condition!)
+          if (deg < 2) {
+            ctx.strokeStyle = col.red;
+            ctx.lineWidth = 2.4;
+            ctx.strokeRect(x + 1.5, y + 1.5, cell - 3, cell - 3);
+          } else if (hov && hov.r === r && hov.c === cc) {
+            ctx.strokeStyle = col.green;
+            ctx.lineWidth = 2.4;
+            ctx.strokeRect(x + 1.5, y + 1.5, cell - 3, cell - 3);
+          }
+
+          // Number of same-color neighbors inside cell
+          ctx.font = deg < 2 ? "700 11.5px Inter, sans-serif" : "600 11px Inter, sans-serif";
+          ctx.fillStyle = deg < 2 ? col.red : "#1E293B";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(deg < 2 ? `${deg}✗` : String(deg), x + cell / 2, y + cell / 2 + 0.5);
+        }
+      }
+
+      // 3. Draw thick boundary lines between different color regions
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 2.2;
+      for (let r = 0; r < 8; r++) {
+        for (let cc = 0; cc < 8; cc++) {
+          const x = ox + cc * cell;
+          const y = oy + r * cell;
+          if (cc < 7 && state.colorGrid[r][cc] !== state.colorGrid[r][cc + 1]) {
+            ctx.beginPath(); ctx.moveTo(x + cell, y); ctx.lineTo(x + cell, y + cell); ctx.stroke();
+          }
+          if (r < 7 && state.colorGrid[r][cc] !== state.colorGrid[r + 1][cc]) {
+            ctx.beginPath(); ctx.moveTo(x, y + cell); ctx.lineTo(x + cell, y + cell); ctx.stroke();
+          }
+        }
+      }
+
+      // If a cell is hovered, draw connecting green links to its same-color neighbors
+      if (hov) {
+        const cid = state.colorGrid[hov.r][hov.c];
+        const cx0 = ox + (hov.c + 0.5) * cell;
+        const cy0 = oy + (hov.r + 0.5) * cell;
+        [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(([dr, dc]) => {
+          const nr = hov.r + dr, nc = hov.c + dc;
+          if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8 && state.colorGrid[nr][nc] === cid) {
+            ctx.beginPath();
+            ctx.moveTo(cx0, cy0);
+            ctx.lineTo(ox + (nc + 0.5) * cell, oy + (nr + 0.5) * cell);
+            ctx.strokeStyle = col.green;
+            ctx.lineWidth = 3.0;
+            ctx.stroke();
+          }
+        });
+      }
+
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 2.2;
+      ctx.strokeRect(ox, oy, boardW, boardW);
+
+      ctx.font = "700 11.5px Inter, sans-serif";
+      ctx.fillStyle = badCells === 0 ? col.green : col.red;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillText(
+        badCells === 0
+          ? "Число в клетке = кол-во соседей своего цвета (везде = 2 ✓)"
+          : "У 3 клеток одного цвета крайние имеют лишь 1 соседа (< 2 ✗)",
+        w * 0.5,
+        oy + boardW + 19
+      );
+      ctx.textAlign = "left";
+    }
+
+    // --- 5.11d: COMBINATORICS CARD 4 (Petya & Vasya 8 White + 8 Black Rooks: Dirichlet ceil(64/9) = 8) ---
+    function drawComboRooksPV() {
+      const c = canvases.cvComboRooksPV;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      // Left side: 8x8 chessboard; Right side: 9 Dirichlet score buckets (scores 0..8)
+      const cell = Math.min(30, Math.floor((w - 156) / 8), Math.floor((h - 76) / 8));
+      const boardW = cell * 8;
+      const ox = 18;
+      const oy = 44;
+
+      const info = analyzePVRooksBoard();
+      const targetScore = state.pvHighlightScore >= 0 ? state.pvHighlightScore : info.bestScore;
+
+      // 1. Top status pill badge
+      if (state.pvBlackRooks.length === 8 && info.allBlackEqual) {
+        drawPillBadge(
+          ctx,
+          `Победа Васи: все 8 чёрных ладей (♜) имеют по ${info.blackScores[0]} балл(а)! ✓`,
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          `По Дирихле (⌈64/9⌉ = 8): балл «${info.bestScore}» есть сразу у ${info.buckets[info.bestScore].length} клеток! ✓`,
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
+        );
+      }
+
+      // 2. Draw 8x8 board with cell scores 0..8 and White (♖) / Black (♜) rooks
+      for (let r = 0; r < 8; r++) {
+        for (let cc = 0; cc < 8; cc++) {
+          const x = ox + cc * cell;
+          const y = oy + r * cell;
+          const sc = info.scores[r][cc];
+          const isBestBucket = (sc === targetScore);
+          const hasW = info.wSet.has(`${r},${cc}`);
+          const hasB = info.bSet.has(`${r},${cc}`);
+
+          ctx.fillStyle = isBestBucket
+            ? "rgba(209, 250, 229, 0.88)"
+            : ((r + cc) % 2 === 1 ? "rgba(241, 245, 249, 0.95)" : "#FFFFFF");
+          ctx.fillRect(x, y, cell, cell);
+
+          ctx.strokeStyle = isBestBucket ? "rgba(16, 185, 129, 0.7)" : "rgba(148, 163, 184, 0.42)";
+          ctx.lineWidth = isBestBucket ? 1.5 : 1.0;
+          ctx.strokeRect(x, y, cell, cell);
+
+          // Draw rooks or score number
+          const cx = x + cell / 2;
+          const cy = y + cell / 2;
+          if (hasW && hasB) {
+            // Both White and Black rook share this cell! Draw side-by-side badges + score in top-right
+            drawDot(ctx, cx - 5.5, cy + 2, 7.2, "#FFFFFF", col.blue, 1.8);
+            drawDot(ctx, cx + 5.5, cy + 2, 7.2, "#0F172A", col.green, 1.8);
+            ctx.font = "700 9px Inter, sans-serif";
+            ctx.fillStyle = col.blue;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("Б", cx - 5.5, cy + 2.5);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillText("Ч", cx + 5.5, cy + 2.5);
+          } else if (hasW) {
+            drawDot(ctx, cx, cy, cell * 0.36, "#FFFFFF", col.blue, 2.0);
+            ctx.font = "700 12px sans-serif";
+            ctx.fillStyle = col.blue;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("♖", cx, cy + 0.5);
+          } else if (hasB) {
+            drawDot(ctx, cx, cy, cell * 0.36, "#0F172A", col.green, 2.0);
+            ctx.font = "700 12px sans-serif";
+            ctx.fillStyle = "#FFFFFF";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("♜", cx, cy + 0.5);
+          }
+
+          // Score badge in top-left corner (or center if empty)
+          ctx.font = (hasW || hasB) ? "700 8.5px Inter, sans-serif" : "700 11px Inter, sans-serif";
+          ctx.fillStyle = isBestBucket ? "#047857" : col.muted;
+          ctx.textAlign = (hasW || hasB) ? "left" : "center";
+          ctx.textBaseline = (hasW || hasB) ? "top" : "middle";
+          ctx.fillText(
+            String(sc),
+            (hasW || hasB) ? x + 2.5 : cx,
+            (hasW || hasB) ? y + 1.5 : cy + 0.5
+          );
+        }
+      }
+
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 2.0;
+      ctx.strokeRect(ox, oy, boardW, boardW);
+
+      // 3. Right-hand Dirichlet Histogram (9 buckets: scores 0..8)
+      const hx = ox + boardW + 14;
+      const hw = Math.max(96, w - hx - 10);
+      const rowH = boardW / 9;
+
+      ctx.font = "700 10.5px Inter, sans-serif";
+      ctx.fillStyle = col.ink;
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillText("Корзины баллов:", hx, oy - 6);
+
+      for (let s = 0; s <= 8; s++) {
+        const cnt = info.buckets[s].length;
+        const ry = oy + s * rowH;
+        const isWinBucket = cnt >= 8;
+        const isSelected = (s === targetScore);
+
+        ctx.beginPath();
+        ctx.roundRect(hx, ry + 1.5, hw, rowH - 3, 5);
+        ctx.fillStyle = isSelected
+          ? "rgba(16, 185, 129, 0.20)"
+          : (isWinBucket ? "rgba(16, 185, 129, 0.10)" : "rgba(241, 245, 249, 0.85)");
+        ctx.fill();
+        ctx.strokeStyle = isSelected
+          ? col.green
+          : (isWinBucket ? "rgba(16, 185, 129, 0.55)" : "rgba(148, 163, 184, 0.35)");
+        ctx.lineWidth = isSelected ? 1.8 : 1.0;
+        ctx.stroke();
+
+        // Progress bar inside bucket
+        const barMaxW = hw - 4;
+        const barW = Math.min(barMaxW, (cnt / 24) * barMaxW);
+        if (cnt > 0) {
+          ctx.beginPath();
+          ctx.roundRect(hx + 2, ry + 3, Math.max(4, barW), rowH - 6, 4);
+          ctx.fillStyle = isWinBucket ? "rgba(16, 185, 129, 0.28)" : "rgba(0, 136, 255, 0.18)";
+          ctx.fill();
+        }
+
+        ctx.font = isWinBucket ? "700 10.5px Inter, sans-serif" : "600 10px Inter, sans-serif";
+        ctx.fillStyle = isWinBucket ? "#047857" : col.ink;
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.fillText(`${s} б.: ${cnt} кл.` + (isWinBucket ? " ✓" : ""), hx + 6, ry + rowH / 2 + 0.5);
+      }
+
+      // Bottom legend below board
+      ctx.font = "600 11px Inter, sans-serif";
+      ctx.fillStyle = col.muted;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillText(
+        `Белых (♖): ${state.pvWhiteRooks.length}/8 · Чёрных (♜): ${state.pvBlackRooks.length}/8 · Зелёные клетки ≥ 8 шт.`,
+        w * 0.5,
+        oy + boardW + 19
+      );
       ctx.textAlign = "left";
     }
 
@@ -4389,6 +5408,32 @@
       });
       window.addEventListener("pointerup", () => { dragPen = false; });
 
+      // Algebra Card 3: (x; a) Region horizontal scan-line drag
+      const cvAR = document.getElementById("cvAlgRegion");
+      let dragReg = false;
+      const updateRegFromEvent = e => {
+        const rect = cvAR.getBoundingClientRect();
+        const oy = rect.height * 0.74;
+        const scY = (rect.height * 0.58) / 2.25;
+        let aVal = (oy - (e.clientY - rect.top)) / scY;
+        if (Math.abs(aVal + 1 / 3) < 0.04) aVal = -1 / 3;
+        else if (Math.abs(aVal) < 0.04) aVal = 0;
+        else if (Math.abs(aVal - 1) < 0.04) aVal = 1;
+        else if (Math.abs(aVal - 2) < 0.04) aVal = 2;
+        state.algRegionA = Math.max(-0.55, Math.min(2.25, aVal));
+        syncAlgRegionUI();
+      };
+      cvAR.addEventListener("pointerdown", e => {
+        dragReg = true;
+        updateRegFromEvent(e);
+        cvAR.setPointerCapture(e.pointerId);
+      });
+      cvAR.addEventListener("pointermove", e => {
+        if (!dragReg) return;
+        updateRegFromEvent(e);
+      });
+      window.addEventListener("pointerup", () => { dragReg = false; });
+
       // Logic Ring click/hover (smooth tracking + clean leave reset)
       const cvLR = document.getElementById("cvLogicRing");
       cvLR.addEventListener("pointermove", e => {
@@ -4535,7 +5580,86 @@
         }
       });
 
-      // Combinatorics Card 2: 8x8 Chessboard Rooks & Knights hover + click
+      // Combinatorics Card 2: 1x6 Strips on 8x8 click
+      const cvStrips = document.getElementById("cvComboStrips");
+      cvStrips.addEventListener("pointerdown", e => {
+        const rect = cvStrips.getBoundingClientRect();
+        const cell = Math.min(Math.floor((rect.width - 76) / 8), Math.floor((rect.height - 78) / 8));
+        const boardW = cell * 8;
+        const ox = Math.round((rect.width - boardW) / 2);
+        const oy = 42;
+        const cc = Math.floor((e.clientX - rect.left - ox) / cell);
+        const rr = Math.floor((e.clientY - rect.top - oy) / cell);
+        if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) {
+          toggleStripAt(rr, cc);
+        }
+      });
+
+      // Combinatorics Card 3: 16-Coloring of 8x8 hover + click
+      const cvCol = document.getElementById("cvComboColoring");
+      cvCol.addEventListener("pointermove", e => {
+        const rect = cvCol.getBoundingClientRect();
+        const cell = Math.min(Math.floor((rect.width - 76) / 8), Math.floor((rect.height - 78) / 8));
+        const boardW = cell * 8;
+        const ox = Math.round((rect.width - boardW) / 2);
+        const oy = 42;
+        const cc = Math.floor((e.clientX - rect.left - ox) / cell);
+        const rr = Math.floor((e.clientY - rect.top - oy) / cell);
+        if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) {
+          state.colorHover = { r: rr, c: cc };
+        } else {
+          state.colorHover = null;
+        }
+      });
+      cvCol.addEventListener("pointerleave", () => {
+        state.colorHover = null;
+      });
+      cvCol.addEventListener("pointerdown", e => {
+        const rect = cvCol.getBoundingClientRect();
+        const cell = Math.min(Math.floor((rect.width - 76) / 8), Math.floor((rect.height - 78) / 8));
+        const boardW = cell * 8;
+        const ox = Math.round((rect.width - boardW) / 2);
+        const oy = 42;
+        const cc = Math.floor((e.clientX - rect.left - ox) / cell);
+        const rr = Math.floor((e.clientY - rect.top - oy) / cell);
+        if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) {
+          toggleColorCellAt(rr, cc);
+        }
+      });
+
+      // Combinatorics Card 4: Petya & Vasya 8 White + 8 Black Rooks click (board + histogram)
+      const cvPV = document.getElementById("cvComboRooksPV");
+      cvPV.addEventListener("pointerdown", e => {
+        const rect = cvPV.getBoundingClientRect();
+        const cell = Math.min(30, Math.floor((rect.width - 156) / 8), Math.floor((rect.height - 76) / 8));
+        const boardW = cell * 8;
+        const ox = 18;
+        const oy = 44;
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+        const cc = Math.floor((px - ox) / cell);
+        const rr = Math.floor((py - oy) / cell);
+        if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) {
+          togglePVRookAt(rr, cc);
+          return;
+        }
+        // Check click on right-hand Dirichlet histogram buckets (scores 0..8)
+        const hx = ox + boardW + 14;
+        const rowH = boardW / 9;
+        if (px >= hx && py >= oy && py < oy + boardW) {
+          const s = Math.floor((py - oy) / rowH);
+          if (s >= 0 && s <= 8) {
+            state.pvHighlightScore = s;
+            const info = analyzePVRooksBoard();
+            if (info.buckets[s].length >= 8) {
+              state.pvBlackRooks = info.buckets[s].slice(0, 8).map(cl => ({ r: cl.r, c: cl.c }));
+            }
+            syncPVRooksUI();
+          }
+        }
+      });
+
+      // Combinatorics Card 5: 8x8 Chessboard Rooks & Knights hover + click
       const cvGrid = document.getElementById("cvComboGrid");
       cvGrid.addEventListener("pointermove", e => {
         const rect = cvGrid.getBoundingClientRect();
@@ -4564,18 +5688,6 @@
         const rr = Math.floor((e.clientY - rect.top - oy) / cell);
         if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) {
           toggleBoardPieceAt(rr, cc);
-        }
-      });
-
-      // Combinatorics Card 3: Gas station click on chart
-      const cvGas = document.getElementById("cvComboGas");
-      cvGas.addEventListener("pointerdown", e => {
-        const rect = cvGas.getBoundingClientRect();
-        const padL = 52, padR = 32;
-        const stepX = (rect.width - padL - padR) / 6;
-        const idx = Math.round(((e.clientX - rect.left) - padL) / stepX);
-        if (idx >= 0 && idx <= 6) {
-          setGasStart(idx % 6);
         }
       });
 
@@ -4657,14 +5769,17 @@
       } else if (state.activeTopic === "algebra") {
         drawAlgMod();
         drawAlgPencil();
+        drawAlgRegion();
       } else if (state.activeTopic === "logic") {
         drawLogicRing();
         drawLogicApples();
         drawLogicGame();
       } else if (state.activeTopic === "combo") {
         drawComboUrns();
+        drawComboStrips();
+        drawComboColoring();
+        drawComboRooksPV();
         drawComboGrid();
-        drawComboGas();
       } else if (state.activeTopic === "geom") {
         drawGeomMedian();
         drawGeomCircle();
