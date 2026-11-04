@@ -520,7 +520,7 @@
     <!-- =================================================================== -->
     <section class="topic-section active" id="sec-stereo">
       <div class="page-kicker">Задачи к вебинару · Интерактивная 3D-лаборатория</div>
-      <h1 class="page-title">№1–3. Сечения многогранников, 3D-развёртки и шары</h1>
+      <h1 class="page-title">№1–4. Развёртки, сечения куба, шар и достраивание тетраэдра до параллелепипеда</h1>
 
       <!-- CARD 1: 3D разворот грани (Метод развёртки / Паук и муха) -->
       <article class="sandbox-card">
@@ -650,7 +650,46 @@
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvStereoSphere"></canvas>
             </div>
-            <div class="stage-caption">Тяните ползунок высоты сечения или вращайте 3D-сферу мышкой</div>
+            <div class="stage-caption">Тяните ползунок высоты сечения h / R или нажимайте на табличные значения</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 4: Достраивание тетраэдра до параллелепипеда -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Вписывание тетраэдра в параллелепипед: почему $V_{\text{тетр}} = \frac{1}{3} V_{\text{пар}}$?</div>
+          <div class="card-pills">
+            <button class="shk-pill" id="btnTetraExplode" onclick="toggleTetraExplode()">Отделить 4 угловые пирамиды</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Олимпиадный приём:</b> если в задаче дан тетраэдр $AB_1CD_1$ со сложными скрещивающимися рёбрами, проведём через каждое его ребро плоскость, параллельную противоположному ребру. Эти $6$ плоскостей образуют <b>описанный параллелепипед</b> $ABCDA_1B_1C_1D_1$, диагоналями граней которого служат рёбра тетраэдра!
+            </p>
+            <p>
+              Чтобы найти объём тетраэдра $AB_1CD_1$, достаточно <span class="inline-link active" onclick="toggleTetraExplode()">отрезать от параллелепипеда 4 угловые прямоугольные пирамиды</span> (с вершинами в углах $A_1, B, D, C_1$).
+            </p>
+            <p>
+              У каждой из 4 угловых пирамид площадь основания равна $\frac{1}{2} S_{\text{грани}}$, а высота равна боковому ребру, поэтому её объём равен $\frac{1}{3} \cdot \frac{1}{2} V_{\text{пар}} = \frac{1}{6} V_{\text{пар}}$. Вычитая 4 такие пирамиды, получаем:
+            </p>
+            <div class="white-formula-box">
+              <span id="tetraFormulaText">V(тетр) = V(пар) − 4 · (1/6 · V(пар)) = V(пар) · (1 − 4/6) = 1/3 · V(пар) ✓</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Отделение 4 угловых пирамид от тетраэдра</span>
+                <span class="slider-val-badge" id="valTetraExplode">0% (Внутри куба)</span>
+              </div>
+              <input type="range" class="shk-range" id="rngTetraExplode" min="0" max="100" value="0" />
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvStereoTetra"></canvas>
+            </div>
+            <div class="stage-caption">Двигайте ползунок отделения угловых пирамид и вращайте 3D-конструкцию мышкой</div>
           </div>
         </div>
       </article>
@@ -921,6 +960,7 @@
           <div class="card-pills" id="gamePills">
             <button class="shk-pill active" onclick="setGameN(17)">Полоска $1 \times 17$ (Выигрывает 2-й)</button>
             <button class="shk-pill" onclick="setGameN(18)">Полоска $1 \times 18$ (Выиграй сам!)</button>
+            <button class="shk-pill" onclick="setGameN(state.gameN)">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -1185,6 +1225,8 @@
       rot2: { yaw: 0.58, pitch: 0.40 },
       sphereH: 0.0,
       rot3: { yaw: -0.5, pitch: 0.35 },
+      tetraExplode: 0.0,
+      rot4: { yaw: 0.56, pitch: 0.38 },
 
       // --- TOPIC 2: GRAPH THEORY ---
       knightMorph: 0,      // 0 (on 3x3 board) .. 1 (unfolded circle C8)
@@ -1225,6 +1267,7 @@
       ringHover: -1,
       gameN: 17,
       gamePos: 1,
+      gamePlayerArc: null,
       gameAiArc: null,
 
       // --- TOPIC 5: COMBINATORICS (Two Urns, Andre Reflection & Circular Gas Shift) ---
@@ -1357,6 +1400,26 @@
 
     window.setSphereH = function(val) {
       animateValue("sphereH", val, 420, syncSphereUI);
+    };
+
+    // Card 4: Tetrahedron inscribed in Parallelepiped (Exploding 4 corner pyramids)
+    function syncTetraUI() {
+      const pct = Math.round(state.tetraExplode * 100);
+      document.getElementById("rngTetraExplode").value = pct;
+      document.getElementById("valTetraExplode").textContent =
+        pct === 0 ? "0% (Внутри куба)" : (pct === 100 ? "100% (4 пирамиды по 1/6 V)" : `${pct}%`);
+      const btn = document.getElementById("btnTetraExplode");
+      btn.textContent = state.tetraExplode > 0.5 ? "Собрать обратно в куб" : "Отделить 4 угловые пирамиды";
+      btn.classList.toggle("active", state.tetraExplode > 0.5);
+    }
+
+    document.getElementById("rngTetraExplode").addEventListener("input", function() {
+      state.tetraExplode = parseFloat(this.value) / 100;
+      syncTetraUI();
+    });
+
+    window.toggleTetraExplode = function() {
+      animateValue("tetraExplode", state.tetraExplode > 0.5 ? 0 : 1, 560, syncTetraUI);
     };
 
     // --- TOPIC 2: GRAPH THEORY CONTROLS ---
@@ -1520,6 +1583,7 @@
     window.setGameN = function(n) {
       state.gameN = n;
       state.gamePos = 1;
+      state.gamePlayerArc = null;
       state.gameAiArc = null;
       const btns = document.querySelectorAll("#gamePills .shk-pill");
       btns[0].classList.toggle("active", n === 17);
@@ -1717,7 +1781,7 @@
     // =========================================================================
     const canvases = {};
     const CANVAS_IDS = [
-      "cvStereoUnfold", "cvStereoTrace", "cvStereoSphere",
+      "cvStereoUnfold", "cvStereoTrace", "cvStereoSphere", "cvStereoTetra",
       "cvGraphKnights", "cvGraphTrees", "cvGraphK33",
       "cvAlgMod", "cvAlgPencil",
       "cvLogicRing", "cvLogicGame",
@@ -2132,6 +2196,122 @@
       if (Math.abs(hVal) > 0.15) {
         ctx.fillText("h", cx - 16, (cy + sy) / 2);
       }
+    }
+
+    // --- 5.3b: STEREO CARD 4 (Tetrahedron Inscribed in Parallelepiped — Exploding 4 Corner Pyramids) ---
+    function drawStereoTetra() {
+      const c = canvases.cvStereoTetra;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      const t = state.tetraExplode;
+      // Scale shrinks slightly as corner pyramids explode outward so all 4 stay well inside canvas bounds
+      const sc = Math.min(w, h) * (0.37 - t * 0.08);
+      const p = pt => project3D(pt, state.rot4, w, h * 0.98, sc);
+
+      const V = {
+        A:  { x: -0.5, y: -0.5, z: -0.5 },
+        B:  { x:  0.5, y: -0.5, z: -0.5 },
+        C:  { x:  0.5, y:  0.5, z: -0.5 },
+        D:  { x: -0.5, y:  0.5, z: -0.5 },
+        A1: { x: -0.5, y: -0.5, z:  0.5 },
+        B1: { x:  0.5, y: -0.5, z:  0.5 },
+        C1: { x:  0.5, y:  0.5, z:  0.5 },
+        D1: { x: -0.5, y:  0.5, z:  0.5 }
+      };
+
+      const pv = {};
+      Object.keys(V).forEach(k => pv[k] = p(V[k]));
+
+      // 1. Faint dashed bounding box (parallelepiped) in center
+      const boxEdges = [
+        ["A","B"],["B","C"],["C","D"],["D","A"],
+        ["A1","B1"],["B1","C1"],["C1","D1"],["D1","A1"],
+        ["A","A1"],["B","B1"],["C","C1"],["D","D1"]
+      ];
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = "rgba(100, 116, 139, 0.35)";
+      ctx.lineWidth = 1.3;
+      boxEdges.forEach(([u, v]) => {
+        ctx.beginPath(); ctx.moveTo(pv[u].x, pv[u].y); ctx.lineTo(pv[v].x, pv[v].y); ctx.stroke();
+      });
+      ctx.setLineDash([]);
+
+      // 2. Central Tetrahedron AB1CD1 (vertices A, B1, C, D1)
+      const tetraFaces = [
+        ["A", "B1", "C"],
+        ["A", "C", "D1"],
+        ["A", "B1", "D1"],
+        ["B1", "C", "D1"]
+      ];
+      tetraFaces.forEach(([u, v, wKey]) => {
+        ctx.beginPath();
+        ctx.moveTo(pv[u].x, pv[u].y);
+        ctx.lineTo(pv[v].x, pv[v].y);
+        ctx.lineTo(pv[wKey].x, pv[wKey].y);
+        ctx.closePath();
+        ctx.fillStyle = "rgba(0, 136, 255, 0.18)";
+        ctx.fill();
+        ctx.strokeStyle = col.blue;
+        ctx.lineWidth = 2.6;
+        ctx.stroke();
+      });
+
+      // 3. Four Exploding Right-Angled Corner Pyramids (each of volume 1/6 V)
+      const dShift = t * 0.36;
+      const corners = [
+        { apex: "A1", base: ["A", "B1", "D1"], dir: { x: -1, y: -1, z:  1 }, color: "rgba(245, 158, 11, 0.16)", stroke: "#F59E0B" },
+        { apex: "B",  base: ["A", "B1", "C"],  dir: { x:  1, y: -1, z: -1 }, color: "rgba(16, 185, 129, 0.16)", stroke: "#10B981" },
+        { apex: "D",  base: ["A", "C", "D1"],  dir: { x: -1, y:  1, z: -1 }, color: "rgba(16, 185, 129, 0.16)", stroke: "#10B981" },
+        { apex: "C1", base: ["B1", "C", "D1"], dir: { x:  1, y:  1, z:  1 }, color: "rgba(245, 158, 11, 0.16)", stroke: "#F59E0B" }
+      ];
+
+      corners.forEach(cObj => {
+        const shiftPt = k => p({
+          x: V[k].x + cObj.dir.x * dShift,
+          y: V[k].y + cObj.dir.y * dShift,
+          z: V[k].z + cObj.dir.z * dShift
+        });
+        const pApex = shiftPt(cObj.apex);
+        const [b0, b1, b2] = cObj.base.map(shiftPt);
+
+        // Fill base triangle of the corner pyramid
+        ctx.beginPath();
+        ctx.moveTo(b0.x, b0.y); ctx.lineTo(b1.x, b1.y); ctx.lineTo(b2.x, b2.y);
+        ctx.closePath();
+        ctx.fillStyle = cObj.color;
+        ctx.fill();
+
+        // Edges of the corner pyramid
+        ctx.strokeStyle = t > 0.03 ? cObj.stroke : col.ink;
+        ctx.lineWidth = 1.7;
+        [[pApex, b0], [pApex, b1], [pApex, b2], [b0, b1], [b1, b2], [b2, b0]].forEach(([p1, p2]) => {
+          ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+        });
+
+        drawDot(ctx, pApex.x, pApex.y, 4.5, t > 0.03 ? cObj.stroke : col.ink);
+      });
+
+      // Central tetrahedron vertices & labels
+      [["A","A", -14, 15], ["B1","B₁", 9, -6], ["C","C", 9, -5], ["D1","D₁", -20, -6]].forEach(([k, lb, ox, oy]) => {
+        drawDot(ctx, pv[k].x, pv[k].y, 6, col.blue);
+        ctx.font = "700 12.5px Inter, sans-serif";
+        ctx.fillStyle = col.blue;
+        ctx.fillText(lb, pv[k].x + ox, pv[k].y + oy);
+      });
+
+      drawPillBadge(
+        ctx,
+        t > 0.1 ? "V(тетр) = V − 4 · (1/6 V) = 1/3 V ✓" : "Тетраэдр AB₁CD₁ внутри параллелепипеда",
+        w * 0.5,
+        20,
+        col.blue,
+        "rgba(239,246,255,0.95)",
+        "rgba(0,136,255,0.35)",
+        "center"
+      );
     }
 
     // --- 5.4: GRAPH CARD 1 (Knights on 3x3 -> Circle C8) ---
@@ -2655,7 +2835,7 @@
       ctx.textBaseline = "alphabetic";
     }
 
-    // --- 5.10: LOGIC CARD 2 (Game 1 x N) ---
+    // --- 5.10: LOGIC CARD 2 (Game 1 x N — Unified Strip, Green Playable Cells & Period-4 Brackets) ---
     function drawLogicGame() {
       const c = canvases.cvLogicGame;
       if (!c) return;
@@ -2664,47 +2844,170 @@
       ctx.clearRect(0, 0, w, h);
 
       const N = state.gameN;
-      const cellW = Math.min(34, (w - 32) / N);
+      const cellW = Math.min(28, (w - 24) / N);
+      const cellH = 30;
       const sx = (w - N * cellW) / 2;
-      const cy = h * 0.55;
+      const cy = h * 0.49;
+      const topY = cy - cellH / 2;
+      const botY = cy + cellH / 2;
+      const cellCenterX = k => sx + (k - 0.5) * cellW;
+
+      // 1. Top status pill badge
+      const rem = (N - state.gamePos) % 4;
+      let statusStr = "";
+      let statusCol = col.blue;
+      if (state.gamePos === N) {
+        statusStr = `Финиш на клетке ${N}! Нажмите «Сбросить» для новой игры`;
+        statusCol = col.green;
+      } else if (rem === 0) {
+        statusStr = `Фишка на ловушке №${state.gamePos} · До финиша ${N - state.gamePos} кл. (кратно 4)`;
+        statusCol = col.red;
+      } else {
+        statusStr = `Фишка на №${state.gamePos} · Шагните +${rem} на ловушку №${state.gamePos + rem}!`;
+        statusCol = col.green;
+      }
+      drawPillBadge(ctx, statusStr, w * 0.5, 22, statusCol, "rgba(255,255,255,0.95)", "rgba(148,163,184,0.35)", "center");
+
+      // 2. Unified board strip background & cells
+      ctx.beginPath();
+      ctx.roundRect(sx, topY, N * cellW, cellH, 7);
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fill();
 
       for (let k = 1; k <= N; k++) {
         const rx = sx + (k - 1) * cellW;
         const isTrap = (N - k) % 4 === 0;
-        const canStep = k - state.gamePos >= 1 && k - state.gamePos <= 3;
+        const stepDelta = k - state.gamePos;
+        const canStep = stepDelta >= 1 && stepDelta <= 3;
 
-        ctx.beginPath();
-        ctx.roundRect(rx + 1.5, cy - 22, cellW - 3, 44, 7);
-        ctx.fillStyle = canStep ? col.blueFill : (isTrap ? "rgba(239,68,68,0.14)" : col.white);
-        ctx.fill();
-        ctx.strokeStyle = canStep ? col.blue : (isTrap ? col.red : col.muted);
-        ctx.lineWidth = canStep ? 2.2 : 1.4;
-        ctx.stroke();
-
-        ctx.font = "700 11.5px Inter, sans-serif";
-        ctx.fillStyle = isTrap ? col.red : col.ink;
-        ctx.textAlign = "center";
-        ctx.fillText(String(k), rx + cellW / 2, cy + 16);
-
-        if (k === state.gamePos) {
-          drawDot(ctx, rx + cellW / 2, cy - 6, 9, col.blue);
+        if (canStep || isTrap) {
+          ctx.fillStyle = canStep ? "rgba(16, 185, 129, 0.18)" : "rgba(239, 68, 68, 0.13)";
+          ctx.fillRect(rx + 0.5, topY + 0.5, cellW - 1, cellH - 1);
         }
+
+        // Cell vertical divider
+        if (k > 1) {
+          ctx.beginPath();
+          ctx.moveTo(rx, topY);
+          ctx.lineTo(rx, botY);
+          ctx.strokeStyle = "rgba(148, 163, 184, 0.38)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        // Highlight green playable cell border + "+1/+2/+3" label inside
+        if (canStep) {
+          ctx.strokeStyle = col.green;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(rx + 1, topY + 1, cellW - 2, cellH - 2);
+          ctx.font = "700 10.5px Inter, sans-serif";
+          ctx.fillStyle = col.green;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(`+${stepDelta}`, rx + cellW / 2, cy + 0.5);
+        } else if (isTrap && k !== state.gamePos) {
+          // Subtle red dot inside trap cell
+          drawDot(ctx, rx + cellW / 2, cy, 3.2, "rgba(239, 68, 68, 0.55)", null, 0);
+        }
+
+        // Active token centered cleanly inside cell
+        if (k === state.gamePos) {
+          drawDot(ctx, rx + cellW / 2, cy, 8.2, col.blue, "#FFFFFF", 2.2);
+        }
+
+        // Cell index number 1..N in a dedicated row BELOW the strip (never collides with token!)
+        ctx.font = isTrap ? "700 10.5px Inter, sans-serif" : "500 10px Inter, sans-serif";
+        ctx.fillStyle = isTrap ? col.red : col.muted;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        ctx.fillText(String(k), rx + cellW / 2, botY + 15);
       }
 
-      if (state.gameAiArc) {
-        const { from, to, step } = state.gameAiArc;
-        const x1 = sx + (from - 0.5) * cellW;
-        const x2 = sx + (to - 0.5) * cellW;
-        ctx.beginPath();
-        ctx.moveTo(x1, cy - 24);
-        ctx.quadraticCurveTo((x1 + x2) / 2, cy - 64, x2, cy - 24);
-        ctx.strokeStyle = col.blue;
-        ctx.lineWidth = 2.4;
-        ctx.stroke();
-        ctx.font = "700 12px Inter, sans-serif";
-        ctx.fillStyle = col.blue;
-        ctx.fillText(`Ответ: +${step}`, (x1 + x2) / 2, cy - 48);
+      // Outer border of unified strip
+      ctx.beginPath();
+      ctx.roundRect(sx, topY, N * cellW, cellH, 7);
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      // 3. Upper Move Arcs (Player +k in Green, AI +(4-k) in Blue, or preview +4 jumps)
+      if (state.gamePlayerArc || state.gameAiArc) {
+        if (state.gamePlayerArc) {
+          const { from, to, step } = state.gamePlayerArc;
+          const x1 = cellCenterX(from), x2 = cellCenterX(to);
+          ctx.beginPath();
+          ctx.moveTo(x1, topY - 3);
+          ctx.quadraticCurveTo((x1 + x2) / 2, topY - 40, x2, topY - 3);
+          ctx.strokeStyle = col.green;
+          ctx.lineWidth = 2.4;
+          ctx.stroke();
+          ctx.font = "700 11px Inter, sans-serif";
+          ctx.fillStyle = col.green;
+          ctx.textAlign = "center";
+          ctx.fillText(`Вы: +${step}`, (x1 + x2) / 2, topY - 26);
+        }
+        if (state.gameAiArc) {
+          const { from, to, step } = state.gameAiArc;
+          const x1 = cellCenterX(from), x2 = cellCenterX(to);
+          ctx.beginPath();
+          ctx.moveTo(x1, topY - 3);
+          ctx.quadraticCurveTo((x1 + x2) / 2, topY - 44, x2, topY - 3);
+          ctx.strokeStyle = col.blue;
+          ctx.lineWidth = 2.4;
+          ctx.stroke();
+          ctx.font = "700 11px Inter, sans-serif";
+          ctx.fillStyle = col.blue;
+          ctx.textAlign = "center";
+          ctx.fillText(`ИИ: +${step}`, (x1 + x2) / 2, topY - 28);
+        }
+      } else {
+        // Preview dashed period-4 arcs between traps when at start
+        const firstTrap = N % 4 === 1 ? 1 : 2;
+        ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = "rgba(239, 68, 68, 0.45)";
+        ctx.lineWidth = 1.6;
+        for (let t = firstTrap; t + 4 <= N; t += 4) {
+          const x1 = cellCenterX(t), x2 = cellCenterX(t + 4);
+          ctx.beginPath();
+          ctx.moveTo(x1, topY - 3);
+          ctx.quadraticCurveTo((x1 + x2) / 2, topY - 32, x2, topY - 3);
+          ctx.stroke();
+          ctx.font = "700 10.5px Inter, sans-serif";
+          ctx.fillStyle = col.red;
+          ctx.textAlign = "center";
+          ctx.fillText("+4", (x1 + x2) / 2, topY - 21);
+        }
+        ctx.setLineDash([]);
       }
+
+      // 4. Lower Period-4 Brackets showing blocks of 4 cells
+      const firstTrap = N % 4 === 1 ? 1 : 2;
+      const brY = botY + 26;
+      ctx.strokeStyle = "rgba(0, 136, 255, 0.45)";
+      ctx.lineWidth = 1.5;
+      for (let t = firstTrap; t + 4 <= N; t += 4) {
+        const x1 = sx + t * cellW + 2;
+        const x2 = sx + (t + 4) * cellW - 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, brY);
+        ctx.lineTo(x1, brY + 6);
+        ctx.lineTo(x2, brY + 6);
+        ctx.lineTo(x2, brY);
+        ctx.stroke();
+      }
+
+      drawPillBadge(
+        ctx,
+        "Красные — ловушки (шаг 4) · Зелёные — ваш ход (+1, +2, +3)",
+        w * 0.5,
+        h - 22,
+        col.muted,
+        "rgba(255,255,255,0.92)",
+        "rgba(148,163,184,0.3)",
+        "center"
+      );
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
     }
 
     // --- 5.11: COMBINATORICS CARD 1 (Andre's Reflection Principle & Catalan Numbers) ---
@@ -3354,6 +3657,7 @@
       bind3DRotation("cvStereoUnfold", state.rot1);
       bind3DRotation("cvStereoTrace", state.rot2);
       bind3DRotation("cvStereoSphere", state.rot3);
+      bind3DRotation("cvStereoTetra", state.rot4);
 
       // Knights click
       const cvK = document.getElementById("cvGraphKnights");
@@ -3491,12 +3795,14 @@
       cvLG.addEventListener("pointerdown", e => {
         const rect = cvLG.getBoundingClientRect();
         const N = state.gameN;
-        const cellW = Math.min(34, (rect.width - 32) / N);
+        const cellW = Math.min(28, (rect.width - 24) / N);
         const sx = (rect.width - N * cellW) / 2;
         const k = Math.floor(((e.clientX - rect.left) - sx) / cellW) + 1;
-        const step = k - state.gamePos;
-        if (step >= 1 && step <= 3 && state.gamePos < N) {
+        const prevPos = state.gamePos;
+        const step = k - prevPos;
+        if (step >= 1 && step <= 3 && prevPos < N) {
           state.gamePos = k;
+          state.gamePlayerArc = { from: prevPos, to: k, step };
           if (k === N) {
             document.getElementById("gameStatusBox").textContent = "🎉 Вы встали на финишную клетку и победили!";
             state.gameAiArc = null;
@@ -3599,6 +3905,7 @@
         drawStereoUnfold();
         drawStereoTrace();
         drawStereoSphere();
+        drawStereoTetra();
       } else if (state.activeTopic === "graphs") {
         drawGraphKnights();
         drawGraphTrees();
