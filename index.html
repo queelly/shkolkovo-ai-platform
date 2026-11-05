@@ -894,7 +894,7 @@
     <!-- =================================================================== -->
     <section class="topic-section" id="sec-algebra">
       <div class="page-kicker">Задачи к вебинару · Графический метод и плоскость (x; a) в параметрах</div>
-      <h1 class="page-title">№1–3. Вложенные модули, пучок прямых и метод областей в плоскости $(x; a)$</h1>
+      <h1 class="page-title">№1–5. Модули, пучок прямых, метод областей в $(x; a)$, уголок с выколотой точкой и касание окружностей</h1>
 
       <!-- CARD 1: Вложенные модули ||x - 1| - 3| = a -->
       <article class="sandbox-card">
@@ -907,6 +907,7 @@
             <button class="shk-pill" onclick="setAlgModA(1.5)">$1{,}5$</button>
             <button class="shk-pill active" onclick="setAlgModA(3)">$3$</button>
             <button class="shk-pill" onclick="setAlgModA(4.2)">$4{,}2$</button>
+            <button class="shk-pill" onclick="setAlgModA(0)">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -946,6 +947,7 @@
             <button class="shk-pill" onclick="setAlgPencilA(-0.6)">$-0{,}6$ (Верх)</button>
             <button class="shk-pill active" onclick="setAlgPencilA(0.2)">$0{,}2$ (2 корня)</button>
             <button class="shk-pill" onclick="setAlgPencilA(1.0)">$1{,}0$ (Низ)</button>
+            <button class="shk-pill" onclick="setAlgPencilA(0.2)">Сбросить</button>
           </div>
         </div>
         <div class="card-grid">
@@ -1027,6 +1029,111 @@
               <canvas class="sandbox-canvas" id="cvAlgRegion"></canvas>
             </div>
             <div class="stage-caption">Тяните горизонтальную секущую $a = \text{const}$ мышкой вверх-вниз — зелёный отрезок показывает все решения $x$!</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 4: Уголок a|2 - x| и прямая с выколотой точкой (x^2 - x - 6)/(3 - x) -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Подвижный уголок и выколотая точка: $a|2 - x| + \dfrac{x^2 - x - 6}{3 - x} = 0$ (ровно 1 решение)</div>
+          <div class="card-pills" id="cornerPills">
+            <span class="pill-label">a =</span>
+            <button class="shk-pill active" onclick="setAlgCornerA(0.5)">1. Уголок ($a = 0{,}5$ ✓)</button>
+            <button class="shk-pill" onclick="setAlgCornerA(5.0)">2. Выколотая $(3; 5)$ ($a = 5$ ✓)</button>
+            <button class="shk-pill" onclick="setAlgCornerA(1.0)">3. Параллельно ($a = 1$ ✓)</button>
+            <button class="shk-pill" onclick="setAlgCornerA(-1.0)">4. Параллельно ($a = -1$ ✗)</button>
+            <button class="shk-pill" onclick="setAlgCornerA(2.5)">$a = 2{,}5$ (2 корня ✗)</button>
+            <button class="shk-pill" onclick="setAlgCornerA(0.5)">Сбросить</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> найдите все значения параметра $a$, при каждом из которых уравнение $a|2 - x| + \dfrac{x^2 - x - 6}{3 - x} = 0$ имеет ровно одно решение.
+            </p>
+            <ul class="algo-list" id="listCornerSteps">
+              <li class="algo-item active" onclick="setAlgCornerA(0.5)">
+                <span class="algo-num">1.</span>
+                <span><b>Разложение на множители и выколотая точка $(3; 5)$:</b> разложим числитель $x^2 - x - 6 = (x - 3)(x + 2)$ и перенесём дробь вправо: <b>$a|2 - x| = \dfrac{(x - 3)(x + 2)}{x - 3}$</b>. Слева — «уголок» $y = a|2 - x|$ с вершиной $(2; 0)$ и подвижными ветвями, справа — прямая $y = x + 2$ с <b>выколотой точкой $(3; 5)$</b> (так как $x \neq 3$).</span>
+              </li>
+              <li class="algo-item" onclick="setAlgCornerA(5.0)">
+                <span class="algo-num">2.</span>
+                <span><b>Случай 1 — ветвь проходит через выколотую точку $(3; 5)$:</b> при $a > 1$ обе ветви уголка пересекают прямую $y = x + 2$ (2 корня), кроме случая, когда правая ветвь попадает ровно в выколотую точку $(3; 5)$: $a|2 - 3| = 5 \implies \mathbf{a = 5}$ (остаётся 1 корень $x = \frac{4}{3}$ ✓).</span>
+              </li>
+              <li class="algo-item" onclick="setAlgCornerA(1.0)">
+                <span class="algo-num">3.</span>
+                <span><b>Случаи 2 и 3 — ветвь уголка параллельна прямой ($a = 1$ и $a = -1$):</b> при $a > 0$ правая ветвь параллельна прямой $y = x + 2$, когда $a = 1$ (при всех $a \in (0; 1]$ и $a = 0$ ровно 1 решение ✓). При $a < 0$ левая ветвь параллельна прямой, когда $a = -1$ (при $a \in (-1; 0)$ есть 1 пересечение, а при $a \le -1$ решений нет). <b>Ответ: $(-1; 1] \cup \{5\}$</b>.</span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="cornerFormulaText">При a = 0.50 ∈ (−1; 1]: ровно 1 решение (x = −0.67) ✓</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Параметр раскрытия ветвей уголка $a$</span>
+                <span class="slider-val-badge" id="valAlgCornerA">a = 0.50 (1 реш. ✓)</span>
+              </div>
+              <input type="range" class="shk-range" id="rngAlgCornerA" min="-180" max="600" value="50" />
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvAlgCorner"></canvas>
+            </div>
+            <div class="stage-caption">Тяните ветви уголка $y = a|2 - x|$ мышкой прямо на графике или переключайте предельные случаи!</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CARD 5: Две окружности и внешнее / внутреннее касание -->
+      <article class="sandbox-card">
+        <div class="card-top-bar">
+          <div class="card-heading">Касание двух окружностей в системе $\begin{cases} x^2 + y^2 = 8x - 37 + 10y, \\ (x - 7)^2 + (y - 9)^2 = a^2 \end{cases}$</div>
+          <div class="card-pills" id="circlesPills">
+            <span class="pill-label">|a| =</span>
+            <button class="shk-pill active" onclick="setAlgCirclesA(1.8)">1. Две окружности ($|a| = 1{,}8$)</button>
+            <button class="shk-pill" onclick="setAlgCirclesA(3.0)">2. Внешнее касание ($|a| = 3$ ✓)</button>
+            <button class="shk-pill" onclick="setAlgCirclesA(5.0)">2 точки ($|a| = 5$ ✗)</button>
+            <button class="shk-pill" onclick="setAlgCirclesA(7.0)">3. Внутреннее касание ($|a| = 7$ ✓)</button>
+            <button class="shk-pill" onclick="setAlgCirclesA(1.8)">Сбросить</button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <div class="card-text-col">
+            <p>
+              <b>Задача:</b> найдите все значения параметра $a$, при каждом из которых система уравнений имеет единственное решение.
+            </p>
+            <ul class="algo-list" id="listCirclesSteps">
+              <li class="algo-item active" onclick="setAlgCirclesA(1.8)">
+                <span class="algo-num">1.</span>
+                <span><b>Выделяем полные квадраты (две окружности):</b> перепишем первое уравнение: $x^2 + y^2 - 8x + 37 - 10y = (x - 4)^2 + (y - 5)^2 - 4 = 0 \iff \mathbf{(x - 4)^2 + (y - 5)^2 = 4}$. При $a = 0$ точка $(7; 9)$ не подходит. При $a \neq 0$ перед нами две окружности: с центром $B(4; 5)$ радиусом $R_1 = 2$ и с центром $A(7; 9)$ радиусом $R_2 = |a|$. Расстояние между центрами $AB = \sqrt{3^2 + 4^2} = 5$.</span>
+              </li>
+              <li class="algo-item" onclick="setAlgCirclesA(3.0)">
+                <span class="algo-num">2.</span>
+                <span><b>Внешнее касание окружностей ($|a| = 3$):</b> две окружности имеют ровно одну общую точку тогда и только тогда, когда они касаются. При <b>внешнем касании</b> расстояние между центрами равно сумме радиусов: $\sqrt{3^2 + 4^2} = 2 + |a| \iff 5 = 2 + |a| \implies \mathbf{|a| = 3}$ ($a = \pm 3$).</span>
+              </li>
+              <li class="algo-item" onclick="setAlgCirclesA(7.0)">
+                <span class="algo-num">3.</span>
+                <span><b>Внутреннее касание окружностей ($|a| = 7$):</b> когда окружность с центром $A(7; 9)$ охватывает окружность с центром $B(4; 5)$ снаружи, расстояние между центрами равно разности радиусов: $\sqrt{3^2 + 4^2} = |a| - 2 \iff 5 = |a| - 2 \implies \mathbf{|a| = 7}$ ($a = \pm 7$). <b>Ответ: $\{-7; -3; 3; 7\}$</b>.</span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="circlesFormulaText">При |a| = 1.80: 2 + |a| = 3.80 < AB = 5 ⇒ окружности не пересекаются (0 решений) ✗</span>
+            </div>
+            <div class="slider-panel">
+              <div class="slider-header">
+                <span>Радиус подвижной окружности $R_2 = |a|$ с центром $A(7; 9)$</span>
+                <span class="slider-val-badge" id="valAlgCirclesA">|a| = 1.80 (0 реш.)</span>
+              </div>
+              <input type="range" class="shk-range" id="rngAlgCirclesA" min="0" max="850" value="180" />
+            </div>
+          </div>
+          <div class="card-stage-col">
+            <div class="stage-canvas-wrap">
+              <canvas class="sandbox-canvas" id="cvAlgCircles"></canvas>
+            </div>
+            <div class="stage-caption">Тяните окружность с центром $A(7; 9)$ мышкой прямо на чертеже или переключайте внешнее ($|a| = 3$) и внутреннее ($|a| = 7$) касание!</div>
           </div>
         </div>
       </article>
@@ -1637,11 +1744,15 @@
       algModA: 3.0,
       algPencilA: 0.2,
       algRegionA: -0.15,   // Starts at Step 1: a in [-1/3; 0]
+      algCornerA: 0.5,     // Starts at Step 1: a = 0.5 in (-1; 1]
+      algCirclesA: 1.8,    // Starts at Step 1: |a| = 1.8 (two disjoint circles)
 
       // --- TOPIC 4: LOGIC & GAMES ---
-      // Card 1: 36 children in a circle in red ("GR") or blue ("MB") sweaters
+      // Card 1: 36 children in a circle in red ({ g: "G", c: "R" }) or blue ({ g: "B", c: "B" }) sweaters
       ringMode: "forbid3", // "forbid3" (Step 1), "triples12" (Step 2), "opt24" (Step 3), "empty"
-      ringKids: Array.from({ length: 36 }, (_, i) => (i < 3 ? "GR" : (i % 3 === 2 ? "MB" : "GR"))),
+      ringKids: Array.from({ length: 36 }, (_, i) =>
+        i < 3 ? { g: "G", c: "R" } : (i % 3 === 2 ? { g: "B", c: "B" } : { g: "G", c: "R" })
+      ),
       ringHover: -1,
       // Card 2: Hulk & Thanos 20 Apples symmetry game (Starts with all 20 apples!)
       apples: [1,1,1,1,1,1,1,1,1, 1,1, 1,1,1,1,1,1,1,1,1],
@@ -2221,6 +2332,160 @@
 
     window.setAlgRegionA = function(val) {
       animateValue("algRegionA", val, 420, syncAlgRegionUI);
+    };
+
+    // --- Card 4 (Algebra): Moving Corner y = a|2 - x| and Punctured Line y = x + 2, x != 3 ---
+    function analyzeAlgCorner(a) {
+      const roots = [];
+      let hitsHole = false;
+      // Left branch (x <= 2): -a*(x - 2) = x + 2  <=>  (a + 1)*x = 2a - 2
+      if (Math.abs(a + 1) > 1e-4) {
+        const x1 = (2 * (a - 1)) / (a + 1);
+        if (x1 <= 2.0001) {
+          roots.push({ x: x1, y: x1 + 2, branch: "L" });
+        }
+      }
+      // Right branch (x > 2): a*(x - 2) = x + 2  <=>  (a - 1)*x = 2a + 2
+      if (Math.abs(a - 1) > 1e-4) {
+        const x2 = (2 * (a + 1)) / (a - 1);
+        if (x2 > 2.0001) {
+          if (Math.abs(x2 - 3) < 0.025) {
+            hitsHole = true; // Passes through the punctured point (3; 5)!
+          } else {
+            roots.push({ x: x2, y: x2 + 2, branch: "R" });
+          }
+        }
+      }
+      return { roots, hitsHole };
+    }
+
+    function syncAlgCornerUI() {
+      const a = state.algCornerA;
+      const rng = document.getElementById("rngAlgCornerA");
+      if (rng) rng.value = Math.round(a * 100);
+
+      const info = analyzeAlgCorner(a);
+      const cnt = info.roots.length;
+      const valBadge = document.getElementById("valAlgCornerA");
+      if (valBadge) {
+        valBadge.textContent = `a = ${a.toFixed(2)} (${cnt} реш.${cnt === 1 ? " ✓" : " ✗"})`;
+      }
+
+      const box = document.getElementById("cornerFormulaText");
+      if (box) {
+        if (Math.abs(a - 5) < 0.04) {
+          box.textContent =
+            "Предельный случай 1 (a = 5): правая ветвь проходит через выколотую точку (3; 5) ⇒ остаётся ровно 1 корень x = 4/3 ≈ 1.33 ✓";
+        } else if (Math.abs(a - 1) < 0.03) {
+          box.textContent =
+            "Предельный случай 2 (a = 1): правая ветвь параллельна прямой y = x + 2 ⇒ ровно 1 пересечение слева в точке (0; 2) ✓";
+        } else if (Math.abs(a + 1) < 0.03) {
+          box.textContent =
+            "Предельный случай 3 (a = −1): левая ветвь параллельна прямой y = x + 2 ⇒ пересечений нет (0 решений) ✗";
+        } else if (cnt === 1) {
+          box.textContent =
+            `При a = ${a.toFixed(2)} ∈ (−1; 1]: ровно 1 решение (x = ${info.roots[0].x.toFixed(2)}; y = ${info.roots[0].y.toFixed(2)}) ✓`;
+        } else if (cnt === 2) {
+          box.textContent =
+            `При a = ${a.toFixed(2)} > 1 (a ≠ 5): обе ветви пересекают прямую ⇒ 2 решения (x₁ = ${info.roots[0].x.toFixed(2)}, x₂ = ${info.roots[1].x.toFixed(2)}) ✗`;
+        } else {
+          box.textContent =
+            `При a = ${a.toFixed(2)} ≤ −1: уголок раскрыт вниз и не достаёт до прямой y = x + 2 ⇒ 0 решений ✗`;
+        }
+      }
+
+      const btns = document.querySelectorAll("#cornerPills .shk-pill");
+      if (btns.length >= 5) {
+        btns[0].classList.toggle("active", Math.abs(a - 0.5) < 0.04);
+        btns[1].classList.toggle("active", Math.abs(a - 5.0) < 0.04);
+        btns[2].classList.toggle("active", Math.abs(a - 1.0) < 0.04);
+        btns[3].classList.toggle("active", Math.abs(a + 1.0) < 0.04);
+        btns[4].classList.toggle("active", Math.abs(a - 2.5) < 0.04);
+      }
+
+      const items = document.querySelectorAll("#listCornerSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", a > -0.95 && a < 0.95);
+        items[1].classList.toggle("active", Math.abs(a - 5.0) < 0.25 || a > 1.05);
+        items[2].classList.toggle("active", Math.abs(a - 1.0) <= 0.05 || a <= -0.95);
+      }
+    }
+
+    document.getElementById("rngAlgCornerA").addEventListener("input", function() {
+      let v = parseFloat(this.value) / 100;
+      if (Math.abs(v - 5) < 0.08) v = 5;
+      else if (Math.abs(v - 1) < 0.06) v = 1;
+      else if (Math.abs(v + 1) < 0.06) v = -1;
+      else if (Math.abs(v) < 0.05) v = 0;
+      state.algCornerA = v;
+      syncAlgCornerUI();
+    });
+
+    window.setAlgCornerA = function(val) {
+      animateValue("algCornerA", val, 420, syncAlgCornerUI);
+    };
+
+    // --- Card 5 (Algebra): Two Circles & External / Internal Tangency (|a| = 3 and |a| = 7) ---
+    function syncAlgCirclesUI() {
+      const r2 = Math.max(0, state.algCirclesA);
+      const rng = document.getElementById("rngAlgCirclesA");
+      if (rng) rng.value = Math.round(r2 * 100);
+
+      const isExtTangent = Math.abs(r2 - 3.0) < 0.04;
+      const isIntTangent = Math.abs(r2 - 7.0) < 0.04;
+      const numSol = (isExtTangent || isIntTangent) ? 1 : ((r2 > 3.0 && r2 < 7.0) ? 2 : 0);
+
+      const valBadge = document.getElementById("valAlgCirclesA");
+      if (valBadge) {
+        valBadge.textContent = `|a| = ${r2.toFixed(2)} (${numSol} реш.${numSol === 1 ? " ✓" : ""})`;
+      }
+
+      const box = document.getElementById("circlesFormulaText");
+      if (box) {
+        if (isExtTangent) {
+          box.textContent =
+            "Внешнее касание (|a| = 3 ⇒ a = ±3): R₁ + R₂ = 2 + 3 = 5 = AB ⇒ ровно 1 общая точка (5,2; 6,6) ✓";
+        } else if (isIntTangent) {
+          box.textContent =
+            "Внутреннее касание (|a| = 7 ⇒ a = ±7): R₂ − R₁ = 7 − 2 = 5 = AB ⇒ ровно 1 общая точка (2,8; 3,4) ✓";
+        } else if (r2 < 3.0) {
+          box.textContent =
+            `При |a| = ${r2.toFixed(2)} < 3: сумма радиусов 2 + |a| = ${(2 + r2).toFixed(2)} < AB = 5 ⇒ окружности не достают друг до друга (0 реш.) ✗`;
+        } else if (r2 < 7.0) {
+          box.textContent =
+            `При |a| = ${r2.toFixed(2)} ∈ (3; 7): окружности пересекаются в 2 точках (2 решения системы) ✗`;
+        } else {
+          box.textContent =
+            `При |a| = ${r2.toFixed(2)} > 7: разность радиусов |a| − 2 = ${(r2 - 2).toFixed(2)} > AB = 5 ⇒ меньшая окружность строго внутри большей (0 реш.) ✗`;
+        }
+      }
+
+      const btns = document.querySelectorAll("#circlesPills .shk-pill");
+      if (btns.length >= 4) {
+        btns[0].classList.toggle("active", Math.abs(r2 - 1.8) < 0.05);
+        btns[1].classList.toggle("active", isExtTangent);
+        btns[2].classList.toggle("active", Math.abs(r2 - 5.0) < 0.05);
+        btns[3].classList.toggle("active", isIntTangent);
+      }
+
+      const items = document.querySelectorAll("#listCirclesSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", !isExtTangent && !isIntTangent);
+        items[1].classList.toggle("active", isExtTangent);
+        items[2].classList.toggle("active", isIntTangent);
+      }
+    }
+
+    document.getElementById("rngAlgCirclesA").addEventListener("input", function() {
+      let v = parseFloat(this.value) / 100;
+      if (Math.abs(v - 3) < 0.08) v = 3.0;
+      else if (Math.abs(v - 7) < 0.08) v = 7.0;
+      state.algCirclesA = v;
+      syncAlgCirclesUI();
+    });
+
+    window.setAlgCirclesA = function(val) {
+      animateValue("algCirclesA", val, 420, syncAlgCirclesUI);
     };
 
     // --- TOPIC 4: LOGIC & GAMES CONTROLS (36 Children in Red/Blue Sweaters Around a Circle) ---
@@ -3032,7 +3297,7 @@
     const CANVAS_IDS = [
       "cvStereoUnfold", "cvStereoTrace", "cvStereoSphere", "cvStereoTetra", "cvStereoInscribed",
       "cvGraphKnights", "cvGraphTrees", "cvGraphK33",
-      "cvAlgMod", "cvAlgPencil", "cvAlgRegion",
+      "cvAlgMod", "cvAlgPencil", "cvAlgRegion", "cvAlgCorner", "cvAlgCircles",
       "cvLogicRing", "cvLogicApples", "cvLogicGame",
       "cvComboUrns", "cvComboStrips", "cvComboColoring", "cvComboRooksPV", "cvComboGrid",
       "cvGeomMedian", "cvGeomCircle", "cvGeomAngles", "cvGeomTrisect"
@@ -4430,6 +4695,377 @@
           "rgba(255,241,242,0.96)",
           "rgba(239,68,68,0.35)",
           "center"
+        );
+      }
+      ctx.textAlign = "left";
+    }
+
+    // --- 5.8b: ALGEBRA CARD 4 (Moving Corner y = a|2 - x| and Punctured Line y = x + 2, x != 3) ---
+    function drawAlgCorner() {
+      const c = canvases.cvAlgCorner;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      const sc = Math.min((w - 44) / 9.6, (h - 60) / 8.6);
+      const ox = w * 0.35;
+      const oy = h * 0.72;
+      const toX = x => ox + x * sc;
+      const toY = y => oy - y * sc;
+
+      // 1. Coordinate grid
+      ctx.strokeStyle = col.grid;
+      ctx.lineWidth = 1;
+      for (let gx = -3; gx <= 6; gx++) {
+        const px = toX(gx);
+        if (px < 16 || px > w - 16) continue;
+        ctx.beginPath();
+        ctx.moveTo(px, 34);
+        ctx.lineTo(px, h - 16);
+        ctx.stroke();
+      }
+      for (let gy = -2; gy <= 6; gy++) {
+        const py = toY(gy);
+        if (py < 34 || py > h - 16) continue;
+        ctx.beginPath();
+        ctx.moveTo(16, py);
+        ctx.lineTo(w - 16, py);
+        ctx.stroke();
+      }
+
+      // 2. Axes Ox and Oy
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(16, oy); ctx.lineTo(w - 16, oy);
+      ctx.moveTo(ox, h - 16); ctx.lineTo(ox, 34);
+      ctx.stroke();
+
+      ctx.font = "700 10.5px Inter, sans-serif";
+      ctx.fillStyle = col.muted;
+      ctx.textAlign = "center";
+      [-3, -2, -1, 1, 2, 3, 4, 5, 6].forEach(xv => {
+        const px = toX(xv);
+        if (px > 24 && px < w - 24) ctx.fillText(String(xv), px, oy + 14);
+      });
+      ctx.textAlign = "right";
+      [-1, 1, 2, 3, 4, 5, 6].forEach(yv => {
+        const py = toY(yv);
+        if (py > 44 && py < h - 20) ctx.fillText(String(yv), ox - 5, py + 4);
+      });
+
+      const a = state.algCornerA;
+      const info = analyzeAlgCorner(a);
+      const cnt = info.roots.length;
+
+      // Clip plotting area so steep branches never overflow onto the top pill badge
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(16, 34, w - 32, h - 50);
+      ctx.clip();
+
+      // 3. Faint dashed guide corners for critical values a = 5, a = 1, a = -1
+      [5, 1, -1].forEach(aCrit => {
+        if (Math.abs(a - aCrit) < 0.05) return;
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.40)";
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.moveTo(toX(-3.5), toY(aCrit * Math.abs(2 - (-3.5))));
+        ctx.lineTo(toX(2), toY(0));
+        ctx.lineTo(toX(6.5), toY(aCrit * Math.abs(2 - 6.5)));
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // 4. Line y = x + 2 in Purple (#9333EA)
+      ctx.beginPath();
+      ctx.moveTo(toX(-3.6), toY(-1.6));
+      ctx.lineTo(toX(4.8), toY(6.8));
+      ctx.strokeStyle = "#9333EA";
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // 5. Moving corner y = a|2 - x| with vertex at (2; 0)
+      ctx.beginPath();
+      ctx.moveTo(toX(-3.6), toY(a * Math.abs(2 - (-3.6))));
+      ctx.lineTo(toX(2), toY(0));
+      ctx.lineTo(toX(6.6), toY(a * Math.abs(2 - 6.6)));
+      ctx.strokeStyle = cnt === 1 ? col.green : "#0284C7";
+      ctx.lineWidth = 2.8;
+      ctx.stroke();
+
+      // Dashed projection lines from punctured point (3; 5) to axes
+      ctx.save();
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = "rgba(147, 51, 234, 0.45)";
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(toX(3), toY(5)); ctx.lineTo(toX(3), oy);
+      ctx.moveTo(toX(3), toY(5)); ctx.lineTo(ox, toY(5));
+      ctx.stroke();
+      ctx.restore();
+
+      // 6. Valid intersection roots
+      info.roots.forEach(rt => {
+        const rx = toX(rt.x), ry = toY(rt.y);
+        ctx.save();
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = cnt === 1 ? "rgba(16, 185, 129, 0.65)" : "rgba(245, 158, 11, 0.65)";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(rx, ry);
+        ctx.lineTo(rx, oy);
+        ctx.stroke();
+        ctx.restore();
+        drawDot(ctx, rx, ry, 6.2, cnt === 1 ? col.green : col.amber);
+      });
+
+      // Vertex (2; 0) of the corner
+      drawDot(ctx, toX(2), toY(0), 5.5, cnt === 1 ? col.green : "#0284C7");
+
+      // 7. Punctured point (3; 5) — white hollow circle with thick border!
+      const hx = toX(3), hy = toY(5);
+      ctx.beginPath();
+      ctx.arc(hx, hy, 6.8, 0, Math.PI * 2);
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fill();
+      ctx.strokeStyle = info.hitsHole ? col.red : "#9333EA";
+      ctx.lineWidth = 2.8;
+      ctx.stroke();
+
+      ctx.restore(); // End clip
+
+      // Curve & point labels inside safe bounds
+      ctx.font = "700 11.5px Inter, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#9333EA";
+      ctx.fillText("y = x + 2 (x ≠ 3)", toX(-2.9), toY(0.15));
+      ctx.fillStyle = info.hitsHole ? col.red : "#9333EA";
+      ctx.fillText("(3; 5) выколота", hx + 10, hy + 4);
+      ctx.fillStyle = cnt === 1 ? col.green : "#0284C7";
+      ctx.fillText("Вершина (2; 0)", toX(2) + 8, oy - 7);
+
+      // 8. Top status pill badge
+      if (Math.abs(a - 5) < 0.04) {
+        drawPillBadge(
+          ctx,
+          "a = 5: ветвь проходит сквозь выколотую (3; 5) ⇒ 1 корень x = 4/3 ✓",
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else if (Math.abs(a - 1) < 0.03) {
+        drawPillBadge(
+          ctx,
+          "a = 1: правая ветвь параллельна прямой ⇒ 1 корень x = 0 ✓",
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else if (Math.abs(a + 1) < 0.03) {
+        drawPillBadge(
+          ctx,
+          "a = −1: левая ветвь параллельна прямой ⇒ 0 решений ✗",
+          w * 0.5, 19, col.red, "rgba(255,241,242,0.96)", "rgba(239,68,68,0.35)", "center"
+        );
+      } else if (cnt === 1) {
+        drawPillBadge(
+          ctx,
+          `a = ${a.toFixed(2)} ∈ (−1; 1]: ровно 1 решение (x = ${info.roots[0].x.toFixed(2)}) ✓`,
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else if (cnt === 2) {
+        drawPillBadge(
+          ctx,
+          `a = ${a.toFixed(2)}: обе ветви пересекают прямую ⇒ 2 корня ✗`,
+          w * 0.5, 19, col.amber, "rgba(255,251,235,0.96)", "rgba(245,158,11,0.35)", "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          `a = ${a.toFixed(2)} ≤ −1: пересечений нет (0 решений) ✗`,
+          w * 0.5, 19, col.red, "rgba(255,241,242,0.96)", "rgba(239,68,68,0.35)", "center"
+        );
+      }
+      ctx.textAlign = "left";
+    }
+
+    // --- 5.8c: ALGEBRA CARD 5 (Two Circles & External/Internal Tangency: |a| = 3 and |a| = 7) ---
+    function drawAlgCircles() {
+      const c = canvases.cvAlgCircles;
+      if (!c) return;
+      const { ctx, w, h } = c;
+      const col = colors();
+      ctx.clearRect(0, 0, w, h);
+
+      // Uniform scale so circles are strictly round and the R2=7 circle (x in [0,14], y in [2,16]) fits cleanly
+      const sc = Math.min((w - 48) / 16.0, (h - 60) / 15.6);
+      const ox = w * 0.5 - 6.8 * sc;
+      const oy = h * 0.54 + 8.8 * sc;
+      const toX = x => ox + x * sc;
+      const toY = y => oy - y * sc;
+
+      // 1. Subtle coordinate grid
+      ctx.strokeStyle = col.grid;
+      ctx.lineWidth = 1;
+      for (let gx = 0; gx <= 14; gx += 2) {
+        const px = toX(gx);
+        if (px < 16 || px > w - 16) continue;
+        ctx.beginPath();
+        ctx.moveTo(px, 34);
+        ctx.lineTo(px, h - 16);
+        ctx.stroke();
+      }
+      for (let gy = 2; gy <= 16; gy += 2) {
+        const py = toY(gy);
+        if (py < 34 || py > h - 16) continue;
+        ctx.beginPath();
+        ctx.moveTo(16, py);
+        ctx.lineTo(w - 16, py);
+        ctx.stroke();
+      }
+
+      // Y-axis ticks along x = 0 (like on the screenshot)
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(toX(0), 34);
+      ctx.lineTo(toX(0), h - 16);
+      ctx.stroke();
+
+      ctx.font = "700 10px Inter, sans-serif";
+      ctx.fillStyle = col.muted;
+      ctx.textAlign = "right";
+      [2, 4, 6, 8, 10, 12, 14, 16].forEach(yv => {
+        const py = toY(yv);
+        if (py > 42 && py < h - 18) ctx.fillText(String(yv), toX(0) - 5, py + 3.5);
+      });
+
+      const B = { x: 4, y: 5 };
+      const A = { x: 7, y: 9 };
+      const pB = { x: toX(B.x), y: toY(B.y) };
+      const pA = { x: toX(A.x), y: toY(A.y) };
+      const r2 = Math.max(0, state.algCirclesA);
+      const isExtTangent = Math.abs(r2 - 3.0) < 0.04;
+      const isIntTangent = Math.abs(r2 - 7.0) < 0.04;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(16, 34, w - 32, h - 50);
+      ctx.clip();
+
+      // 2. Line of centers AB (slope 4/3: y - 5 = 4/3 (x - 4))
+      ctx.beginPath();
+      ctx.moveTo(toX(1.0), toY(1.0));
+      ctx.lineTo(toX(12.25), toY(16.0));
+      ctx.strokeStyle = "rgba(100, 116, 139, 0.55)";
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+
+      // Right triangle (4;5) -> (7;5) -> (7;9) showing 3-4-5 distance between centers
+      ctx.save();
+      ctx.setLineDash([4, 3]);
+      ctx.strokeStyle = "rgba(217, 119, 6, 0.65)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(pB.x, pB.y);
+      ctx.lineTo(toX(7), toY(5));
+      ctx.lineTo(pA.x, pA.y);
+      ctx.stroke();
+      ctx.restore();
+
+      // 3. Faint dashed reference circles for |a| = 3 (external tangency) and |a| = 7 (internal tangency)
+      [3, 7].forEach(rRef => {
+        if (Math.abs(r2 - rRef) < 0.06) return;
+        ctx.save();
+        ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.45)";
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.arc(pA.x, pA.y, rRef * sc, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // 4. Fixed Circle 1: (x - 4)^2 + (y - 5)^2 = 2^2 (Center B(4;5), R1 = 2)
+      ctx.beginPath();
+      ctx.arc(pB.x, pB.y, 2 * sc, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(0, 136, 255, 0.08)";
+      ctx.fill();
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 2.3;
+      ctx.stroke();
+
+      // 5. Moving Circle 2: (x - 7)^2 + (y - 9)^2 = a^2 (Center A(7;9), R2 = |a|)
+      if (r2 > 0.02) {
+        ctx.beginPath();
+        ctx.arc(pA.x, pA.y, r2 * sc, 0, Math.PI * 2);
+        ctx.strokeStyle = (isExtTangent || isIntTangent) ? col.green : "#0284C7";
+        ctx.lineWidth = 2.7;
+        ctx.stroke();
+      }
+
+      // 6. Highlight tangency or intersection points
+      // Unit vector from B(4,5) to A(7,9) is u = (0.6, 0.8)
+      if (isExtTangent) {
+        // External tangency point: B + 2 * u = (5.2, 6.6)
+        const tx = toX(5.2), ty = toY(6.6);
+        drawDot(ctx, tx, ty, 7.0, col.green);
+      } else if (isIntTangent) {
+        // Internal tangency point: B - 2 * u = (2.8, 3.4)
+        const tx = toX(2.8), ty = toY(3.4);
+        drawDot(ctx, tx, ty, 7.0, col.green);
+      } else if (r2 > 3.0 && r2 < 7.0) {
+        // 2 intersection points of circles with d = 5, R1 = 2, R2 = r2
+        const d = 5;
+        const aProj = (4 - r2 * r2 + d * d) / (2 * d);
+        const hOrth = Math.sqrt(Math.max(0, 4 - aProj * aProj));
+        const mx = 4 + aProj * 0.6;
+        const my = 5 + aProj * 0.8;
+        const p1 = { x: toX(mx - hOrth * 0.8), y: toY(my + hOrth * 0.6) };
+        const p2 = { x: toX(mx + hOrth * 0.8), y: toY(my - hOrth * 0.6) };
+        drawDot(ctx, p1.x, p1.y, 5.8, col.amber);
+        drawDot(ctx, p2.x, p2.y, 5.8, col.amber);
+      }
+
+      ctx.restore(); // End clip
+
+      // 7. Centers B(4; 5) and A(7; 9) + Labels
+      drawDot(ctx, pB.x, pB.y, 6.0, "#F59E0B");
+      drawDot(ctx, pA.x, pA.y, 6.0, "#F59E0B");
+
+      ctx.font = "700 12px Inter, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillStyle = col.ink;
+      ctx.fillText("B(4; 5), R₁=2", pB.x + 9, pB.y + 14);
+      ctx.fillText("A(7; 9)", pA.x + 9, pA.y + 4);
+      ctx.fillStyle = "#D97706";
+      ctx.font = "700 10.5px Inter, sans-serif";
+      ctx.fillText("AB = √(3²+4²) = 5", toX(5.6), toY(6.8) - 8);
+
+      // 8. Top status pill badge
+      if (isExtTangent) {
+        drawPillBadge(
+          ctx,
+          "Внешнее касание (|a| = 3 ⇒ a = ±3): 2 + |a| = 5 ⇒ 1 решение ✓",
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else if (isIntTangent) {
+        drawPillBadge(
+          ctx,
+          "Внутреннее касание (|a| = 7 ⇒ a = ±7): |a| − 2 = 5 ⇒ 1 решение ✓",
+          w * 0.5, 19, col.green, "rgba(236,253,245,0.96)", "rgba(16,185,129,0.35)", "center"
+        );
+      } else if (r2 > 3.0 && r2 < 7.0) {
+        drawPillBadge(
+          ctx,
+          `При |a| = ${r2.toFixed(2)} ∈ (3; 7): окружности пересекаются в 2 точках ✗`,
+          w * 0.5, 19, col.amber, "rgba(255,251,235,0.96)", "rgba(245,158,11,0.35)", "center"
+        );
+      } else {
+        drawPillBadge(
+          ctx,
+          `При |a| = ${r2.toFixed(2)}: общих точек нет (0 решений) · Касание при |a| = 3 и |a| = 7`,
+          w * 0.5, 19, col.blue, "rgba(239,246,255,0.96)", "rgba(0,136,255,0.35)", "center"
         );
       }
       ctx.textAlign = "left";
@@ -6498,6 +7134,65 @@
       });
       window.addEventListener("pointerup", () => { dragReg = false; });
 
+      // Algebra Card 4: Moving Corner y = a|2 - x| drag
+      const cvACor = document.getElementById("cvAlgCorner");
+      let dragCorner = false;
+      const updateCornerFromEvent = e => {
+        const rect = cvACor.getBoundingClientRect();
+        const sc = Math.min((rect.width - 44) / 9.6, (rect.height - 60) / 8.6);
+        const ox = rect.width * 0.35;
+        const oy = rect.height * 0.72;
+        const x = (e.clientX - rect.left - ox) / sc;
+        const y = (oy - (e.clientY - rect.top)) / sc;
+        const dx = Math.abs(2 - x);
+        if (dx > 0.25) {
+          let aVal = y / dx;
+          if (Math.abs(aVal - 5) < 0.12) aVal = 5;
+          else if (Math.abs(aVal - 1) < 0.08) aVal = 1;
+          else if (Math.abs(aVal + 1) < 0.08) aVal = -1;
+          else if (Math.abs(aVal) < 0.06) aVal = 0;
+          state.algCornerA = Math.max(-1.8, Math.min(6.0, aVal));
+          syncAlgCornerUI();
+        }
+      };
+      cvACor.addEventListener("pointerdown", e => {
+        dragCorner = true;
+        updateCornerFromEvent(e);
+        cvACor.setPointerCapture(e.pointerId);
+      });
+      cvACor.addEventListener("pointermove", e => {
+        if (!dragCorner) return;
+        updateCornerFromEvent(e);
+      });
+      window.addEventListener("pointerup", () => { dragCorner = false; });
+
+      // Algebra Card 5: Two Circles radius |a| drag around A(7; 9)
+      const cvACir = document.getElementById("cvAlgCircles");
+      let dragCircles = false;
+      const updateCirclesFromEvent = e => {
+        const rect = cvACir.getBoundingClientRect();
+        const sc = Math.min((rect.width - 48) / 16.0, (rect.height - 60) / 15.6);
+        const ox = rect.width * 0.5 - 6.8 * sc;
+        const oy = rect.height * 0.54 + 8.8 * sc;
+        const x = (e.clientX - rect.left - ox) / sc;
+        const y = (oy - (e.clientY - rect.top)) / sc;
+        let rVal = Math.hypot(x - 7, y - 9);
+        if (Math.abs(rVal - 3) < 0.14) rVal = 3.0;
+        else if (Math.abs(rVal - 7) < 0.14) rVal = 7.0;
+        state.algCirclesA = Math.max(0, Math.min(8.5, rVal));
+        syncAlgCirclesUI();
+      };
+      cvACir.addEventListener("pointerdown", e => {
+        dragCircles = true;
+        updateCirclesFromEvent(e);
+        cvACir.setPointerCapture(e.pointerId);
+      });
+      cvACir.addEventListener("pointermove", e => {
+        if (!dragCircles) return;
+        updateCirclesFromEvent(e);
+      });
+      window.addEventListener("pointerup", () => { dragCircles = false; });
+
       // Logic Ring click/hover (36 children in red/blue sweaters around a circle)
       const cvLR = document.getElementById("cvLogicRing");
       cvLR.addEventListener("pointermove", e => {
@@ -6857,6 +7552,8 @@
         drawAlgMod();
         drawAlgPencil();
         drawAlgRegion();
+        drawAlgCorner();
+        drawAlgCircles();
       } else if (state.activeTopic === "logic") {
         drawLogicRing();
         drawLogicApples();
