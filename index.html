@@ -349,13 +349,15 @@
     .white-formula-box {
       background: var(--bg-white-box);
       border-radius: 14px;
-      padding: 14px 20px;
+      padding: 13px 18px;
       font-weight: 600;
       color: var(--shk-blue);
-      font-size: 15.5px;
-      line-height: 1.55;
+      font-size: 15px;
+      line-height: 1.5;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-      display: block;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
     }
 
     .muted-note {
@@ -758,30 +760,43 @@
       <div class="page-kicker">Задачи к вебинару · Интерактивный конспект по графам</div>
       <h1 class="page-title">№1–3. Изоморфизм графов, выделение остовного дерева и формула Эйлера ($7$ озёр и $10$ каналов)</h1>
 
-      <!-- CARD 1: Четыре коня на доске 3x3 (развёртка звезды в кольцо C8) -->
+      <!-- CARD 1: Четыре коня в углах доски 3x3 (вершины A..K -> восьмиугольник A'..K') -->
       <article class="sandbox-card">
         <div class="card-top-bar">
-          <div class="card-heading">Задача о четырёх конях на доске 3 × 3 и распутывание графа</div>
-          <div class="card-pills">
-            <button class="shk-pill" id="btnKnightUnfold" onclick="toggleKnightCircle()">Развернуть в круг</button>
+          <div class="card-heading">Четыре коня в углах доски 3 × 3: переход к графу $(A, B, \dots, H, K)$ и инвариант порядка</div>
+          <div class="card-pills" id="knightPills">
+            <button class="shk-pill active" onclick="setKnightStep(1)">1. Граф на доске 3 × 3</button>
+            <button class="shk-pill" onclick="setKnightStep(2)">2. Восьмиугольник без пересечений</button>
+            <button class="shk-pill" onclick="setKnightStep(3)">3. Инвариант порядка (Б–Ч–Б–Ч)</button>
             <button class="shk-pill" onclick="resetKnightsGame()">Сбросить коней</button>
           </div>
         </div>
         <div class="card-grid">
           <div class="card-text-col">
             <p>
-              В углах доски $3 \times 3$ стоят два белых коня ($a1, a3$) и два чёрных ($c1, c3$). Можно ли ходами коня поменять белых и чёрных местами (или поставить их в чередование Б—Ч—Б—Ч)?
+              <b>Задача:</b> в углах доски $3 \times 3$ стоят кони: по 2 коня чёрного и белого цветов, причём кони одного цвета стоят в противоположных углах. За один ход разрешается выбрать любого коня и сделать им ход в свободную клетку. Можно ли переставить коней так, чтобы по-прежнему все кони стояли в углах, но кони одного цвета стояли в углах при одной стороне?
             </p>
-            <p>
-              Если соединить клетки ходами коня, центральная клетка $b2$ окажется изолированной, а остальные 8 клеток образуют <span class="inline-link" onclick="setKnightMorph(0)">восьмиконечную звезду на доске</span>.
-            </p>
-            <p>
-              Но если расставить вершины по порядку обхода $a1 - b3 - c1 - a2 - c3 - b1 - a3 - c2$, звезда распутывается в <span class="inline-link active" onclick="setKnightMorph(1)">обычный цикл из 8 клеток по кругу</span>! На круге кони не могут перепрыгнуть друг через друга, поэтому их циклический порядок <b>Б — Б — Ч — Ч</b> — инвариант.
-            </p>
+            <ul class="algo-list" id="listKnightSteps">
+              <li class="algo-item active" onclick="setKnightStep(1)">
+                <span class="algo-num">1.</span>
+                <span><b>Нарисуем граф коня на доске $3 \times 3$:</b> отметим вершину графа в центре каждой клетки, назвав их $A, B, C, D, E, F, G, H, K$, и соединим рёбрами клетки, связанные одним ходом коня. По условию изначально кони стоят в углах $A, C, K, G$: <b>белые — в $A$ и $K$</b>, а <b>чёрные — в $C$ и $G$</b>.</span>
+              </li>
+              <li class="algo-item" onclick="setKnightStep(2)">
+                <span class="algo-num">2.</span>
+                <span><b>Перерисуем граф без пересечения рёбер:</b> расставим 8 внешних вершин по циклу обхода $B' - K' - D' - C' - H' - A' - F' - G'$ (правильный восьмиугольник), а изолированную центральную клетку $E'$ оставим в центре.</span>
+              </li>
+              <li class="algo-item" onclick="setKnightStep(3)">
+                <span class="algo-num">3.</span>
+                <span><b>Инвариант порядка в круге:</b> кони передвигаются только по рёбрам цикла и <b>не могут перепрыгивать</b> друг через друга, поэтому их циклический порядок измениться не может. Изначально они стоят в порядке <b>Белый — Чёрный — Белый — Чёрный</b> ($K' - C' - A' - G'$), поэтому получить порядок <b>Белый — Белый — Чёрный — Чёрный</b> (одноцветные при одной стороне) невозможно. <b>Ответ: нет, нельзя.</b></span>
+              </li>
+            </ul>
+            <div class="white-formula-box">
+              <span id="knightFormulaText">Порядок по циклу: Белый (K) → Чёрный (C) → Белый (A) → Чёрный (G) ✓</span>
+            </div>
             <div class="slider-panel">
               <div class="slider-header">
-                <span>Изоморфизм: Звезда на доске → Цикл $C_8$ по кругу</span>
-                <span class="slider-val-badge" id="valKnightMorph">0% (На доске)</span>
+                <span>Укладка графа: Доска $3 \times 3$ $(A \dots K)$ → Восьмиугольник $(A' \dots K')$</span>
+                <span class="slider-val-badge" id="valKnightMorph">0% (На доске 3×3)</span>
               </div>
               <input type="range" class="shk-range" id="rngKnightMorph" min="0" max="100" value="0" />
             </div>
@@ -790,7 +805,7 @@
             <div class="stage-canvas-wrap">
               <canvas class="sandbox-canvas" id="cvGraphKnights"></canvas>
             </div>
-            <div class="stage-caption">Кликните на любого коня, а затем на подсвеченную клетку для прыжка</div>
+            <div class="stage-caption">Кликните на любого коня, а затем на соседнюю свободную вершину для хода по ребру графа!</div>
           </div>
         </div>
       </article>
@@ -1014,7 +1029,7 @@
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="regFormulaText">При a = −0.15 ∈ [−1/3; 0]: x ∈ [1 − √(1 + 3a); 1 + √(1 + 3a)] = [0.26; 1.74] ✓</span>
+              <span id="regFormulaText">При a = −0.15: x ∈ [1 − √(1+3a); 1 + √(1+3a)] = [0.26; 1.74] ✓</span>
             </div>
             <div class="slider-panel">
               <div class="slider-header">
@@ -1119,7 +1134,7 @@
               </li>
             </ul>
             <div class="white-formula-box">
-              <span id="circlesFormulaText">При |a| = 1.80: 2 + |a| = 3.80 < AB = 5 ⇒ окружности не пересекаются (0 решений) ✗</span>
+              <span id="circlesFormulaText">При |a| = 1.80 < 3: 2 + |a| < 5 ⇒ не пересекаются (0 реш.) ✗</span>
             </div>
             <div class="slider-panel">
               <div class="slider-header">
@@ -1709,9 +1724,10 @@
       rot5: { yaw: -0.52, pitch: 0.32 },
 
       // --- TOPIC 2: GRAPH THEORY ---
-      knightMorph: 0,      // 0 (on 3x3 board) .. 1 (unfolded circle C8)
-      knights: ["W", null, "B", null, "B", null, "W", null],
-      selKnight: 0,
+      knightMorph: 0,      // 0 (on 3x3 board A..K) .. 1 (unfolded octagon A'..K')
+      knightStep: 1,       // 1: Graph on 3x3, 2: Octagon B'-K'-D'-C'-H'-A'-F'-G', 3: Cyclic order invariant
+      knights: [null, "W", null, "B", null, "W", null, "B"], // Cycle [B, K, D, C, H, A, F, G]: W at K(1), A(5); B at C(3), G(7)
+      selKnight: 1,
       // Card 2: Spanning Tree extraction by breaking cycles (7 vertices, 10 edges -> 6 tree edges)
       treeStep: 0,
       spanNodes: [
@@ -2011,18 +2027,54 @@
     };
 
     // --- TOPIC 2: GRAPH THEORY CONTROLS ---
+    const KNIGHT_CODES = ["B", "K", "D", "C", "H", "A", "F", "G"];
+
     function syncKnightUI() {
       const pct = Math.round(state.knightMorph * 100);
-      document.getElementById("rngKnightMorph").value = pct;
-      document.getElementById("valKnightMorph").textContent =
-        pct === 0 ? "0% (На доске 3×3)" : (pct === 100 ? "100% (Цикл C₈ по кругу)" : `${pct}%`);
-      const btn = document.getElementById("btnKnightUnfold");
-      btn.textContent = state.knightMorph > 0.5 ? "Вернуть на доску 3 × 3" : "Развернуть в круг";
-      btn.classList.toggle("active", state.knightMorph > 0.5);
+      const rng = document.getElementById("rngKnightMorph");
+      if (rng) rng.value = pct;
+      const valBadge = document.getElementById("valKnightMorph");
+      if (valBadge) {
+        valBadge.textContent =
+          pct === 0 ? "0% (На доске 3×3)" : (pct === 100 ? "100% (Восьмиугольник)" : `${pct}%`);
+      }
+
+      const prime = state.knightMorph > 0.5 ? "'" : "";
+      const occ = [];
+      for (let i = 0; i < 8; i++) {
+        if (state.knights[i]) {
+          const cName = state.knights[i] === "W" ? "Белый" : "Чёрный";
+          occ.push(`${cName} (${KNIGHT_CODES[i]}${prime})`);
+        }
+      }
+      const fBox = document.getElementById("knightFormulaText");
+      if (fBox) {
+        if (state.knightStep === 3) {
+          fBox.textContent = "Инвариант: Б–Ч–Б–Ч не переходит в Б–Б–Ч–Ч ⇒ Ответ: нельзя! ✓";
+        } else {
+          fBox.textContent = `Порядок по циклу: ${occ.join(" → ")} ✓`;
+        }
+      }
+
+      const btns = document.querySelectorAll("#knightPills .shk-pill");
+      if (btns.length >= 3) {
+        btns[0].classList.toggle("active", state.knightStep === 1);
+        btns[1].classList.toggle("active", state.knightStep === 2);
+        btns[2].classList.toggle("active", state.knightStep === 3);
+      }
+
+      const items = document.querySelectorAll("#listKnightSteps .algo-item");
+      if (items.length === 3) {
+        items[0].classList.toggle("active", state.knightStep === 1);
+        items[1].classList.toggle("active", state.knightStep === 2);
+        items[2].classList.toggle("active", state.knightStep === 3);
+      }
     }
 
     document.getElementById("rngKnightMorph").addEventListener("input", function() {
       state.knightMorph = parseFloat(this.value) / 100;
+      if (state.knightMorph < 0.35) state.knightStep = 1;
+      else if (state.knightStep === 1) state.knightStep = 2;
       syncKnightUI();
     });
 
@@ -2030,14 +2082,23 @@
       animateValue("knightMorph", val, 520, syncKnightUI);
     };
 
+    window.setKnightStep = function(step) {
+      state.knightStep = step;
+      const targetMorph = step === 1 ? 0 : 1;
+      animateValue("knightMorph", targetMorph, 520, syncKnightUI);
+      syncKnightUI();
+    };
+
     window.toggleKnightCircle = function() {
-      setKnightMorph(state.knightMorph > 0.5 ? 0 : 1);
+      setKnightStep(state.knightMorph > 0.5 ? 1 : 2);
     };
 
     window.resetKnightsGame = function() {
-      state.knights = ["W", null, "B", null, "B", null, "W", null];
-      state.selKnight = 0;
-      setKnightMorph(0);
+      state.knights = [null, "W", null, "B", null, "W", null, "B"];
+      state.selKnight = 1;
+      state.knightStep = 1;
+      animateValue("knightMorph", 0, 480, syncKnightUI);
+      syncKnightUI();
     };
 
     // Card 2 (Graphs): Spanning Tree by breaking cycles (Problem 15)
@@ -2293,15 +2354,14 @@
       const info = getAlgRegionInterval(a);
       const box = document.getElementById("regFormulaText");
       if (!info) {
-        box.textContent = `При a = ${a.toFixed(2)} ∉ [−1/3; 2]: горизонталь не пересекает область (решений нет, x ∈ ∅) ✗`;
+        box.textContent = `При a = ${a.toFixed(2)} ∉ [−1/3; 2]: вне области (решений нет) ✗`;
       } else if (Math.abs(a + 1 / 3) < 0.012) {
-        box.textContent = `При a = −1/3 (вершина параболы A): единственное решение x = 1 ✓`;
+        box.textContent = `При a = −1/3 (вершина A): единственное решение x = 1 ✓`;
       } else if (Math.abs(a - 2) < 0.012) {
-        box.textContent = `При a = 2 (вершина пересечения B): единственное решение x = 1 ✓`;
+        box.textContent = `При a = 2 (вершина B): единственное решение x = 1.00 ✓`;
       } else {
-        const regLabel = info.regime === 1 ? "[−1/3; 0]" : (info.regime === 2 ? "[0; 1]" : "[1; 2]");
         box.textContent =
-          `При a = ${a.toFixed(2)} ∈ ${regLabel}: x ∈ ${info.symStr} = [${info.xL.toFixed(2)}; ${info.xR.toFixed(2)}] ✓`;
+          `При a = ${a.toFixed(2)}: x ∈ ${info.symStr} = [${info.xL.toFixed(2)}; ${info.xR.toFixed(2)}] ✓`;
       }
 
       const items = document.querySelectorAll("#listRegSteps .algo-item");
@@ -2375,22 +2435,22 @@
       if (box) {
         if (Math.abs(a - 5) < 0.04) {
           box.textContent =
-            "Предельный случай 1 (a = 5): правая ветвь проходит через выколотую точку (3; 5) ⇒ остаётся ровно 1 корень x = 4/3 ≈ 1.33 ✓";
+            "При a = 5: прокол (3; 5) на ветви ⇒ 1 корень x = 4/3 ✓";
         } else if (Math.abs(a - 1) < 0.03) {
           box.textContent =
-            "Предельный случай 2 (a = 1): правая ветвь параллельна прямой y = x + 2 ⇒ ровно 1 пересечение слева в точке (0; 2) ✓";
+            "При a = 1: правая ветвь ∥ прямой ⇒ 1 решение x = 0 ✓";
         } else if (Math.abs(a + 1) < 0.03) {
           box.textContent =
-            "Предельный случай 3 (a = −1): левая ветвь параллельна прямой y = x + 2 ⇒ пересечений нет (0 решений) ✗";
+            "При a = −1: левая ветвь ∥ прямой ⇒ решений нет (0) ✗";
         } else if (cnt === 1) {
           box.textContent =
-            `При a = ${a.toFixed(2)} ∈ (−1; 1]: ровно 1 решение (x = ${info.roots[0].x.toFixed(2)}; y = ${info.roots[0].y.toFixed(2)}) ✓`;
+            `При a = ${a.toFixed(2)} ∈ (−1; 1]: ровно 1 решение (x = ${info.roots[0].x.toFixed(2)}) ✓`;
         } else if (cnt === 2) {
           box.textContent =
-            `При a = ${a.toFixed(2)} > 1 (a ≠ 5): обе ветви пересекают прямую ⇒ 2 решения (x₁ = ${info.roots[0].x.toFixed(2)}, x₂ = ${info.roots[1].x.toFixed(2)}) ✗`;
+            `При a = ${a.toFixed(2)} > 1: 2 решения (x₁ = ${info.roots[0].x.toFixed(2)}, x₂ = ${info.roots[1].x.toFixed(2)}) ✗`;
         } else {
           box.textContent =
-            `При a = ${a.toFixed(2)} ≤ −1: уголок раскрыт вниз и не достаёт до прямой y = x + 2 ⇒ 0 решений ✗`;
+            `При a = ${a.toFixed(2)} < −1: ветви ниже прямой ⇒ 0 решений ✗`;
         }
       }
 
@@ -2444,19 +2504,19 @@
       if (box) {
         if (isExtTangent) {
           box.textContent =
-            "Внешнее касание (|a| = 3 ⇒ a = ±3): R₁ + R₂ = 2 + 3 = 5 = AB ⇒ ровно 1 общая точка (5,2; 6,6) ✓";
+            "Внешнее касание (|a| = 3): 2 + 3 = 5 = AB ⇒ 1 решение ✓";
         } else if (isIntTangent) {
           box.textContent =
-            "Внутреннее касание (|a| = 7 ⇒ a = ±7): R₂ − R₁ = 7 − 2 = 5 = AB ⇒ ровно 1 общая точка (2,8; 3,4) ✓";
+            "Внутр. касание (|a| = 7): 7 − 2 = 5 = AB ⇒ 1 решение ✓";
         } else if (r2 < 3.0) {
           box.textContent =
-            `При |a| = ${r2.toFixed(2)} < 3: сумма радиусов 2 + |a| = ${(2 + r2).toFixed(2)} < AB = 5 ⇒ окружности не достают друг до друга (0 реш.) ✗`;
+            `При |a| = ${r2.toFixed(2)} < 3: 2 + |a| < 5 ⇒ общих точек нет (0) ✗`;
         } else if (r2 < 7.0) {
           box.textContent =
-            `При |a| = ${r2.toFixed(2)} ∈ (3; 7): окружности пересекаются в 2 точках (2 решения системы) ✗`;
+            `При |a| = ${r2.toFixed(2)} ∈ (3; 7): 2 общие точки (2 решения) ✗`;
         } else {
           box.textContent =
-            `При |a| = ${r2.toFixed(2)} > 7: разность радиусов |a| − 2 = ${(r2 - 2).toFixed(2)} > AB = 5 ⇒ меньшая окружность строго внутри большей (0 реш.) ✗`;
+            `При |a| = ${r2.toFixed(2)} > 7: |a| − 2 > 5 ⇒ внутри (0 решений) ✗`;
         }
       }
 
@@ -4024,38 +4084,48 @@
       );
     }
 
-    // --- 5.4: GRAPH CARD 1 (Knights on 3x3 -> Circle C8) ---
+    // --- 5.4: GRAPH CARD 1 (Knights in Corners of 3x3 Board: Vertices A..K -> Octagon A'..K') ---
     const KNIGHT_CYCLE = [
-      { code: "a1", r: 2, c: 0 },
-      { code: "b3", r: 0, c: 1 },
-      { code: "c1", r: 2, c: 2 },
-      { code: "a2", r: 1, c: 0 },
-      { code: "c3", r: 0, c: 2 },
-      { code: "b1", r: 2, c: 1 },
-      { code: "a3", r: 0, c: 0 },
-      { code: "c2", r: 1, c: 2 }
+      { code: "B", r: 1, c: 0, corner: false, ox: -25, oy: -18 },
+      { code: "K", r: 0, c: 2, corner: true,  ox:  24, oy: -22 },
+      { code: "D", r: 2, c: 1, corner: false, ox:  22, oy:  20 },
+      { code: "C", r: 0, c: 0, corner: true,  ox: -24, oy: -22 },
+      { code: "H", r: 1, c: 2, corner: false, ox:  25, oy: -18 },
+      { code: "A", r: 2, c: 0, corner: true,  ox: -24, oy:  22 },
+      { code: "F", r: 0, c: 1, corner: false, ox:   0, oy: -26 },
+      { code: "G", r: 2, c: 2, corner: true,  ox:  24, oy:  22 }
     ];
 
     function getKnightPositions(w, h) {
-      const cell = Math.min(w, h) * 0.24;
-      const bx = w * 0.5 - cell * 1.5;
-      const by = h * 0.5 - cell * 1.5;
-      const R = Math.min(w, h) * 0.36;
+      const cx = w * 0.5;
+      const cy = h * 0.54;
+      const cell = Math.min(w, h - 46) * 0.245;
+      const bx = cx - cell * 1.5;
+      const by = cy - cell * 1.5;
+      const R = Math.min(w, h - 46) * 0.335;
       const t = state.knightMorph;
       const pts = KNIGHT_CYCLE.map((item, idx) => {
         const x0 = bx + (item.c + 0.5) * cell;
         const y0 = by + (item.r + 0.5) * cell;
-        const ang = (idx * 2 * Math.PI) / 8 - Math.PI / 2;
-        const x1 = w * 0.5 + R * Math.cos(ang);
-        const y1 = h * 0.5 + R * Math.sin(ang);
+        const ang = (-5 * Math.PI) / 8 + (idx * Math.PI) / 4;
+        const x1 = cx + R * Math.cos(ang);
+        const y1 = cy + R * Math.sin(ang);
+        const lx0 = x0 + item.ox;
+        const ly0 = y0 + item.oy;
+        const lx1 = cx + (R + 26) * Math.cos(ang);
+        const ly1 = cy + (R + 26) * Math.sin(ang);
         return {
           idx,
           code: item.code,
+          corner: item.corner,
+          ang,
           x: x0 + (x1 - x0) * t,
-          y: y0 + (y1 - y0) * t
+          y: y0 + (y1 - y0) * t,
+          lx: lx0 + (lx1 - lx0) * t,
+          ly: ly0 + (ly1 - ly0) * t
         };
       });
-      return { cell, bx, by, pts };
+      return { cx, cy, R, cell, bx, by, pts };
     }
 
     function drawGraphKnights() {
@@ -4065,33 +4135,78 @@
       const col = colors();
       ctx.clearRect(0, 0, w, h);
 
-      const { cell, bx, by, pts } = getKnightPositions(w, h);
+      const { cx, cy, R, cell, bx, by, pts } = getKnightPositions(w, h);
+      const t = state.knightMorph;
+      const prime = t > 0.5 ? "'" : "";
 
-      // Draw fading 3x3 grid when morph < 0.85
-      if (state.knightMorph < 0.9) {
-        ctx.globalAlpha = 1 - state.knightMorph * 0.85;
+      // 1. Draw fading 3x3 chessboard grid & corner highlights when morph < 0.92
+      if (t < 0.92) {
+        ctx.save();
+        ctx.globalAlpha = 1 - t * 0.9;
         for (let r = 0; r < 3; r++) {
           for (let cl = 0; cl < 3; cl++) {
+            const rx = bx + cl * cell;
+            const ry = by + r * cell;
+            const isCornerCell = (r === 0 || r === 2) && (cl === 0 || cl === 2);
+            if (isCornerCell) {
+              ctx.fillStyle = "rgba(37, 99, 235, 0.06)";
+              ctx.fillRect(rx, ry, cell, cell);
+            }
             ctx.strokeStyle = col.muted;
-            ctx.lineWidth = 1.2;
-            ctx.strokeRect(bx + cl * cell, by + r * cell, cell, cell);
+            ctx.lineWidth = 1.3;
+            ctx.strokeRect(rx, ry, cell, cell);
           }
         }
-        ctx.globalAlpha = 1;
+        // Small grid intersection dots (like in the reference diagram)
+        for (let r = 0; r <= 3; r++) {
+          for (let cl = 0; cl <= 3; cl++) {
+            ctx.beginPath();
+            ctx.arc(bx + cl * cell, by + r * cell, 3.2, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(100, 116, 139, 0.45)";
+            ctx.fill();
+          }
+        }
+        ctx.restore();
       }
 
-      // Draw Cycle Edges
+      // 2. Step 3 invariant ring highlight (shows cyclic order around the octagon)
+      if (state.knightStep === 3 || t > 0.65) {
+        ctx.save();
+        ctx.setLineDash([6, 5]);
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.strokeStyle = state.knightStep === 3 ? "rgba(217, 119, 6, 0.45)" : "rgba(37, 99, 235, 0.18)";
+        ctx.lineWidth = state.knightStep === 3 ? 2.2 : 1.4;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 3. Draw Cycle Edges (B - K - D - C - H - A - F - G - B)
       ctx.beginPath();
       for (let i = 0; i < 8; i++) {
         const p1 = pts[i], p2 = pts[(i + 1) % 8];
         ctx.moveTo(p1.x, p1.y);
         ctx.lineTo(p2.x, p2.y);
       }
-      ctx.strokeStyle = col.blue;
-      ctx.lineWidth = 2.4;
+      ctx.strokeStyle = "#CA8A04";
+      ctx.lineWidth = 2.6;
       ctx.stroke();
 
-      // Valid targets for selected knight
+      // 4. Draw isolated central vertex E / E'
+      ctx.beginPath();
+      ctx.arc(cx, cy, 8.5, 0, Math.PI * 2);
+      ctx.fillStyle = "#F472B6";
+      ctx.fill();
+      ctx.strokeStyle = col.ink;
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+      ctx.font = "700 13px Inter, sans-serif";
+      ctx.fillStyle = "#DB2777";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      ctx.fillText(`E${prime}`, cx + 13, cy - 10);
+
+      // 5. Valid targets for selected knight
       const targets = new Set();
       if (state.selKnight !== null) {
         const n1 = (state.selKnight + 1) % 8;
@@ -4100,32 +4215,70 @@
         if (!state.knights[n2]) targets.add(n2);
       }
 
-      // Draw Nodes & Knights
+      // 6. Draw 8 Cycle Vertices, Knights & Vertex Labels (A..K / A'..K')
       pts.forEach(p => {
         const k = state.knights[p.idx];
         const isSel = state.selKnight === p.idx;
         const isTarget = targets.has(p.idx);
 
+        // Corner halo for A, C, K, G
+        if (p.corner) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 22, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(37, 99, 235, 0.28)";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+
+        const rad = k ? 18 : (isTarget ? 14 : 9.5);
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 20, 0, Math.PI * 2);
-        ctx.fillStyle = k === "W" ? "#FFFFFF" : (k === "B" ? "#0F172A" : (isTarget ? col.blueFill : col.white));
+        ctx.arc(p.x, p.y, rad, 0, Math.PI * 2);
+        ctx.fillStyle = k === "W"
+          ? "#FFFFFF"
+          : (k === "B" ? "#0F172A" : (isTarget ? "rgba(16, 185, 129, 0.18)" : "#F472B6"));
         ctx.fill();
         ctx.strokeStyle = isSel ? col.blue : (isTarget ? col.green : col.ink);
-        ctx.lineWidth = (isSel || isTarget) ? 3 : 1.8;
+        ctx.lineWidth = (isSel || isTarget) ? 2.8 : 1.8;
         ctx.stroke();
 
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         if (k) {
-          ctx.font = "20px sans-serif";
+          ctx.font = "19px sans-serif";
           ctx.fillStyle = k === "W" ? "#0F172A" : "#FFFFFF";
           ctx.fillText(k === "W" ? "♘" : "♞", p.x, p.y + 1);
-        } else {
-          ctx.font = "700 12px Inter, sans-serif";
-          ctx.fillStyle = isTarget ? col.green : col.muted;
-          ctx.fillText(p.code, p.x, p.y);
         }
+
+        // Vertex label A..K or A'..K' outside the node
+        ctx.font = p.corner ? "700 13.5px Inter, sans-serif" : "600 13px Inter, sans-serif";
+        ctx.fillStyle = isTarget ? col.green : (p.corner ? col.blue : "#DB2777");
+        ctx.fillText(`${p.code}${prime}`, p.lx, p.ly);
       });
+
+      // 7. Top status pill badge
+      const occShort = [];
+      for (let i = 0; i < 8; i++) {
+        if (state.knights[i]) {
+          occShort.push(`${state.knights[i] === "W" ? "Б" : "Ч"}(${KNIGHT_CODES[i]}${prime})`);
+        }
+      }
+      const badgeText = state.knightStep === 3
+        ? `Порядок по кругу: ${occShort.join(" – ")} ≠ Б–Б–Ч–Ч ⇒ Ответ: нельзя!`
+        : (t < 0.5
+          ? `Углы доски: белые в A и K, чёрные в C и G (${occShort.join(" – ")})`
+          : `Восьмиугольник B'K'D'C'H'A'F'G': чередование ${occShort.join(" – ")}`);
+
+      drawPillBadge(
+        ctx,
+        badgeText,
+        w * 0.5,
+        20,
+        state.knightStep === 3 ? col.amber : col.blue,
+        state.knightStep === 3 ? "rgba(254, 243, 199, 0.95)" : "rgba(239, 246, 255, 0.95)",
+        state.knightStep === 3 ? "rgba(245, 158, 11, 0.35)" : "rgba(37, 99, 235, 0.30)",
+        "center"
+      );
+
       ctx.textBaseline = "alphabetic";
     }
 
@@ -7022,6 +7175,7 @@
                 state.knights[p.idx] = state.knights[state.selKnight];
                 state.knights[state.selKnight] = null;
                 state.selKnight = p.idx;
+                syncKnightUI();
               }
             }
             break;
